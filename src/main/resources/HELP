@@ -1,0 +1,7 @@
+= Links =
+
+== Softlinks ==
+
+We disabled support for softlinks to avoid endless loops.
+The .wine folder for example includes links to your home folder, 
+which has .wine as a subfolder, which has links to your...

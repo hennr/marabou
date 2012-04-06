@@ -1,0 +1,123 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-11-01 15:52+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: /home/henner/workspace/marabou/src/main/java/gui/MainWindow.java:27
+msgid "Marabou - Audio tagger"
+msgstr ""
+
+#: /home/henner/workspace/marabou/src/main/java/gui/MainMenu.java:40
+msgid "&File"
+msgstr ""
+
+#: /home/henner/workspace/marabou/src/main/java/gui/MainMenu.java:48
+msgid "&Open file\tF"
+msgstr ""
+
+#: /home/henner/workspace/marabou/src/main/java/gui/MainMenu.java:56
+msgid "Choose a file to open"
+msgstr ""
+
+#: /home/henner/workspace/marabou/src/main/java/gui/MainMenu.java:78
+msgid "&Unicode Fail?\tU"
+msgstr ""
+
+#: /home/henner/workspace/marabou/src/main/java/gui/MainMenu.java:87
+msgid "Choose a file to check"
+msgstr ""
+
+#: /home/henner/workspace/marabou/src/main/java/gui/MainMenu.java:131
+msgid "Open &directory\tD"
+msgstr ""
+
+#: /home/henner/workspace/marabou/src/main/java/gui/MainMenu.java:145
+msgid "Choose a directory to open"
+msgstr ""
+
+#: /home/henner/workspace/marabou/src/main/java/gui/MainMenu.java:162
+msgid "&Exit"
+msgstr ""
+
+#: /home/henner/workspace/marabou/src/main/java/gui/MainMenu.java:173
+msgid "&Help"
+msgstr ""
+
+#: /home/henner/workspace/marabou/src/main/java/gui/MainMenu.java:179
+msgid "&About"
+msgstr ""
+
+#: /home/henner/workspace/marabou/src/main/java/gui/AboutWindow.java:21
+msgid "About Marabou"
+msgstr ""
+
+#: /home/henner/workspace/marabou/src/main/java/gui/AboutWindow.java:44
+msgid ""
+"The Marabu is a scavenger, and so is this software.\n"
+"It's written to eat badly tagged music files.\n"
+msgstr ""
+
+#: /home/henner/workspace/marabou/src/main/java/gui/AboutWindow.java:51
+msgid "About"
+msgstr ""
+
+#: /home/henner/workspace/marabou/src/main/java/gui/AboutWindow.java:58
+msgid ""
+"\n"
+"\n"
+"This program is Free Software.\n"
+"It is licenced under the GNU GPL v.3 or later."
+msgstr ""
+
+#: /home/henner/workspace/marabou/src/main/java/gui/AboutWindow.java:62
+msgid "Licence"
+msgstr ""
+
+#: /home/henner/workspace/marabou/src/main/java/gui/TableShell.java:73
+msgid "Length"
+msgstr ""
+
+#: /home/henner/workspace/marabou/src/main/java/gui/TableShell.java:78
+msgid "Format"
+msgstr ""
+
+#: /home/henner/workspace/marabou/src/main/java/gui/TableShell.java:83
+msgid "Bitrate"
+msgstr ""
+
+#: /home/henner/workspace/marabou/src/main/java/gui/TableShell.java:88
+msgid "Samplerate"
+msgstr ""
+
+#: /home/henner/workspace/marabou/src/main/java/gui/TableShell.java:93
+msgid "Artist"
+msgstr ""
+
+#: /home/henner/workspace/marabou/src/main/java/gui/TableShell.java:98
+msgid "Title"
+msgstr ""
+
+#: /home/henner/workspace/marabou/src/main/java/gui/TableShell.java:103
+msgid "Path"
+msgstr ""
+
+#: /home/henner/workspace/marabou/src/main/java/gui/TableShell.java:145
+msgid "Can't open file!"
+msgstr ""
+
+#: /home/henner/workspace/marabou/src/main/java/gui/TableShell.java:146
+msgid "Couldn't open \n"
+msgstr ""

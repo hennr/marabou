@@ -1,0 +1,50 @@
+-=Release 0.1=-
+
+jaudiotagger tilgen: grep -iI jaudiotagger .
+log4j aus der pom?
+
+jaudiotagger does not seem to be able to deal with hardlinks, what to do?
+
+exceptions abfangen!
+Kommentare
+maven pkg-plugin/IzPackInstaller
+sourcecode mit der GPL überall kommentieren
+auto updater, siehe rssowl: http://www.rssowl.org
+untere leiste auskommentieren?
+filesystem seitenleiste auskommentieren?
+reset version number of marabou.properties 0.1 before releasing
+use "optipng" to compress graphics
+image loader helper?
+
+-=Release 0.2=-
+Drag&Drop Support
+"OpenWith" from context menu of file managers?
+make it possible to disable update checks when someone builds debian packages
+hier eintragen: http://tango.freedesktop.org/Tango_Showroom
+hier eintragen: http://alternativeto.net
+options dialogue
+seitenleiste ausblendbar machen
+leisten ausblendbar machen (view leiste)
+Neben der Baumstruktur einen NortonCommander Style einbauen 
+changelog
+
+exceptions abfangen!
+grafikdesign neu machen, z.B. platz zum Rahmen relativ setzen, nicht fest; siehe AboutWindow
+statusfenster beim enlesen der dateien
+create interfaces?
+neues Logo
+add saving support for soft/hard links under linux; links to folders sorted by genre, artist...
+grafiken unter den tags links
+drag n' drop vom filemanager links, generell, und auch andersrum :) Also aus der tabelle den pfad zur datei in andere programme
+
+-=???=-
+When Java 7 is released replace the code that checks if Files are symlink while opening dirs recursively
+UTF-8
+volume normalisieren
+musik DB mit hash nach mp3-namen durchsuchen
+picard audio erkennung angucken
+fehler in audio dateien suchen/finden (siehe bookmarks ffmpeg*)
+audio felder in vorbis: Live, Acoustic, Frauenstimme?
+BPM
+revert funktion
+logfiles versenden (z.B. über upload only ftp)

@@ -1,0 +1,199 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.launchpad</groupId>
+	<artifactId>marabou</artifactId>
+	<description>Marabou is a cross-platform audio tagger using SWT 
+	for the frontend and mp3agic as the backend library for mp3 file tagging.</description>
+	<packaging>jar</packaging>
+	<version>0.1-SNAPSHOT</version>
+	<name>marabou</name>
+	<url>https://launchpad.net/marabou</url>
+	<licenses>
+		<license>
+			<name>GNU GPL v3 or higher</name>
+			<url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
+		</license>
+	</licenses>
+
+	<issueManagement>
+		<system>Launchpad</system>
+		<url>https://bugs.launchpad.net/marabou</url>
+	</issueManagement>
+
+	<mailingLists>
+		<mailingList>
+			<name>Developer List</name>
+			<subscribe>https://launchpad.net/~marabou-devel</subscribe>
+			<unsubscribe>https://launchpad.net/~marabou-devel</unsubscribe>
+			<post>marabou-devel@lists.launchpad.net</post>
+			<archive>https://lists.launchpad.net/marabou-devel/</archive>
+		</mailingList>
+	</mailingLists>
+
+	<developers>
+		<developer>
+			<name>Jan-Hendrik "hennr" Peters</name>
+			<email>hennr@hennr.name</email>
+			<url>http://www.hennr.name</url>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>Europe/Berlin</timezone>
+		</developer>
+		<developer>
+			<name>Markus Herpich</name>
+			<email>herpich@cs.tu-berlin.de</email>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>Europe/Berlin</timezone>
+		</developer>
+	</developers>
+
+	<dependencies>
+		<!--
+			junit for our tests *twinkle* *twinkle* 
+			does not get included in final jar package
+		-->
+		<dependency>
+		    <groupId>junit</groupId>
+		    <artifactId>junit</artifactId>
+		    <version>4.8.2</version>
+		</dependency>
+
+		<!-- gettext for internationalisation -->
+		<dependency>
+			<groupId>org.xnap.commons</groupId>
+			<artifactId>gettext-commons</artifactId>
+			<version>0.9.6</version>
+		</dependency>
+				
+		<!-- mp3agic as our mp3 tag lib -->
+		<dependency>
+			<groupId>mp3agic</groupId>
+			<artifactId>mp3agic</artifactId>
+			<version>0.6</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/mp3agic-0.6.jar</systemPath>
+		</dependency>
+		
+		<!-- TODO delete this lib!!!
+		 Our backend lib jaudiotagger -->
+		<dependency>
+		<groupId>org</groupId>
+		<artifactId>jaudiotagger</artifactId>
+		<version>2.0.3</version>
+		</dependency>
+		<!-- SWT from a repo -->
+		<!--
+		<dependency>
+			<groupId>org.eclipse.swt.gtk.linux</groupId>
+			<artifactId>x86_64</artifactId>
+			<version>3.3.0-v3346</version>
+			<scope>compile</scope>
+		</dependency>
+		-->
+		<!-- SWT local -->
+		<dependency>
+			<groupId>swt</groupId>
+			<artifactId>swt</artifactId>
+			<version>3.6.2</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/swt-3.6.2-gtk-linux-x86_64.jar</systemPath>
+		</dependency>
+		<!-- http://mvnrepository.com/artifact/org.hsqldb/hsqldb -->
+		<dependency>
+		    <groupId>org.hsqldb</groupId>
+		    <artifactId>hsqldb</artifactId>
+		    <version>2.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+			<type>jar</type>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>com.sun.jmx</groupId>
+					<artifactId>jmxri</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.sun.jdmk</groupId>
+					<artifactId>jmxtools</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.jms</groupId>
+					<artifactId>jms</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+		<!-- To let mvn locate the Main class when packaging
+		TODO still needed if we use IzPack?
+		 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>net.launchpad.marabou.Main</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<!--
+				This is a maven plugin to create message templates and classes from
+				the po files for the internationalisation
+			-->
+			<plugin>
+				<groupId>org.xnap.commons</groupId>
+				<artifactId>maven-gettext-plugin</artifactId>
+				<configuration>
+					<poDirectory>${basedir}/resources/i18n</poDirectory>
+					<targetBundle>i18n.Messages</targetBundle>
+					<keywords>-k_</keywords>
+				</configuration>
+			</plugin>
+			<!-- Yep, we write java 6 code and want it to be compiled as such -->
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<repositories>
+		<!-- for internationalisation -->
+		<repository>
+			<id>gettext-commons-site</id>
+			<url>http://gettext-commons.googlecode.com/svn/maven-repository/</url>
+		</repository>
+		
+		<!-- TODO delete this repo!!!
+		jaudiotagger repo -->
+		<repository>
+			<id>jaudiotagger-repo</id>
+			<url>http://download.java.net/maven/2/</url>
+		</repository>
+	</repositories>
+	
+	<pluginRepositories>
+		<!-- for the gettext-maven-plugin -->
+		<pluginRepository>
+			<id>xnap-commons</id>
+			<name>XNap Commons Repository</name>
+			<url>http://xnap-commons.sourceforge.net/repository/</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+</project>
