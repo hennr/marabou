@@ -43,7 +43,7 @@ public class CreditsWindow {
 		
 		final Shell shell = new Shell(display);
 		shell.setText(_("Credits"));
-		shell.setImage(new Image(display, "src/main/resources/graphics/marabou.png"));
+		shell.setImage(new Image(display, "src/main/resources/graphics/marabou_16.png"));
 		
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
@@ -97,29 +97,30 @@ public class CreditsWindow {
 				}
 				//  no mail client found 
 				catch (IOException e) {
-				// FIXME on my system no MUA is found :( Works fine in Markus' environment... 
+				// FIXME on my system no MUA is found :( Works fine in Markus' environment though... 
 				} catch (URISyntaxException e) {/* shouldn't happen */}
 			}
 			}
 		});
-		
-		final String transUrl = "https://translations.launchpad.net/marabou";
-		Link transNote = new Link(transComp, SWT.None);
-		transNote.setText(_("Want to help translate marabou?\n" + 
-				"Check out the online interface at:\n" + 
-				"<a>") + transUrl + _("</a>"));
-		transNote.pack();
-		// handle clicks on the link and open it in a browser
-		transNote.addListener(SWT.Selection, new Listener() {
-			@Override
-			public void handleEvent(Event event) {
-				if (Desktop.isDesktopSupported()) {
-				try {
-					try {
-						Desktop.getDesktop().browse(new URI(transUrl));
-						} catch (IOException e) { /* no browsing today :( */ }
-				} catch (URISyntaxException e) {/* Shouldn't happen at all */ }}
-			}});
+
+// FIXME does github or something we can use for free a web interface for translation volunteers as well?
+//		final String transUrl = "https://translations.launchpad.net/marabou";
+//		Link transNote = new Link(transComp, SWT.None);
+//		transNote.setText(_("Want to help translate marabou?\n" + 
+//				"Check out the online interface at:\n" + 
+//				"<a>") + transUrl + _("</a>"));
+//		transNote.pack();
+//		// handle clicks on the link and open it in a browser
+//		transNote.addListener(SWT.Selection, new Listener() {
+//			@Override
+//			public void handleEvent(Event event) {
+//				if (Desktop.isDesktopSupported()) {
+//				try {
+//					try {
+//						Desktop.getDesktop().browse(new URI(transUrl));
+//						} catch (IOException e) { /* no browsing today :( */ }
+//				} catch (URISyntaxException e) {/* Shouldn't happen at all */ }}
+//			}});
 		
 		Link translators = new Link(transComp, SWT.None);
 		// FIXME these line breaks are necessary, otherwise the first label covers this one, why?

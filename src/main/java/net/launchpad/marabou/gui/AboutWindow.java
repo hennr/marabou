@@ -91,7 +91,7 @@ public class AboutWindow {
 		labelText.pack();
 
 		// button with project's url
-		final String url = "https://launchpad.net/marabou";
+		final String url = "https://github.com/hennr/marabou";
 		final Button linkButton = new Button(comp1, SWT.PUSH);
 		linkButton.setText(url);
 		linkButton.pack();

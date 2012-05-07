@@ -36,7 +36,7 @@ public class LicenceWindow {
 		
 		final Shell shell = new Shell(display);
 		shell.setText(_("Licence"));
-		shell.setImage(new Image(display, "src/main/resources/graphics/marabou.png"));
+		shell.setImage(new Image(display, "src/main/resources/graphics/marabou_16.png"));
 		
 		RowLayout rowLayout = new RowLayout(1);
 		rowLayout.center = true;
