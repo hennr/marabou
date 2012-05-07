@@ -62,7 +62,7 @@ public class LicenceWindow {
 		label.setText(_(
 		"Marabou Audio Tagger\n\n" +
 		"A cross platform audio tagger using SWT\n\n" + 	
-		"Copyright (C) 2009-2010  Jan-Hendrik Peters, Markus Herpich\n\n\n" + 
+		"Copyright (C) 2009-2012  Jan-Hendrik Peters, Markus Herpich\n\n\n" + 
 		
 		"This program is free software: you can redistribute it and/or modify\n" + 
 		"it under the terms of the GNU General Public License as published by\n" + 
