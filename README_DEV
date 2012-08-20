@@ -3,22 +3,28 @@
 To get started developing marabou for the first time do the following:
 
 - check it out via git
+git clone https://github.com/hennr/marabou.git
+
 - install maven
-- change into the marabou dir and run maven. This will download all dependencies and their sourcode and javadoc if available:
-mvn -DdownloadSources=true -DdownloadJavadocs=true clean
-Yes, this take quite a while...
+- change into the marabou dir and download all dependencies, their source code and their javadoc, if available:
+
+mvn dependency:sources
+mvn dependency:resolve -Dclassifier=javadoc
+
+Yes, this takes quite a while...
 
  - if you use eclipse read on below
  - if not, that's it!
 
 -= Eclipse =-
 
-If you run mvn for the first time or switch your workspace you need to make eclipse know where your maven repo is:
+If you run mvn for the first time or switched your workspace you need to make eclipse know where your maven repo is:
 mvn -Declipse.workspace=<path-to-your-eclipse-workspace> eclipse:add-maven-repo
 
-Create an eclipse project from the maven project:
-mvn eclipse:clean
+Let maven create an eclipse project for you:
 mvn eclipse:eclipse
+
+This can be imported into eclispe now.
 
 -=recreate the eclipse project (e.g. if you edited the pom.xml or if a dependency got updated)=-
 mvn eclipse:clean
