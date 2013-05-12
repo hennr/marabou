@@ -5,3 +5,4 @@
 *.iml
 *.class
 bin
+/nb-configuration.xml
