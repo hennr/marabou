@@ -211,12 +211,24 @@
 		<swt.artifactId>org.eclipse.swt.gtk.linux.x86_64</swt.artifactId>
 	    </properties>
 	</profile>
+		<profile>
+	    <id>gtk_linux_amd64</id>
+	    <activation>
+		<os>
+		    <name>linux</name>
+		    <arch>x86_64</arch>
+		</os>
+	    </activation>
+	    <properties>
+		<swt.artifactId>org.eclipse.swt.gtk.linux.x86_64</swt.artifactId>
+	    </properties>
+	</profile>
 	<profile>
 	    <id>windows32</id>
 	    <activation>
 		<os>
 		    <family>windows</family>
-		    <arch>x86</arch>
+		    <arch>amd64</arch>
 		</os>
 	    </activation>
 	    <properties>
