@@ -22,7 +22,7 @@ package net.launchpad.marabou.gui;
 import static net.launchpad.marabou.helper.I18nHelper._;
 
 import java.io.File;
-import java.util.Iterator;
+import java.io.IOException;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -33,6 +33,7 @@ import net.launchpad.marabou.db.HSQLDBController;
 import net.launchpad.marabou.helper.IsLinkHelper;
 import net.launchpad.marabou.helper.PropertiesAllowedKeys;
 import net.launchpad.marabou.helper.PropertiesHelper;
+import net.launchpad.marabou.helper.UnsupportedFileEndingException;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -43,6 +44,9 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
+
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.UnsupportedTagException;
 
 /**
  * 
@@ -73,6 +77,7 @@ public class MainMenu {
 
 	/**
 	 * sets the tableShell that is needed when invoking "open file" etc.
+	 * 
 	 * @param tableShell
 	 */
 	public final void setTableShell(final TableShell tableShell) {
@@ -116,66 +121,44 @@ public class MainMenu {
 				FileDialog fileDialog = new FileDialog(shell, SWT.MULTI);
 				fileDialog.setText(_("Choose file..."));
 
-				// set the filter path, if possible restore it from the config
-				// file
-				String lastPath = PropertiesHelper
-						.getProp(PropertiesAllowedKeys.lastPath);
+				// set the filter path, restore from the config file if possible
+				String lastPath = PropertiesHelper.getProp(PropertiesAllowedKeys.lastPath);
 				fileDialog.setFilterPath(lastPath);
 
-				// file endings that are supported an their respective text
-				// (regexp case insensitive)
-				final String[] supportedFileEndings = {
-//						"*.[o|O][g|G][g|G];*.[m|M][p|P]3;*.[m|M][p|P]4;*.[f|F][l|L][a|A][c|C];*.[w|W][m|M][a|A]",
-//						"*.[o|O][g|G][g|G]",
-						"*.[m|M][p|P]3",
-//						"*.[m|M][p|P]4",
-//						"*.[f|F][l|L][a|A][c|C]",
-//						"*.[w|W][m|M][a|A]",
-						"*" };
-				final String[] fileEndingsDesc = 
-						{_("all supported audio files"),
-//						"*.ogg",
+				/**
+				 * currently supported file endings, text for GUI
+				 */
+				final String[] supportedFileEndingsDesc = {
+						_("all supported audio files"),
 						"*.mp3",
-//						"*.mp4",
-//						"*.flac",
-//						"*.wma",
-						_("all files")};
+						_("all files") };
+				
+				/**
+				 *  currently supported file endings
+				 */
+				final String[] supportedFileEndings = {
+						"*.[m|M][p|P]3",
+						"*.[m|M][p|P]3",
+						"*" };
+				
 				fileDialog.setFilterExtensions(supportedFileEndings);
-				// names for the filters
-				fileDialog.setFilterNames(fileEndingsDesc);
+				fileDialog.setFilterNames(supportedFileEndingsDesc);
 
 				fileDialog.open();
-				// safe the last path if user wishes
+				// safe the last path if user wants us to
 				String dirToOpen = fileDialog.getFilterPath();
-				boolean safeLastPath = PropertiesHelper.getProp(
-						PropertiesAllowedKeys.safeLastPath).equals("true");
-				if (safeLastPath && dirToOpen != null) { // if it's null, the
-															// user aborted the
-															// opening process
-					PropertiesHelper.setProp(PropertiesAllowedKeys.lastPath,
-							dirToOpen);
+				boolean safeLastPath = PropertiesHelper.getProp(PropertiesAllowedKeys.safeLastPath).equals("true");
+				if (safeLastPath && dirToOpen != null) {
+					// if it's null, the user aborted the opening process
+					PropertiesHelper.setProp(PropertiesAllowedKeys.lastPath, dirToOpen);
 				}
 
 				// open the selected files
 				String[] filesToOpen = fileDialog.getFileNames();
+				String filterPath = fileDialog.getFilterPath();
 				if (filesToOpen != null) {
-					String filterPath = fileDialog.getFilterPath();
-
-					for (String file : filesToOpen) {
-
-						int i = controller.insertFile(new File(filterPath + "/"
-								+ file));
-						if (i > 0) {
-							try {
-								// TODO get the id because filenames can change!
-								controller.addTableItemByFilename(filterPath
-										+ "/" + file);
-							} catch (GUINotConnectedException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
-						}
-
+					for (String file: filesToOpen) {
+						openFile(filterPath + "/" + file);
 					}
 					tableShell.setFocus();
 				}
@@ -200,70 +183,58 @@ public class MainMenu {
 		// TODO make opening of multiple dirs at once possible
 		// the problem is that not every platform seems to supports opening of
 		// multiple dirs at once
-		// we have to create our own dialog if we want that functionality
+		// we have to create our own dialog if we want that functionality :(
 
 		// http://java-gui.info/Wiley-Professional.Java.Interfaces.with.SWT.JFace/12093/BBL0061.html
-		
+
 		openDirectoryItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(final Event e) {
 
 				DirectoryDialog directoryDialog = new DirectoryDialog(shell);
 				directoryDialog.setText(_("Choose directory..."));
 
-				String lastPath = PropertiesHelper
-						.getProp(PropertiesAllowedKeys.lastPath);
+				String lastPath = PropertiesHelper.getProp(PropertiesAllowedKeys.lastPath);
 				directoryDialog.setFilterPath(lastPath);
 				String dirToOpen = directoryDialog.open();
-				boolean safeLastPath = PropertiesHelper.getProp(
-						PropertiesAllowedKeys.safeLastPath).equals("true");
-				if (safeLastPath && dirToOpen != null) { // if it's null, the
-															// user aborted the
-															// opening process
-					PropertiesHelper.setProp(PropertiesAllowedKeys.lastPath,
-							dirToOpen);
+				boolean safeLastPath = PropertiesHelper.getProp(PropertiesAllowedKeys.safeLastPath).equals("true");
+				if (safeLastPath && dirToOpen != null) {
+					// if it's null, the user aborted the opening process
+					PropertiesHelper.setProp(PropertiesAllowedKeys.lastPath, dirToOpen);
 				}
 				log.info("Directory to open: " + dirToOpen);
 
-				// invoke helper method to scan folder
 				if (dirToOpen != null) {
+					tableShell.setFocus();
 					Vector<String> files = findFiles(dirToOpen);
-					Iterator<String> i = files.iterator();
-					while (i.hasNext()) {
-						controller.insertFile(new File(i.next()));
-						// tableShell.fillTable(i.next());
-					}
-					try {
-						controller.addAllTableItems();
-					} catch (GUINotConnectedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					openFiles(files);
 				}
-				tableShell.setFocus();
 			}
 		});
-		
+
 		// TODO Controller: use the HSQLDBController here
 		// File -> save current file
 		MenuItem saveItem = new MenuItem(filemenu, SWT.PUSH);
 		saveItem.setText(_("&Save\t Ctrl+S"));
 		saveItem.setAccelerator(SWT.CTRL + 'S');
 		// TODO RELEASE replace with image loader helper call
-		saveItem.setImage(new Image(shell.getDisplay(), "src/main/resources/graphics/save.png"));
-		
+		saveItem.setImage(new Image(shell.getDisplay(),
+				"src/main/resources/graphics/save.png"));
+
 		saveItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
 				try {
 					controller.saveSelectedFiles();
-				} catch (Exception e1) {}
+				} catch (Exception e1) {
+				}
 			}
-			
+
 		});
 
 		// File -> Exit
 		MenuItem exitItem = new MenuItem(filemenu, SWT.PUSH);
 		// TODO RELEASE replace with image loader helper call
-		exitItem.setImage(new Image(shell.getDisplay(), "src/main/resources/graphics/exit.png"));
+		exitItem.setImage(new Image(shell.getDisplay(),
+				"src/main/resources/graphics/exit.png"));
 		exitItem.setText(_("&Exit\t Alt+F4"));
 
 		// listener for File -> Exit
@@ -288,7 +259,6 @@ public class MainMenu {
 		aboutItem.setImage(new Image(shell.getDisplay(),
 				"src/main/resources/graphics/help.png"));
 
-
 		// listener for Help -> About
 		aboutItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(final Event e) {
@@ -308,26 +278,76 @@ public class MainMenu {
 	 * @param dirToScan
 	 *            the directory to start with
 	 */
-	private static Vector<String> locatedFiles = new Vector<String>();
-
 	public static Vector<String> findFiles(String dirToScan) {
 
-		File dir = new File(dirToScan);
+	    File dir = new File(dirToScan);
 
-		File[] files = dir.listFiles(new AudioFileFilter());
-		if (files != null && files.length != 0) {
-			for (int i = 0; i < files.length; i++) {
-				if (IsLinkHelper.isLink(files[i])) {
-					// we ignore softlinks, see HELP
-				} else {
-					if (files[i].isDirectory()) {
-						findFiles(files[i].toString());
-					} else {
-						locatedFiles.add(files[i].toString());
-					}
-				}
+	    File[] files = dir.listFiles(new AudioFileFilter());
+	    Vector<String> locatedFiles = new Vector<>();
+	    if (files != null && files.length != 0) {
+		for (File f : files) {
+		    if (!IsLinkHelper.isLink(f)) {
+			if (f.isDirectory()) {
+			    findFiles(f.toString());
+			} else {
+			    locatedFiles.add(f.toString());
 			}
+		    }
 		}
-		return locatedFiles;
+	    }
+	    return locatedFiles;
 	}
+	
+	/**
+	 * Utilises the {@link HSQLDBController} to open given files
+	 * Will notify the user if files fail to open
+	 * @param files Vector of files to open (absolute path)
+	 */
+	private void openFiles(Vector<String> files) {
+		
+		for (String file: files) {
+			openFile(file);
+		}
+	}
+	
+	/**
+	 * Utilises the {@link HSQLDBController} to open given files.
+	 * Will notify the user if files fail to open
+	 * @param file absolute path of file
+	 */
+	private void openFile(String file) {
+		
+		try {
+		    isFileSupported(file);
+		} catch (UnsupportedFileEndingException e) {
+		    return;
+		}
+		try {
+		    controller.insertFile(new File(file));
+		} catch (InvalidDataException | IOException | UnsupportedTagException e) {
+			ErrorWindow.appendError("couldn't open file: " + file);
+		}
+		try {
+		    controller.addAllTableItems();
+		} catch (GUINotConnectedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Determines of given file is supported by our backend library.
+	 * @param file 
+	 * @return true if file ending is mp3 (lower or upper case)
+	 * @throws UnsupportedFileEndingException if the file format seems to be unsupported by mp3agic
+	 */
+	private boolean isFileSupported(String file) throws UnsupportedFileEndingException {
+		System.out.println(file);
+		if (! file.toLowerCase().endsWith("mp3")) {
+			throw new UnsupportedFileEndingException();
+		} else {
+			return true;
+		}
+	}
+	
 }

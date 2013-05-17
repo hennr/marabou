@@ -1,10 +1,14 @@
 package net.launchpad.marabou.db;
 
 import java.io.File;
+import java.io.IOException;
 
 import net.launchpad.marabou.gui.TableShell;
 
 import org.eclipse.swt.widgets.TabFolder;
+
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.UnsupportedTagException;
 
 /**
  * Abstract class defining database controller.
@@ -54,11 +58,16 @@ public abstract class DBController {
 	/**
 	 * Insert audio file into DB.
 	 * 
+	 * If you want the file to show up in the GUI you have to call addAllTableItems (or similar function) afterwards
+	 * 
 	 * @param audiofile
 	 *            File object to be inserted
 	 * @return affected rows
+	 * @throws InvalidDataException if file is not a supported file type or if it's corrupt
+	 * @throws IOException 
+	 * @throws UnsupportedTagException 
 	 */
-	public abstract int insertFile(File audiofile);
+	public abstract int insertFile(File audiofile) throws InvalidDataException, IOException, UnsupportedTagException;
 
 	/**
 	 * Set TableItem at given position.
