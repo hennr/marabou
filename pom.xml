@@ -123,7 +123,7 @@
 		    </descriptorRefs>
 		    <archive>
 			<manifest>
-			    <mainClass>net.launchpad.marabou.Main</mainClass>
+			    <mainClass>com.github.marabou.Main</mainClass>
 			</manifest>
 		    </archive>
 		</configuration>
