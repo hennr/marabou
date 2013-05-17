@@ -64,17 +64,13 @@
 	    <version>0.9.6</version>
 	</dependency>
 				
-	<!-- our mp3 tag lib -->
+	<!-- mp3 tag lib -->
 	<dependency>
-	    <groupId>com.mpatric.mp3agic</groupId>
+	    <groupId>com.mpatric</groupId>
 	    <artifactId>mp3agic</artifactId>
 	    <version>0.8-SNAPSHOT</version>
-	    <scope>system</scope>
-	    <systemPath>${basedir}/lib/mp3agic-0.8-SNAPSHOT.jar</systemPath>
 	</dependency>
 		
-	<!-- TODO delete this lib!!!
-	Our backend lib jaudiotagger -->
 	<dependency>
 	    <groupId>org</groupId>
 	    <artifactId>jaudiotagger</artifactId>
@@ -97,22 +93,7 @@
 	    <version>1.2.16</version>
 	    <type>jar</type>
 	    <scope>compile</scope>
-	    <exclusions>
-		<exclusion>
-		    <groupId>com.sun.jmx</groupId>
-		    <artifactId>jmxri</artifactId>
-		</exclusion>
-		<exclusion>
-		    <groupId>com.sun.jdmk</groupId>
-		    <artifactId>jmxtools</artifactId>
-		</exclusion>
-		<exclusion>
-		    <groupId>javax.jms</groupId>
-		    <artifactId>jms</artifactId>
-		</exclusion>
-	    </exclusions>
 	</dependency>
-
     </dependencies>
 
     <build>
@@ -226,18 +207,17 @@
     </profiles>
 	
     <repositories>
-	<!-- for internationalisation -->
+	<!-- mp3agic snapshots -->
+	<repository>
+	    <id>mp3agic snapshots</id>
+	    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+	</repository>
+	<!-- gettext -->
 	<repository>
 	    <id>gettext-commons-site</id>
 	    <url>http://gettext-commons.googlecode.com/svn/maven-repository/</url>
 	</repository>
-		
-	<!-- TODO delete this repo!!!
-	jaudiotagger repo -->
-	<repository>
-	    <id>jaudiotagger-repo</id>
-	    <url>http://download.java.net/maven/2/</url>
-	</repository>
+	<!-- unoffical swt repo; co-maintained by hennr -->
 	<repository>
 	    <id>swt-repo</id>
 	    <url>https://swt-repo.googlecode.com/svn/repo/</url>
@@ -245,7 +225,7 @@
     </repositories>
 	
     <pluginRepositories>
-	<!-- for the gettext-maven-plugin -->
+	<!-- gettext-maven-plugin -->
 	<pluginRepository>
 	    <id>xnap-commons</id>
 	    <name>XNap Commons Repository</name>
