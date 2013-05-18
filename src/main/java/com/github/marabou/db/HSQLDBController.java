@@ -112,7 +112,12 @@ public final class HSQLDBController extends DBController {
 	    year = id31Tag.getYear();
 	    // genre
 	    int g = id31Tag.getGenre();
-	    genre = AudioFileHelper.getGenreByID(g);
+	    try {
+		genre = AudioFileHelper.getGenre(g);
+	    } catch (UnknownGenreException e) {
+		genre = "";
+	    }
+
 	    // comments
 	    comment = id31Tag.getComment();
 	    // disc number
@@ -136,20 +141,20 @@ public final class HSQLDBController extends DBController {
 	    year = id32Tag.getYear();
 	    // genre
 	    int g = id32Tag.getGenre();
-	    genre = AudioFileHelper.getGenreByID(g);
+	    try {
+		genre = AudioFileHelper.getGenre(g);
+	    } catch (UnknownGenreException e) {
+		genre = "";
+	    }
 	    // comments
 	    comment = id32Tag.getComment();
 	    // disc number
-	    discNo = "Not supported yet";
+	    discNo = "unsupported";
 	    // composer
 	    composer = id32Tag.getComposer();
 	}
 
-
-	// TODO create idv32 tag if not tag is available in the file
-
-
-	// get values that are not tag version specific
+	// values not tag version specific
 
 	// duration
 	String duration = AudioFileHelper.calculateTrackLength((int) file.getLengthInSeconds());
@@ -174,21 +179,6 @@ public final class HSQLDBController extends DBController {
     /**
      * Actual insert method that also checks values.
      *
-     * @param artist artist
-     * @param title title
-     * @param album album
-     * @param trackNumber trackNumber
-     * @param year year
-     * @param genre
-     * @param comment
-     * @param discNo
-     * @param composer
-     * @param duration
-     * @param bitRate
-     * @param sampleRate
-     * @param channels
-     * @param encoding
-     * @param fullPath
      */
     private int insertValues(final String artist, final String title,
 	    final String album, final String trackNumber, final String year,
@@ -232,7 +222,7 @@ public final class HSQLDBController extends DBController {
     }
 
     /**
-     * {@inheritDoc}}
+     * {@inheritDoc}
      */
     @Override
     public int addTableItemByFilename(String filename)

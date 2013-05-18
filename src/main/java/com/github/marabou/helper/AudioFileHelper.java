@@ -19,9 +19,6 @@
 
 package com.github.marabou.helper;
 
-import org.jaudiotagger.tag.FieldKey;
-import org.jaudiotagger.tag.Tag;
-
 /**
  * Some helper functions for audio files
  * @author Jan-Hendrik Peters
@@ -212,54 +209,6 @@ public class AudioFileHelper {
 		throw new UnknownGenreException();
 	}
 	
-	/**
-	 * 
-	 * @param tag the tag of the file that we want to read
-	 * @return the genre. Resolves genre IDs from 0-147
-	 * or the stored string
-	 */
-	@Deprecated //This was used with jaudiotagger 
-	public static String getGenreByID(Tag tag) {
-		
-		int id;
-		String genre = tag.getFirst(FieldKey.GENRE);
-		
-		try {
-		id = Integer.parseInt(genre);
-		// genre is not listed in the id list but saved as a string instead
-		} catch (NumberFormatException e) {
-			return genre;
-		}
-		try {
-			return getGenre(id);
-		} catch (UnknownGenreException uge) {
-			return genre;
-		}
-	}
-	
-	/**
-	 * 
-	 * @param tag the tag of the file that we want to read
-	 * @return the genre. Resolves genre IDs from 0-147
-	 * or the stored string
-	 */
-	public static String getGenreByID(int id) {
-		
-		String genre = "No ID yet";
-		
-		try {
-		id = Integer.parseInt(genre);
-		// genre is not listed in the id list but saved as a string instead
-		} catch (NumberFormatException e) {
-			return genre;
-		}
-		try {
-			return getGenre(id);
-		} catch (UnknownGenreException uge) {
-			return genre;
-		}
-	}
-
 	/** 
 	 * converts seconds to the following format: min:secs
 	 * @return min:secs as a string

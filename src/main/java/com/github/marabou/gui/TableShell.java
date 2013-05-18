@@ -27,8 +27,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-import com.github.marabou.audio.AudioFileItem;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -39,23 +37,17 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.jaudiotagger.audio.exceptions.CannotReadException;
-import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
-import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
-import org.jaudiotagger.tag.TagException;
-
-import com.mpatric.mp3agic.InvalidDataException;
 
 public class TableShell {
 
 	final Table table;
 	final Shell shell;
 	final Display display;
-	final static HashMap<String, Integer> columnsOrder = new HashMap<String, Integer>();
+	final static HashMap<String, Integer> columnsOrder = new HashMap<>();
 	final static Logger log = Logger.getLogger(TableShell.class.getName());
 	
 	/**
-	 * Creates a new table object
+	 * Creates a new table object.
 	 * @param composite the comp to hold the table
 	 */
 	public TableShell(Composite composite) {
