@@ -166,16 +166,19 @@ public class MainWindow {
 	 */
 	public void createGUI() {
 	
-		// maximize if first run
+		// maximize on first run
 		shell.setMaximized(true);
 		if (Boolean.parseBoolean(PropertiesHelper.getProp(PropertiesAllowedKeys.saveWindowSize))) {
 			String x = PropertiesHelper.getProp(PropertiesAllowedKeys.windowSizeX);
 			String y = PropertiesHelper.getProp(PropertiesAllowedKeys.windowSizeY);
+			if (x.equals("max") && y.equals("max")) {
+			    shell.setMaximized(true);
+			}
 			try {
 				int xInt = Integer.parseInt(x);
 				int yInt = Integer.parseInt(y);
 				shell.setSize(xInt, yInt);
-			} catch (NumberFormatException e) {} // set maximized then in else branch
+			} catch (NumberFormatException e) {}
 		} else {
 			shell.setMaximized(true);
 		}
@@ -183,15 +186,19 @@ public class MainWindow {
 		
 		// save window size on exit to open it in that size again
 		shell.addDisposeListener(new DisposeListener() {
-			@Override
-			public void widgetDisposed(DisposeEvent arg0) {
-				if (Boolean.parseBoolean(PropertiesHelper.getProp(PropertiesAllowedKeys.saveWindowSize))) {
-					String x = String.valueOf(shell.getSize().x);
-					String y = String.valueOf(shell.getSize().y);
-					PropertiesHelper.setProp(PropertiesAllowedKeys.windowSizeX, x);
-					PropertiesHelper.setProp(PropertiesAllowedKeys.windowSizeY, y);
-				}
+		    @Override
+		    public void widgetDisposed(DisposeEvent arg0) {
+			if (Boolean.parseBoolean(PropertiesHelper.getProp(PropertiesAllowedKeys.saveWindowSize))) {
+			    if (shell.getMaximized()) {
+				PropertiesHelper.setProp(PropertiesAllowedKeys.windowSizeX, "max");
+				PropertiesHelper.setProp(PropertiesAllowedKeys.windowSizeY, "max");
+			    }
+			    String x = String.valueOf(shell.getSize().x);
+			    String y = String.valueOf(shell.getSize().y);
+			    PropertiesHelper.setProp(PropertiesAllowedKeys.windowSizeX, x);
+			    PropertiesHelper.setProp(PropertiesAllowedKeys.windowSizeY, y);
 			}
+		    }
 		});
 		
 		while (!shell.isDisposed()) {
