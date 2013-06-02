@@ -23,7 +23,6 @@ import static com.github.marabou.helper.I18nHelper._;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Vector;
 import java.util.logging.Logger;
 
 import com.github.marabou.audio.AudioFileFilter;
@@ -47,6 +46,8 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
+import java.util.ArrayList;
+import java.util.logging.Level;
 
 /**
  * 
@@ -177,14 +178,12 @@ public class MainMenu {
 		// listener for File -> open directory
 		// TODO IMPORTANT threading!
 		// TODO progressbar
-		// TODO should we add an option to open only *.xxx files from the
-		// directory?
+		// TODO should we add an option to open only *.xxx files from the directory?
 		// TODO let the user choose to open dirs recursively or not
 		// TODO make opening of multiple dirs at once possible
 		// the problem is that not every platform seems to supports opening of
 		// multiple dirs at once
 		// we have to create our own dialog if we want that functionality :(
-
 		// http://java-gui.info/Wiley-Professional.Java.Interfaces.with.SWT.JFace/12093/BBL0061.html
 
 		openDirectoryItem.addListener(SWT.Selection, new Listener() {
@@ -201,11 +200,11 @@ public class MainMenu {
 					// if it's null, the user aborted the opening process
 					PropertiesHelper.setProp(PropertiesAllowedKeys.lastPath, dirToOpen);
 				}
-				log.info("Directory to open: " + dirToOpen);
+				log.log(Level.INFO, "Directory to open: {0}", dirToOpen);
 
 				if (dirToOpen != null) {
 					tableShell.setFocus();
-					Vector<String> files = findFiles(dirToOpen);
+					   ArrayList<String> files = findFiles(dirToOpen);
 					openFiles(files);
 				}
 			}
@@ -278,12 +277,12 @@ public class MainMenu {
 	 * @param dirToScan
 	 *            the directory to start with
 	 */
-	public static Vector<String> findFiles(String dirToScan) {
+	public static ArrayList<String> findFiles(String dirToScan) {
 
 	    File dir = new File(dirToScan);
 
 	    File[] files = dir.listFiles(new AudioFileFilter());
-	    Vector<String> locatedFiles = new Vector<>();
+	    ArrayList<String> locatedFiles = new ArrayList<>();
 	    if (files != null && files.length != 0) {
 		for (File f : files) {
 		    if (!IsLinkHelper.isLink(f)) {
@@ -303,7 +302,7 @@ public class MainMenu {
 	 * Will notify the user if files fail to open
 	 * @param files Vector of files to open (absolute path)
 	 */
-	private void openFiles(Vector<String> files) {
+	private void openFiles(ArrayList<String> files) {
 		
 		for (String file: files) {
 			openFile(file);
