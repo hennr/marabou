@@ -107,6 +107,18 @@
 		    <keywords>-k_</keywords>
 		</configuration>
 	    </plugin>
+	    <!-- disable jar bundling as we use the assembly plugin for that which includes all deps -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <executions>
+                    <execution>
+                        <id>default-jar</id>
+                        <phase>none</phase>
+                    </execution>
+                </executions>
+            </plugin>
 	    <!-- assembles one single runnable jar -->
 	    <plugin>
 		<groupId>org.apache.maven.plugins</groupId>
