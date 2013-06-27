@@ -213,24 +213,25 @@ public class AudioFileHelper {
 	 * converts seconds to the following format: min:secs
 	 * @return min:secs as a string
 	 */
-	public static String calculateTrackLength(int secs) {
+	public static String calculateTrackLength(int secs) throws IllegalArgumentException {
 
-			// FIXME what if secs < 0?
-			int mins = secs / 60;
-			
-			if (mins == 0) {
-				if (secs < 10) {
-					return "0:0" + secs;
-				} else {
-					return "0:" + secs;
-				}
-				// mins != 0
-			} else {
-				String seconds = String.valueOf(secs - (60 * mins));
-				if (seconds.length() < 2) {
-					seconds = "0" + seconds;
-				}
-				return mins + ":" + seconds;
-			}
-		}
+        if (secs < 0) throw new IllegalArgumentException();
+
+        int mins = secs / 60;
+
+        if (mins == 0) {
+            if (secs < 10) {
+                return "0:0" + secs;
+            } else {
+                return "0:" + secs;
+            }
+            // mins != 0
+        } else {
+            String seconds = String.valueOf(secs - (60 * mins));
+            if (seconds.length() < 2) {
+                seconds = "0" + seconds;
+            }
+            return mins + ":" + seconds;
+        }
+    }
 }

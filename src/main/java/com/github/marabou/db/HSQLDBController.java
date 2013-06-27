@@ -157,7 +157,12 @@ public final class HSQLDBController extends DBController {
 	// values not tag version specific
 
 	// duration
-	String duration = AudioFileHelper.calculateTrackLength((int) file.getLengthInSeconds());
+	String duration;
+        try {
+            duration = AudioFileHelper.calculateTrackLength((int) file.getLengthInSeconds());
+        } catch (IllegalArgumentException e) {
+            duration = "0";
+        }
 	// bit rate
 	String bitRate = Integer.toString(file.getBitrate());
 	// sample rate
