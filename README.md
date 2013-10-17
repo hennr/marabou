@@ -8,11 +8,8 @@ Here you can find a  somewhat older screenshot:
 http://bayimg.com/KaMEIAaCF
 
 
-Marabou is still under development, we have to solve some problems before we can release it to the end user.
+Marabou is still under development, there is no stable release out yet, sorry.
 
-Some problems are:
+If you want to give the snapshot a try, clone the project and run:
 
-* multi platform installers for 32 and 64 systems are not yet there
-* we need to complete some features
-* we need to cleanup the code
-* currently we only support *.mp3 files (via mp3agic)
+mvn clean package && java -jar target/marabou-0.1-SNAPSHOT-jar-with-dependencies.jar
