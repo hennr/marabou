@@ -3,7 +3,7 @@
 .project
 .settings/
 *.iml
-.idea/
+.idea
 *.class
 bin
 /nb-configuration.xml
