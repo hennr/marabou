@@ -23,29 +23,26 @@ import static com.github.marabou.helper.I18nHelper._;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.github.marabou.audio.AudioFileFilter;
 import com.github.marabou.db.DBController;
 import com.github.marabou.db.GUINotConnectedException;
 import com.github.marabou.db.HSQLDBController;
-import com.github.marabou.helper.IsLinkHelper;
-import com.github.marabou.helper.PropertiesAllowedKeys;
-import com.github.marabou.helper.PropertiesHelper;
-import com.github.marabou.helper.UnsupportedFileEndingException;
+import com.github.marabou.helper.*;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.*;
 
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
+
 import java.util.ArrayList;
 import java.util.logging.Level;
 
@@ -58,7 +55,8 @@ import java.util.logging.Level;
  * 
  */
 public class MainMenu {
-	private Shell shell;
+    private final ImageLoader imageLoader;
+    private Shell shell;
 	private TableShell tableShell;
 	private Menu menu;
 	private DBController controller;
@@ -72,8 +70,8 @@ public class MainMenu {
 	public MainMenu(final Shell shell) {
 		menu = new Menu(shell, SWT.BAR);
 		controller = HSQLDBController.getInstance();
-
 		this.shell = shell;
+        imageLoader = new ImageLoader(shell.getDisplay());
 	}
 
 	/**
@@ -104,17 +102,15 @@ public class MainMenu {
 		MenuItem file = new MenuItem(menu, SWT.CASCADE);
 		file.setText(_("&File"));
 
-		Menu filemenu = new Menu(shell, SWT.DROP_DOWN);
-		file.setMenu(filemenu);
+		Menu fileMenu = new Menu(shell, SWT.DROP_DOWN);
+		file.setMenu(fileMenu);
 
 		// File -> Open File
-		MenuItem openFileItem = new MenuItem(filemenu, SWT.PUSH);
+		MenuItem openFileItem = new MenuItem(fileMenu, SWT.PUSH);
 		openFileItem.setText(_("Open &file\t Ctrl+F"));
 
 		openFileItem.setAccelerator(SWT.CTRL + 'F');
-		// TODO RELEASE replace with image loader helper call
-		openFileItem.setImage(new Image(shell.getDisplay(),
-				"src/main/resources/graphics/audiofile.png"));
+		openFileItem.setImage(imageLoader.getImage(AvailableImage.AUDIO_ICON));
 
 		// listener for File -> open file
 		openFileItem.addListener(SWT.Selection, new Listener() {
@@ -159,7 +155,7 @@ public class MainMenu {
 				String filterPath = fileDialog.getFilterPath();
 				if (filesToOpen != null) {
 					for (String file: filesToOpen) {
-						openFile(filterPath + "/" + file);
+						openFile(new File(filterPath + "/" + file));
 					}
 					tableShell.setFocus();
 				}
@@ -167,13 +163,11 @@ public class MainMenu {
 		});
 
 		// File -> open directory
-		MenuItem openDirectoryItem = new MenuItem(filemenu, SWT.PUSH);
+		MenuItem openDirectoryItem = new MenuItem(fileMenu, SWT.PUSH);
 		openDirectoryItem.setText(_("Open &directory\t Ctrl+D"));
 		openDirectoryItem.setAccelerator(SWT.CTRL + 'D');
 
-		// TODO RELEASE replace with image loader helper call
-		openDirectoryItem.setImage(new Image(shell.getDisplay(),
-				"src/main/resources/graphics/folder.png"));
+		openDirectoryItem.setImage(imageLoader.getImage(AvailableImage.FOLDER_ICON));
 
 		// listener for File -> open directory
 		// TODO IMPORTANT threading!
@@ -204,7 +198,7 @@ public class MainMenu {
 
 				if (dirToOpen != null) {
 					tableShell.setFocus();
-					   ArrayList<String> files = findFiles(dirToOpen);
+					   ArrayList<File> files = findFiles(dirToOpen);
 					openFiles(files);
 				}
 			}
@@ -212,12 +206,11 @@ public class MainMenu {
 
 		// TODO Controller: use the HSQLDBController here
 		// File -> save current file
-		MenuItem saveItem = new MenuItem(filemenu, SWT.PUSH);
+		MenuItem saveItem = new MenuItem(fileMenu, SWT.PUSH);
 		saveItem.setText(_("&Save\t Ctrl+S"));
 		saveItem.setAccelerator(SWT.CTRL + 'S');
 		// TODO RELEASE replace with image loader helper call
-		saveItem.setImage(new Image(shell.getDisplay(),
-				"src/main/resources/graphics/save.png"));
+		saveItem.setImage(imageLoader.getImage(AvailableImage.SAVE_ICON));
 
 		saveItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
@@ -230,10 +223,8 @@ public class MainMenu {
 		});
 
 		// File -> Exit
-		MenuItem exitItem = new MenuItem(filemenu, SWT.PUSH);
-		// TODO RELEASE replace with image loader helper call
-		exitItem.setImage(new Image(shell.getDisplay(),
-				"src/main/resources/graphics/exit.png"));
+		MenuItem exitItem = new MenuItem(fileMenu, SWT.PUSH);
+		exitItem.setImage(imageLoader.getImage(AvailableImage.EXIT_ICON));
 		exitItem.setText(_("&Exit\t Alt+F4"));
 
 		// listener for File -> Exit
@@ -254,9 +245,7 @@ public class MainMenu {
 		aboutItem.setText(_("&About\t F1"));
 		aboutItem.setAccelerator(SWT.F1);
 
-		// TODO replace with image loader helper call
-		aboutItem.setImage(new Image(shell.getDisplay(),
-				"src/main/resources/graphics/help.png"));
+		aboutItem.setImage(imageLoader.getImage(AvailableImage.HELP_ICON));
 
 		// listener for Help -> About
 		aboutItem.addListener(SWT.Selection, new Listener() {
@@ -277,34 +266,37 @@ public class MainMenu {
 	 * @param dirToScan
 	 *            the directory to start with
 	 */
-	public static ArrayList<String> findFiles(String dirToScan) {
+	public static ArrayList<File> findFiles(String dirToScan) {
 
 	    File dir = new File(dirToScan);
+        AudioFileFilter filter = new AudioFileFilter();
+	    List<File> foundFiles = Arrays.asList(dir.listFiles(filter));
 
-	    File[] files = dir.listFiles(new AudioFileFilter());
-	    ArrayList<String> locatedFiles = new ArrayList<>();
-	    if (files != null && files.length != 0) {
-		for (File f : files) {
-		    if (!IsLinkHelper.isLink(f)) {
-			if (f.isDirectory()) {
-			    findFiles(f.toString());
-			} else {
-			    locatedFiles.add(f.toString());
-			}
-		    }
-		}
-	    }
-	    return locatedFiles;
-	}
-	
-	/**
+        for(File subFolder : filter.getSubFolders()) {
+            foundFiles.addAll(findFiles(subFolder.getAbsolutePath()));
+        }
+
+        return removeFileSystemLinks(foundFiles);
+    }
+
+    private static ArrayList<File> removeFileSystemLinks(List<File> files) {
+        ArrayList<File> locatedFiles = new ArrayList<>();
+        for (File file : files) {
+            if (!IsLinkHelper.isLink(file)) {
+                locatedFiles.add(file);
+            }
+        }
+        return locatedFiles;
+    }
+
+    /**
 	 * Utilises the {@link HSQLDBController} to open given files
 	 * Will notify the user if files fail to open
 	 * @param files Vector of files to open (absolute path)
 	 */
-	private void openFiles(ArrayList<String> files) {
+	private void openFiles(ArrayList<File> files) {
 		
-		for (String file: files) {
+		for (File file: files) {
 			openFile(file);
 		}
 	}
@@ -314,7 +306,7 @@ public class MainMenu {
 	 * Will notify the user if files fail to open
 	 * @param file absolute path of file
 	 */
-	private void openFile(String file) {
+	private void openFile(File file) {
 		
 		try {
 		    isFileSupported(file);
@@ -322,7 +314,7 @@ public class MainMenu {
 		    return;
 		}
 		try {
-		    controller.insertFile(new File(file));
+		    controller.insertFile(file);
 		} catch (InvalidDataException | IOException | UnsupportedTagException e) {
 			ErrorWindow.appendError("couldn't open file: " + file);
 		}
@@ -340,9 +332,9 @@ public class MainMenu {
 	 * @return true if file ending is mp3 (lower or upper case)
 	 * @throws UnsupportedFileEndingException if the file format seems to be unsupported by mp3agic
 	 */
-	private boolean isFileSupported(String file) throws UnsupportedFileEndingException {
+	private boolean isFileSupported(File file) throws UnsupportedFileEndingException {
 		System.out.println(file);
-		if (! file.toLowerCase().endsWith("mp3")) {
+		if (! file.getName().toLowerCase().endsWith("mp3")) {
 			throw new UnsupportedFileEndingException();
 		} else {
 			return true;

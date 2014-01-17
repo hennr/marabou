@@ -24,9 +24,10 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import com.github.marabou.helper.AvailableImage;
+import com.github.marabou.helper.ImageLoader;
 import org.eclipse.swt.*;
 import org.eclipse.swt.widgets.*;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 
@@ -43,7 +44,7 @@ public class CreditsWindow {
 		
 		final Shell shell = new Shell(display);
 		shell.setText(_("Credits"));
-		shell.setImage(new Image(display, "src/main/resources/graphics/marabou_16.png"));
+		shell.setImage(new ImageLoader(display).getImage(AvailableImage.LOGO_SMALL));
 		
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;

@@ -21,11 +21,12 @@ package com.github.marabou.gui;
 
 import java.util.Calendar;
 
+import com.github.marabou.helper.AvailableImage;
+import com.github.marabou.helper.ImageLoader;
 import org.eclipse.swt.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 
 import static com.github.marabou.helper.I18nHelper._;
@@ -51,9 +52,7 @@ public class ErrorWindow {
 		shell.setLayout(new FillLayout());
 		shell.setSize(500, 300);
 		shell.setText(_("Marabou - Error Occurred"));
-		Image logoWM = new Image(display,
-				"src/main/resources/graphics/marabou_16.png");
-		shell.setImage(logoWM);
+		shell.setImage(new ImageLoader(display).getImage(AvailableImage.LOGO_SMALL));
 		errorText = new List(shell, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 
 		// when the window gets closed destroy the 

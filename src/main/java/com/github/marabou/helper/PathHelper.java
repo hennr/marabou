@@ -64,7 +64,7 @@ public class PathHelper {
 	 * 
 	 * @return the full path for the filename given
 	 */
-	public String getUserPathForFile(String filename) throws FileNotFoundException, UnknowPlatformException {
+	public String getUserPathForFile(String filename) throws FileNotFoundException, UnknownPlatformException {
 		if (isUnix) {
 			File f = new File(userHome + ".marabou/" + filename);
 			if (!f.exists() || !f.isFile()) {
@@ -79,7 +79,7 @@ public class PathHelper {
 			// TODO macos
 			return "";
 		} else {
-			throw new UnknowPlatformException();
+			throw new UnknownPlatformException();
 		}
 	}
 	
@@ -89,7 +89,7 @@ public class PathHelper {
 	 * 
 	 * @return the full path for the filename given
 	 */
-	public String getSystemPathForFile(String filename) throws FileNotFoundException, UnknowPlatformException {
+	public String getSystemPathForFile(String filename) throws FileNotFoundException, UnknownPlatformException {
 		if (isUnix) {
 			// TODO RELEASE
 			// STUB: "src/main/resources"
@@ -101,7 +101,7 @@ public class PathHelper {
 			// TODO macos
 			return "";
 		} else {
-			throw new UnknowPlatformException();
+			throw new UnknownPlatformException();
 		}
 	}
 	
@@ -124,7 +124,7 @@ public class PathHelper {
 	 * including "/" at the end of the path
 	 * Does not check if file exists!
 	 */
-	public String getMarabouHomeFolder() throws UnknowPlatformException {
+	public String getMarabouHomeFolder() throws UnknownPlatformException {
 		// Unix
 		if (isUnix) {
 			return userHome + ".marabou/";
@@ -135,7 +135,7 @@ public class PathHelper {
 			// TODO macos
 			return "";
 		} else {
-			throw new UnknowPlatformException();
+			throw new UnknownPlatformException();
 		}
 	}
 	

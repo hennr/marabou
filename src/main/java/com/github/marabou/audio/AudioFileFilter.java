@@ -21,44 +21,30 @@ package com.github.marabou.audio;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.util.regex.Matcher;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
-/**
- * Checks if we support this file type.
- * @author Jan-Hendrik Peters
- */
 public class AudioFileFilter implements FileFilter {
 
-	/**
-	 * checks if a given file meets criteria to be opened
-	 * 
-	 * criteria are:
-	 * be readable and end with either mp3, ogg, flac, mp4 or wma
-	 * 
-	 * @return true if criteria are matched
-	 */
-	public boolean accept(File file) {
-		if (file.canRead()) {
-			try {
-				if (file.isDirectory()) {
-					return true;
-				} else {
-//					Pattern p = Pattern.compile(".+\\.mp3$|.+\\.ogg$|.+\\.flac$|.+\\.mp4$|.+\\.wma$", Pattern.CASE_INSENSITIVE);
-					Pattern p = Pattern.compile(".+\\.mp3$|.+\\.ogg$|.+\\.flac$|.+\\.mp4$|.+\\.wma$", Pattern.CASE_INSENSITIVE);
-					Matcher m = p.matcher(file.getName());
-		
-					if (m.matches()) {
-						return true;
-					} else {
-						return false;
-					}
-				}
-			} catch (SecurityException e) {
-				return false;
-			  }
-		} else {
-		return false;
-		}
-	}
+    Pattern fileNamePattern = Pattern.compile(".+\\.mp3$", Pattern.CASE_INSENSITIVE);
+
+    List<File> subFolders = new ArrayList<>();
+
+    public boolean accept(File file) {
+        if (!file.canRead()) {
+            return false;
+        }
+        if (file.isDirectory()) {
+            subFolders.add(file);
+            return false;
+        } else {
+            return fileNamePattern.matcher(file.getName()).matches();
+        }
+    }
+
+    public List<File> getSubFolders() {
+        return subFolders;
+    }
+
 }

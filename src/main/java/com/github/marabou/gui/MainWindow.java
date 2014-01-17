@@ -23,6 +23,8 @@ import static com.github.marabou.helper.I18nHelper._;
 import com.github.marabou.db.DBController;
 import com.github.marabou.db.GUINotConnectedException;
 import com.github.marabou.db.HSQLDBController;
+import com.github.marabou.helper.AvailableImage;
+import com.github.marabou.helper.ImageLoader;
 import com.github.marabou.helper.PropertiesAllowedKeys;
 import com.github.marabou.helper.PropertiesHelper;
 
@@ -30,7 +32,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -52,49 +53,50 @@ public class MainWindow {
 		SashForm sashForm;
 		MainMenu menu;
 		DBController controller;
-		
+        ImageLoader imageLoader;
+
 		/**
 		 * the main window holds elements such as the menu, the table,
 		 *  and the tabs on the left
 		 */
 		public MainWindow() {
-		shell.setLayout(new FillLayout(SWT.VERTICAL));
-		Image logo = new Image(display, "src/main/resources/graphics/marabou_16.png");
-		shell.setImage(logo);
-		shell.setText(_("Marabou - Audio tagger"));
 
-		// get Controller instance
-		controller = HSQLDBController.getInstance();
-		
-		//Create a menu, place it in the shell and fill the menu
-		menu = new MainMenu(shell);
-		menu.init();
-		shell.setMenuBar(menu.getMenu());
+            imageLoader = new ImageLoader(display);
+            shell.setLayout(new FillLayout(SWT.VERTICAL));
+            shell.setImage(imageLoader.getImage(AvailableImage.LOGO_SMALL));
+            shell.setText(_("Marabou - Audio tagger"));
 
-		// the comp is a child of the shell which holds the toolbar
-		GridLayout gl = new GridLayout();
-		gl.marginHeight = 0;
-		gl.marginWidth = 0;
-		gl.horizontalSpacing = 0;
-		gl.verticalSpacing = 0;
-		comp.setLayout(gl);
-		GridData gd = new GridData(GridData.FILL_BOTH);
-		comp.setLayoutData(gd);
-		
-		// the upper toolbar below the menu
-		ToolBar toolbar = new ToolBar(comp, SWT.HORIZONTAL);
-		ToolItem ti = new ToolItem(toolbar, SWT.PUSH);
-		// TODO replace this with a call to an image load helper
-		ti.setImage(new Image(display, "src/main/resources/graphics/save.png"));
-		ti.addListener(SWT.Selection, new Listener() {
-			@Override
-			public void handleEvent(Event event) {
-				try {
-					controller.saveSelectedFiles();
-				} catch (GUINotConnectedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+            // get Controller instance
+            controller = HSQLDBController.getInstance();
+
+            //Create a menu, place it in the shell and fill the menu
+            menu = new MainMenu(shell);
+            menu.init();
+            shell.setMenuBar(menu.getMenu());
+
+            // the comp is a child of the shell which holds the toolbar
+            GridLayout gl = new GridLayout();
+            gl.marginHeight = 0;
+            gl.marginWidth = 0;
+            gl.horizontalSpacing = 0;
+            gl.verticalSpacing = 0;
+            comp.setLayout(gl);
+            GridData gd = new GridData(GridData.FILL_BOTH);
+            comp.setLayoutData(gd);
+
+            // the upper toolbar below the menu
+            ToolBar toolbar = new ToolBar(comp, SWT.HORIZONTAL);
+            ToolItem ti = new ToolItem(toolbar, SWT.PUSH);
+            ti.setImage(imageLoader.getImage(AvailableImage.SAVE_ICON));
+            ti.addListener(SWT.Selection, new Listener() {
+                @Override
+                public void handleEvent(Event event) {
+                    try {
+                        controller.saveSelectedFiles();
+                    } catch (GUINotConnectedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
 			}
 		});
 		toolbar.pack();

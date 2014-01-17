@@ -23,6 +23,8 @@ import java.awt.Desktop;
 import java.net.URI;
 import java.util.logging.Logger;
 
+import com.github.marabou.helper.AvailableImage;
+import com.github.marabou.helper.ImageLoader;
 import com.github.marabou.helper.PropertiesAllowedKeys;
 import com.github.marabou.helper.PropertiesHelper;
 
@@ -36,9 +38,8 @@ import static com.github.marabou.helper.I18nHelper._;
 
 public class AboutWindow {
 
-
 	final static Logger log = Logger.getLogger(PropertiesHelper.class.getName());
-	
+
 	/**
 	 * shows various information about marabou in a small window
 	 */
@@ -46,7 +47,7 @@ public class AboutWindow {
 		final Display display = Display.getCurrent();
 		final Shell shell = new Shell(display);
 		shell.setText(_("About Marabou"));
-		shell.setImage(new Image(display, "src/main/resources/graphics/marabou_16.png"));
+		shell.setImage(new ImageLoader(display).getImage(AvailableImage.LOGO_SMALL));
 		FormLayout formLayout = new FormLayout();
 		formLayout.marginBottom = 10;
 		formLayout.marginTop = 10;
@@ -75,9 +76,7 @@ public class AboutWindow {
 			version = PropertiesHelper.getProp(PropertiesAllowedKeys.version);
 		text.setText(_("Marabou - Audio Tagger \n" + "Version " + version));
 
-		// image
-		// TODO Release get img from image loader helper class
-		Image logo = new Image(display,	"src/main/resources/graphics/marabou_300.png");
+		Image logo = new ImageLoader(display).getImage(AvailableImage.LOGO_BIG);
 		Label labelImage = new Label(comp1, SWT.NONE);
 		labelImage.setImage(logo);
 		labelImage.pack();

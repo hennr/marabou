@@ -19,24 +19,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.github.marabou.gui;
 
+import com.github.marabou.helper.AvailableImage;
+import com.github.marabou.helper.ImageLoader;
 import org.eclipse.swt.*;
 import org.eclipse.swt.widgets.*;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.RowLayout;
 
 import static com.github.marabou.helper.I18nHelper._;
 
 public class LicenceWindow {
 
-/**
- * shows our choosen licence from file LICENCE
- */
 	public static void showLicence() {
 		final Display display = Display.getCurrent();
 		
 		final Shell shell = new Shell(display);
 		shell.setText(_("Licence"));
-		shell.setImage(new Image(display, "src/main/resources/graphics/marabou_16.png"));
+		shell.setImage(new ImageLoader(display).getImage(AvailableImage.LOGO_BIG));
 		
 		RowLayout rowLayout = new RowLayout(1);
 		rowLayout.center = true;

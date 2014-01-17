@@ -26,8 +26,8 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 /**
- * this class is written to setup the loging the way we want it to have
- * marabou uses java.util.logging beacause jaudiotagger uses it as well
+ * this class is written to setup the logging the way we want it to have
+ * marabou uses java.util.logging because jaudiotagger uses it as well
  * and we didn't want to setup two different logging frameworks
  * 
  * @author Jan-Hendrik Peters
@@ -40,9 +40,7 @@ public class LoggingHelper {
 	
 	// root logger
 	private static Logger rootLogger = Logger.getLogger("");
-	// all loggers used in jaudiotagger
-	private static Logger jaudioLogger = Logger.getLogger("org.jaudiotagger");
-	
+
 	/**
 	 * sets up the loggers used by marabou and jaudiotagger
 	 * sets loglevel to severe and enables the use of a logfile
@@ -60,7 +58,7 @@ public class LoggingHelper {
 		try {
 			home = ph.getMarabouHomeFolder();
 			logFilePath = home + "marabou.log";
-		} catch (UnknowPlatformException e1) {
+		} catch (UnknownPlatformException e1) {
 			System.err.println("OS couldn't get detected properly, please file a bugreport!\n" +
 					"No logfile will be used.");
 		}
@@ -77,18 +75,10 @@ public class LoggingHelper {
 				System.err.println("Couldn't create log file under: " + logFilePath);
 			}
 		}
-
-		// setting the loglevel for all jaudiotagger related classes
-		jaudioLogger.setLevel(Level.WARNING);
 	}
 	
-	/**
-	 * sets up the loggers used by marabou and jaudiotagger
-	 * sets loglevel to ALL and create logfile
-	 */
 	public static void initLoggingDebug() {
 		initLogging();
 		rootLogger.setLevel(Level.ALL);
-		jaudioLogger.setLevel(Level.ALL);
 	}
 }

@@ -38,7 +38,7 @@ public class PropertiesHelper {
 		try {
 			homeFolder = ph.getMarabouHomeFolder();
 			conf = new File(ph.getMarabouHomeFolder() + "marabou.properties");
-		} catch (UnknowPlatformException e1) {
+		} catch (UnknownPlatformException e1) {
 			log.severe("Your OS couldn't get detected properly.\n"
 					+ "Please file a bugreport.");
 			return 1;
@@ -104,7 +104,7 @@ public class PropertiesHelper {
 		} else {
 			try {
 				File mhfFile = new File(homeFolder);
-				// create foler if no folder exists yet
+				// create folder if no folder exists yet
 				if (!mhfFile.exists()) {
 					if (!mhfFile.mkdir()) {
 						log.severe("Couldn't create marabou folder in your home.\n"
