@@ -292,7 +292,6 @@ public class MainMenu {
     /**
 	 * Utilises the {@link HSQLDBController} to open given files
 	 * Will notify the user if files fail to open
-	 * @param files Vector of files to open (absolute path)
 	 */
 	private void openFiles(ArrayList<File> files) {
 		
@@ -304,14 +303,11 @@ public class MainMenu {
 	/**
 	 * Utilises the {@link HSQLDBController} to open given files.
 	 * Will notify the user if files fail to open
-	 * @param file absolute path of file
 	 */
 	private void openFile(File file) {
-		
-		try {
-		    isFileSupported(file);
-		} catch (UnsupportedFileEndingException e) {
-		    return;
+	
+		if (!isFileSupported(file)) {
+			return;
 		}
 		try {
 		    controller.insertFile(file);
@@ -326,19 +322,10 @@ public class MainMenu {
 		}
 	}
 
-	/**
-	 * Determines of given file is supported by our backend library.
-	 * @param file 
-	 * @return true if file ending is mp3 (lower or upper case)
-	 * @throws UnsupportedFileEndingException if the file format seems to be unsupported by mp3agic
-	 */
-	private boolean isFileSupported(File file) throws UnsupportedFileEndingException {
+	private boolean isFileSupported(File file) {
 		System.out.println(file);
-		if (! file.getName().toLowerCase().endsWith("mp3")) {
-			throw new UnsupportedFileEndingException();
-		} else {
-			return true;
-		}
+		// TODO use file filter here
+		return file.getName().toLowerCase().endsWith("mp3");
 	}
 	
 }
