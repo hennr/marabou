@@ -157,7 +157,7 @@ public class MainMenu {
 					for (String file: filesToOpen) {
 						openFile(new File(filterPath + "/" + file));
 					}
-					tableShell.setFocus();
+					tableShell.setKeyboardFocus();
 				}
 			}
 		});
@@ -197,7 +197,7 @@ public class MainMenu {
 				log.log(Level.INFO, "Directory to open: {0}", dirToOpen);
 
 				if (dirToOpen != null) {
-					tableShell.setFocus();
+					tableShell.setKeyboardFocus();
 					   ArrayList<File> files = findFiles(dirToOpen);
 					openFiles(files);
 				}

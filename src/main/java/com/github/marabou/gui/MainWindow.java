@@ -127,7 +127,8 @@ public class MainWindow {
 		// Tab1 - Tags
 		TabItem item1 = new TabItem(tabFolder, SWT.NONE);
 		item1.setText(_("Tags"));
-		item1.setControl(TagTab.init(tabFolder));
+        FileAttributeSIdePanel fileAttributeSIdePanel = new FileAttributeSIdePanel();
+		item1.setControl(fileAttributeSIdePanel.init(tabFolder));
 //		item1.addListener(SWT.MouseExit, new Listener() {
 //			public void handleEvent(final Event event) {
 //				//TODO update database and table

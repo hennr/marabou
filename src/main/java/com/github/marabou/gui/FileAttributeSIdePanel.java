@@ -14,19 +14,7 @@ import org.eclipse.swt.widgets.TabFolder;
 
 import static com.github.marabou.helper.I18nHelper._;
 
-/**
- * 
- * Class to show the left tab in the main window which 
- * holds data of the selected files in drop-down lists
- *  
- *  TODO should this get realised as a singleton as well?
- *  
- * @author Jan-Hendrik Peters
- * 
- */
-
-//TODO do it OO! why is all this crap static?
-public class TagTab {
+public class FileAttributeSIdePanel {
 	
 	// empty Combo object array that will be accessed when adding entries
 	static Combo[] combos = new Combo[9];
@@ -39,7 +27,7 @@ public class TagTab {
 	 *            the object which should hold the returned composite object
 	 * @return a composite object with a 2 colomn GridLayout
 	 */
-	public static Composite init(TabFolder tabFolder) {
+	public Composite init(TabFolder tabFolder) {
 		
 		Composite composite = new Composite(tabFolder, SWT.None);
 		GridLayout gridLayout = new GridLayout();
@@ -74,7 +62,7 @@ public class TagTab {
 	 * add Strings to the drop-down lists, check 
 	 * for empty Strings and for those that are already in the list
 	 **/
-	public static void addTags(final String artist, final String title,
+	public void addTags(final String artist, final String title,
 			final String album, final String track, final String year,
 			final String genre, final String comments, final String disc_no,
 			final String composer) {
@@ -140,7 +128,7 @@ public class TagTab {
 	/**
 	 * returns a HashMap with all sections (like genre, etc) and attributes of selected file
 	 */
-	public static HashMap<String,String> getTags() {
+	public HashMap<String,String> getTags() {
 		HashMap<String,String> tags = new HashMap<String, String>();
 		for (int i=0; i < combos.length; ++i) {
 			tags.put(labels[i], combos[i].getText());

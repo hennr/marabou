@@ -70,16 +70,6 @@ public abstract class DBController {
 	public abstract int insertFile(File audiofile) throws InvalidDataException, IOException, UnsupportedTagException;
 
 	/**
-	 * Set TableItem at given position.
-	 * 
-	 * @param filename
-	 *            filename
-	 * @return 
-	 * @throws GUINotConnectedException 
-	 */
-	public abstract int addTableItemByFilename(String filename) throws GUINotConnectedException;
-
-	/**
 	 * Set all TableItems from DB.
 	 * 
 	 * @return 
@@ -89,14 +79,8 @@ public abstract class DBController {
 	
 	public abstract void saveFile(int idx);
 	
-	public abstract void updateTableItemById(int id) throws GUINotConnectedException;
-	
-	public abstract void deleteTableItemById(int id) throws GUINotConnectedException;
-
 	public abstract void updateDBandTable() throws GUINotConnectedException;
 	
-	public abstract void updateItem(int id) throws GUINotConnectedException;
-
 	/**
 	 * gets selected files from the table and saves them
 	 */
