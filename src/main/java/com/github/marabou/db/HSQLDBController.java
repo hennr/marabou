@@ -10,10 +10,12 @@ import java.util.logging.Logger;
 
 import com.github.marabou.gui.ErrorWindow;
 import com.github.marabou.gui.FileAttributeSIdePanel;
+import com.github.marabou.gui.TableShell;
 import com.github.marabou.helper.AudioFileHelper;
 import com.github.marabou.helper.UnknownGenreException;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TableItem;
 
 import com.mpatric.mp3agic.ID3v1;
@@ -23,7 +25,7 @@ import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.NotSupportedException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
-public final class HSQLDBController extends DBController {
+public final class HSQLDBController {
 
     final static Logger log = Logger.getLogger(HSQLDBController.class.getName());
 
@@ -39,6 +41,14 @@ public final class HSQLDBController extends DBController {
 
     FileAttributeSIdePanel fileAttributeSIdePanel;
 
+    protected TableShell table;
+
+    private boolean tabFolderConnected = false;
+
+    private boolean tableConnected;
+
+    protected TabFolder tabFolder;
+
     private HSQLDBController() {
         this.db = new HSQLDBClient();
         fileAttributeSIdePanel = new FileAttributeSIdePanel();
@@ -51,9 +61,14 @@ public final class HSQLDBController extends DBController {
         return singleton;
     }
 
-    @Override
+    /**
+     * Insert audio file into DB.
+     *
+     * If you want the file to show up in the GUI you have to call addAllTableItems (or similar function) afterwards
+     *
+     * @throws InvalidDataException if file is not a supported file type or if it's corrupt
+     */
     public int insertFile(final File audioFile) throws InvalidDataException, IOException, UnsupportedTagException {
-        // TODO open files with help of executor thread pool
         int rows = -1;
 
         Mp3File file = null;
@@ -211,7 +226,6 @@ public final class HSQLDBController extends DBController {
         return row;
     }
 
-    @Override
     public int addAllTableItems() throws GUINotConnectedException {
         if (!isTableConnected()) {
             throw new GUINotConnectedException();
@@ -253,7 +267,6 @@ public final class HSQLDBController extends DBController {
                 rs.getString("encoding"), rs.getString("file")});
     }
 
-    @Override
     public void saveFile(int index) {
         PreparedStatement stmt = this.db.getPreparedSelectStatement("id");
         try {
@@ -343,19 +356,18 @@ public final class HSQLDBController extends DBController {
         }
     }
 
-    @Override
+    /**
+     * gets selected files from the table and saves them
+     */
     public boolean saveSelectedFiles() {
 
         TableItem[] filesToSave = table.getTable().getSelection();
-        if (filesToSave.length != 0) {
-            for (TableItem t : filesToSave) {
-                saveFile(table.getTable().indexOf(t));
-            }
+        for (TableItem t : filesToSave) {
+            saveFile(table.getTable().indexOf(t));
         }
         return true;
     }
 
-    @Override
     public void updateDBandTable() throws GUINotConnectedException {
 
         if (!isTabFolderConnected() || !isTableConnected()) {
@@ -374,6 +386,23 @@ public final class HSQLDBController extends DBController {
         for (TableItem ti : tblItems) {
             setTableItemValues(newTags, ti, multiUpdate);
         }
-
     }
+
+    private boolean isTabFolderConnected() {
+        return tabFolderConnected;
+    }
+
+    public boolean isTableConnected() {
+        return tableConnected;
+    }
+
+    public final void connectTableShell(TableShell tableShell) {
+        table = tableShell;
+        tableConnected = true;
+    }
+
+    public void connectTabFolder(TabFolder tabFolder) {
+        this.tabFolder = tabFolder;
+    }
+
 }

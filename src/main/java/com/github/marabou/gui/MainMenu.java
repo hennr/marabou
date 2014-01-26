@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.github.marabou.audio.AudioFileFilter;
-import com.github.marabou.db.DBController;
 import com.github.marabou.db.GUINotConnectedException;
 import com.github.marabou.db.HSQLDBController;
 import com.github.marabou.helper.*;
@@ -59,7 +58,7 @@ public class MainMenu {
     private Shell shell;
 	private TableShell tableShell;
 	private Menu menu;
-	private DBController controller;
+	private HSQLDBController controller;
 
 	/**
 	 * Constructor for the MainMenu which will be used in the main window.
@@ -204,20 +203,15 @@ public class MainMenu {
 			}
 		});
 
-		// TODO Controller: use the HSQLDBController here
 		// File -> save current file
 		MenuItem saveItem = new MenuItem(fileMenu, SWT.PUSH);
 		saveItem.setText(_("&Save\t Ctrl+S"));
 		saveItem.setAccelerator(SWT.CTRL + 'S');
-		// TODO RELEASE replace with image loader helper call
 		saveItem.setImage(imageLoader.getImage(AvailableImage.SAVE_ICON));
 
 		saveItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
-				try {
 					controller.saveSelectedFiles();
-				} catch (Exception e1) {
-				}
 			}
 
 		});
