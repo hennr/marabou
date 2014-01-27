@@ -23,6 +23,7 @@ import static com.github.marabou.helper.I18nHelper._;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
@@ -198,7 +199,7 @@ public class MainMenu {
 
 				if (dirToOpen != null) {
 					tableShell.setFocus();
-					   ArrayList<File> files = findFiles(dirToOpen);
+					   List<File> files = findFiles(new File(dirToOpen));
 					openFiles(files);
 				}
 			}
@@ -258,35 +259,24 @@ public class MainMenu {
 
 	// Helper methods
 
-	// TODO When Java 7 gets released, our isLink() implementation should be
-	// replaced by Java's isLink()
 	/**
 	 * scans a folder in a recursive way and returns found files
-	 * 
-	 * @param dirToScan
-	 *            the directory to start with
 	 */
-	public static ArrayList<File> findFiles(String dirToScan) {
+	public static List<File> findFiles(File dirToScan) {
 
-	    File dir = new File(dirToScan);
         AudioFileFilter filter = new AudioFileFilter();
-	    List<File> foundFiles = Arrays.asList(dir.listFiles(filter));
+	    List<File> directoryContent = new ArrayList<>(Arrays.asList(dirToScan.listFiles()));
 
-        for(File subFolder : filter.getSubFolders()) {
-            foundFiles.addAll(findFiles(subFolder.getAbsolutePath()));
-        }
+        List<File> acceptedFiles = new ArrayList<>();
 
-        return removeFileSystemLinks(foundFiles);
-    }
-
-    private static ArrayList<File> removeFileSystemLinks(List<File> files) {
-        ArrayList<File> locatedFiles = new ArrayList<>();
-        for (File file : files) {
-            if (!IsLinkHelper.isLink(file)) {
-                locatedFiles.add(file);
+        for(File file : directoryContent ) {
+            if (file.isDirectory() && !Files.isSymbolicLink(file.toPath())) {
+                acceptedFiles.addAll(findFiles(file));
+            } else if (filter.accept(file)) {
+                acceptedFiles.add(file);
             }
         }
-        return locatedFiles;
+        return acceptedFiles;
     }
 
     /**
@@ -294,7 +284,7 @@ public class MainMenu {
 	 * Will notify the user if files fail to open
 	 * @param files Vector of files to open (absolute path)
 	 */
-	private void openFiles(ArrayList<File> files) {
+	private void openFiles(List<File> files) {
 		
 		for (File file: files) {
 			openFile(file);

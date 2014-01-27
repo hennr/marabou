@@ -21,30 +21,17 @@ package com.github.marabou.audio;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Pattern;
 
 public class AudioFileFilter implements FileFilter {
 
-    Pattern fileNamePattern = Pattern.compile(".+\\.mp3$", Pattern.CASE_INSENSITIVE);
-
-    List<File> subFolders = new ArrayList<>();
+    private Pattern fileNamePattern = Pattern.compile(".+\\.mp3$", Pattern.CASE_INSENSITIVE);
 
     public boolean accept(File file) {
-        if (!file.canRead()) {
-            return false;
-        }
-        if (file.isDirectory()) {
-            subFolders.add(file);
+        if (!file.canRead() || file.isDirectory()) {
             return false;
         } else {
             return fileNamePattern.matcher(file.getName()).matches();
         }
     }
-
-    public List<File> getSubFolders() {
-        return subFolders;
-    }
-
 }

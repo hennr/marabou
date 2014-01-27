@@ -23,11 +23,6 @@ import com.github.marabou.gui.MainWindow;
 import com.github.marabou.helper.LoggingHelper;
 import com.github.marabou.helper.PropertiesHelper;
 
-/**
- * 
- * @author Jan-Hendrik Peters
- *
- */
 public class Main {
 	// TODO parse passed arguments like a folder name or a 
 	// file name to open it directly
