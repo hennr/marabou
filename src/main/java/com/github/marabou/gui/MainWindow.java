@@ -20,8 +20,6 @@
 package com.github.marabou.gui;
 
 import static com.github.marabou.helper.I18nHelper._;
-import com.github.marabou.db.DBController;
-import com.github.marabou.db.GUINotConnectedException;
 import com.github.marabou.db.HSQLDBController;
 import com.github.marabou.helper.AvailableImage;
 import com.github.marabou.helper.ImageLoader;
@@ -52,7 +50,7 @@ public class MainWindow {
 		Composite comp = new Composite(shell, SWT.NONE);
 		SashForm sashForm;
 		MainMenu menu;
-		DBController controller;
+		HSQLDBController controller;
         ImageLoader imageLoader;
 
 		/**
@@ -91,13 +89,8 @@ public class MainWindow {
             ti.addListener(SWT.Selection, new Listener() {
                 @Override
                 public void handleEvent(Event event) {
-                    try {
-                        controller.saveSelectedFiles();
-                    } catch (GUINotConnectedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-			}
+                    controller.saveSelectedFiles();
+			    }
 		});
 		toolbar.pack();
 		
@@ -127,7 +120,8 @@ public class MainWindow {
 		// Tab1 - Tags
 		TabItem item1 = new TabItem(tabFolder, SWT.NONE);
 		item1.setText(_("Tags"));
-		item1.setControl(TagTab.init(tabFolder));
+        FileAttributeSidePanel fileAttributeSidePanel = new FileAttributeSidePanel();
+		item1.setControl(fileAttributeSidePanel.init(tabFolder));
 //		item1.addListener(SWT.MouseExit, new Listener() {
 //			public void handleEvent(final Event event) {
 //				//TODO update database and table

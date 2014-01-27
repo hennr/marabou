@@ -31,7 +31,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
@@ -42,24 +41,23 @@ public class TableShell {
 
 	final Table table;
 	final Shell shell;
-	final Display display;
 	final static HashMap<String, Integer> columnsOrder = new HashMap<>();
 	final static Logger log = Logger.getLogger(TableShell.class.getName());
-	
+    FileAttributeSidePanel fileAttributeSidePanel;
+
 	/**
 	 * Creates a new table object.
 	 * @param composite the comp to hold the table
 	 */
 	public TableShell(Composite composite) {
-		display = Display.getCurrent();
+
 		this.shell = composite.getParent().getShell();
-		// TODO let one delete and add columns(via right mouse; like aMule)
-		// table
 		this.table = new Table(composite, SWT.MULTI);
 		this.getTable().setLinesVisible(true);
 		this.getTable().setHeaderVisible(true);
-		
-		// fill a HashMap with the name and the index of the columns 
+        fileAttributeSidePanel = new FileAttributeSidePanel();
+
+		// fill a HashMap with the name and the index of the columns
 		columnsOrder.put("ARTIST", 0);
 		columnsOrder.put("TITLE", 1);
 		columnsOrder.put("ALBUM", 2);
@@ -75,42 +73,43 @@ public class TableShell {
 		columnsOrder.put("COMPOSER", 12);
 		columnsOrder.put("FILETYPE", 13);
 		columnsOrder.put("PATH", 14);
-		
+
 		// get indices of table columns
-		final int ARTIST 		= 	TableShell.getColumindex("ARTIST");
-		final int TITLE 		=	TableShell.getColumindex("TITLE");
-		final int ALBUM 		= 	TableShell.getColumindex("ALBUM");
-		final int TRACKNUMBER 	=	TableShell.getColumindex("TRACKNUMBER");
-		final int YEAR 			= 	TableShell.getColumindex("YEAR");
-		final int GENRE 		= 	TableShell.getColumindex("GENRE");
-		final int COMMENTS 		=	TableShell.getColumindex("COMMENTS");
-		final int DISC_NUMBER 	=	TableShell.getColumindex("DISC_NUMBER");
-		final int COMPOSER 		=	TableShell.getColumindex("COMPOSER");
-		final int PATH 			=	TableShell.getColumindex("PATH");
-		
-		this.getTable().addSelectionListener(new SelectionListener() {
+		final int ARTIST = getColumnIndex("ARTIST");
+        final int TITLE = getColumnIndex("TITLE");
+        final int ALBUM = getColumnIndex("ALBUM");
+        final int TRACKNUMBER = getColumnIndex("TRACKNUMBER");
+        final int YEAR = getColumnIndex("YEAR");
+        final int GENRE = getColumnIndex("GENRE");
+        final int COMMENTS = getColumnIndex("COMMENTS");
+        final int DISC_NUMBER = getColumnIndex("DISC_NUMBER");
+        final int COMPOSER = getColumnIndex("COMPOSER");
+        final int PATH = getColumnIndex("PATH");
+
+		table.addSelectionListener(new SelectionListener() {
 			/**
 			 * adds the chosen entry to the drop dows in the tagTab
 			 */
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				// TODO MVC clear all fields on the left side if entries from the table get removed
-				// TODO this only works for one entry at a time
-				TagTab.addTags(
-						(getTable().getItem(getTable().getSelectionIndex()).getText(ARTIST)),
-						(getTable().getItem(getTable().getSelectionIndex()).getText(TITLE)),
-						(getTable().getItem(getTable().getSelectionIndex()).getText(ALBUM)),
-						(getTable().getItem(getTable().getSelectionIndex()).getText(TRACKNUMBER)),
-						(getTable().getItem(getTable().getSelectionIndex()).getText(YEAR)),
-						(getTable().getItem(getTable().getSelectionIndex()).getText(GENRE)),
-						(getTable().getItem(getTable().getSelectionIndex()).getText(COMMENTS)),
-						(getTable().getItem(getTable().getSelectionIndex()).getText(DISC_NUMBER)),
-						(getTable().getItem(getTable().getSelectionIndex()).getText(COMPOSER)));
+
+                fileAttributeSidePanel.addTags(
+                        table.getItem(getTable().getSelectionIndex()).getText(ARTIST),
+                        table.getItem(getTable().getSelectionIndex()).getText(TITLE),
+                        table.getItem(getTable().getSelectionIndex()).getText(ALBUM),
+                        table.getItem(getTable().getSelectionIndex()).getText(TRACKNUMBER),
+                        table.getItem(getTable().getSelectionIndex()).getText(YEAR),
+                        table.getItem(getTable().getSelectionIndex()).getText(GENRE),
+                        table.getItem(getTable().getSelectionIndex()).getText(COMMENTS),
+                        table.getItem(getTable().getSelectionIndex()).getText(DISC_NUMBER),
+                        table.getItem(getTable().getSelectionIndex()).getText(COMPOSER));
 			}
 
-			// no need to handle this
 			@Override
-			public void widgetDefaultSelected(final SelectionEvent e) {}});
+			public void widgetDefaultSelected(SelectionEvent e) {
+                // no need to handle this
+            }
+        });
 
 		this.getTable().addListener(SWT.MouseDoubleClick, new Listener() {
 			// handles a double click on a table item
@@ -130,101 +129,91 @@ public class TableShell {
 				}
 			}
 		});
-		
-		// create table columns
-		// TODO MARKUS DRY
-		// *NOTE* Add new entry also to the columsOrder HashMap!
-		
-//		Object[][] test = new Object[10][10];
-//		test[0][0] = "Artist";
-//		test[0][1] = new Integer(200);
-		// TODO hier muss darauf geachtet werden das die Spalten später auch verschoben werden können
-		// zudem soll diese Verschobene Ansicht auch gespeichert werden *und* es dürfen auch Splaten ausgeblendet werden
-		
+
 		// artist
 		TableColumn artist = new TableColumn(this.getTable(), SWT.LEFT);
 		artist.setWidth(200);
 		artist.setText(_("Artist"));
 		artist.setMoveable(true);
-		
+
 		// title
 		TableColumn title = new TableColumn(this.getTable(), SWT.LEFT);
 		title.setWidth(200);
 		title.setText(_("Title"));
 		title.setMoveable(true);
-		
+
 		// album
 		TableColumn album = new TableColumn(this.getTable(), SWT.LEFT);
 		album.setWidth(200);
 		album.setText(_("Album"));
 		album.setMoveable(true);
-		
+
 		// duration
 		TableColumn length = new TableColumn(this.getTable(), SWT.LEFT);
 		length.setWidth(60);
 		length.setText(_("Length"));
 		length.setMoveable(true);
-		
+
 		// tracknumber
 		TableColumn track= new TableColumn(this.getTable(), SWT.LEFT);
 		track.setWidth(60);
 		track.setText(_("Track"));
 		track.setMoveable(true);
-		
+
 		// bitrate
 		TableColumn bitrate = new TableColumn(this.getTable(), SWT.LEFT);
 		bitrate.setWidth(60);
 		bitrate.setText(_("Bitrate"));
 		bitrate.setMoveable(true);
-		
+
 		// samplerate
 		TableColumn samplerate = new TableColumn(this.getTable(), SWT.LEFT);
 		samplerate.setWidth(60);
 		samplerate.setText(_("Samplerate"));
 		samplerate.setMoveable(true);
-		
+
 		// channels
 		TableColumn channels = new TableColumn(this.getTable(), SWT.LEFT);
 		channels.setWidth(60);
 		channels.setText(_("Channels"));
 		channels.setMoveable(true);
-		
+
 		// year
 		TableColumn year = new TableColumn(this.getTable(), SWT.LEFT);
 		year.setWidth(60);
 		year.setText(_("Year"));
 		year.setMoveable(true);
-		
+
 		// genre
 		TableColumn genre = new TableColumn(this.getTable(), SWT.LEFT);
 		genre.setWidth(120);
 		genre.setText(_("Genre"));
 		genre.setMoveable(true);
-		
+
 		// comments
 		TableColumn comments = new TableColumn(this.getTable(), SWT.LEFT);
 		comments.setWidth(120);
 		comments.setText(_("Comments"));
 		comments.setMoveable(true);
-		
+
 		// disc number
 		TableColumn diskNumber = new TableColumn(this.getTable(), SWT.LEFT);
 		diskNumber.setWidth(60);
 		diskNumber.setText(_("Disk Number"));
 		diskNumber.setMoveable(true);
-		
+
 		// composer
 		TableColumn composer = new TableColumn(this.getTable(), SWT.LEFT);
 		composer.setWidth(120);
 		composer.setText(_("Composer"));
 		composer.setMoveable(true);
-		
+
 		// filetype
 		TableColumn format = new TableColumn(this.getTable(), SWT.LEFT);
 		format.setWidth(100);
 		format.setText(_("Format"));
 		format.setMoveable(true);
-				
+
 		// path
 		TableColumn path = new TableColumn(this.getTable(), SWT.LEFT);
 		path.setWidth(1000);
@@ -235,7 +224,6 @@ public class TableShell {
 		this.getTable().setSortColumn(path);
 		this.getTable().setSortDirection(SWT.DOWN);
 
-		// TODO MVC sort the coloumns
 		path.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
 				if (getTable().getSortDirection() == SWT.UP) {
@@ -247,21 +235,12 @@ public class TableShell {
 		});
 	}
 
-	
-	// helper methods
-	
-	public static int getColumindex(String key) {
+
+	public int getColumnIndex(String key) {
 		return(columnsOrder.get(key));
 	}
-	
-	public static int getColumnsCount() {
-		return columnsOrder.size();
-	}
-	
-	/**
-	 * sets the keyboard focus on the table
-	 */
-	public void setFocus() {
+
+	public void setKeyboardFocus() {
 		this.getTable().setFocus();
 	}
 

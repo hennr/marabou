@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.github.marabou.audio.AudioFileFilter;
-import com.github.marabou.db.DBController;
 import com.github.marabou.db.GUINotConnectedException;
 import com.github.marabou.db.HSQLDBController;
 import com.github.marabou.helper.*;
@@ -48,19 +47,15 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 
 /**
- * 
  * This class creates and fills (if init is invoked) a menu object which will be
  * used as SWT.BAR menu in the main window.
- * 
- * @author Jan-Hendrik Peters
- * 
  */
 public class MainMenu {
     private final ImageLoader imageLoader;
     private Shell shell;
 	private TableShell tableShell;
 	private Menu menu;
-	private DBController controller;
+	private HSQLDBController controller;
 
 	/**
 	 * Constructor for the MainMenu which will be used in the main window.
@@ -158,7 +153,7 @@ public class MainMenu {
 					for (String file: filesToOpen) {
 						openFile(new File(filterPath + "/" + file));
 					}
-					tableShell.setFocus();
+					tableShell.setKeyboardFocus();
 				}
 			}
 		});
@@ -198,27 +193,22 @@ public class MainMenu {
 				log.log(Level.INFO, "Directory to open: {0}", dirToOpen);
 
 				if (dirToOpen != null) {
-					tableShell.setFocus();
-					   List<File> files = findFiles(new File(dirToOpen));
+                    tableShell.setKeyboardFocus();
+                    List<File> files = findFiles(new File(dirToOpen));
 					openFiles(files);
 				}
 			}
 		});
 
-		// TODO Controller: use the HSQLDBController here
 		// File -> save current file
 		MenuItem saveItem = new MenuItem(fileMenu, SWT.PUSH);
 		saveItem.setText(_("&Save\t Ctrl+S"));
 		saveItem.setAccelerator(SWT.CTRL + 'S');
-		// TODO RELEASE replace with image loader helper call
 		saveItem.setImage(imageLoader.getImage(AvailableImage.SAVE_ICON));
 
 		saveItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
-				try {
 					controller.saveSelectedFiles();
-				} catch (Exception e1) {
-				}
 			}
 
 		});
@@ -282,7 +272,6 @@ public class MainMenu {
     /**
 	 * Utilises the {@link HSQLDBController} to open given files
 	 * Will notify the user if files fail to open
-	 * @param files Vector of files to open (absolute path)
 	 */
 	private void openFiles(List<File> files) {
 		
@@ -294,14 +283,11 @@ public class MainMenu {
 	/**
 	 * Utilises the {@link HSQLDBController} to open given files.
 	 * Will notify the user if files fail to open
-	 * @param file absolute path of file
 	 */
 	private void openFile(File file) {
-		
-		try {
-		    isFileSupported(file);
-		} catch (UnsupportedFileEndingException e) {
-		    return;
+	
+		if (!isFileSupported(file)) {
+			return;
 		}
 		try {
 		    controller.insertFile(file);
@@ -316,19 +302,9 @@ public class MainMenu {
 		}
 	}
 
-	/**
-	 * Determines of given file is supported by our backend library.
-	 * @param file 
-	 * @return true if file ending is mp3 (lower or upper case)
-	 * @throws UnsupportedFileEndingException if the file format seems to be unsupported by mp3agic
-	 */
-	private boolean isFileSupported(File file) throws UnsupportedFileEndingException {
-		System.out.println(file);
-		if (! file.getName().toLowerCase().endsWith("mp3")) {
-			throw new UnsupportedFileEndingException();
-		} else {
-			return true;
-		}
+	private boolean isFileSupported(File file) {
+		// TODO use file filter here
+		return file.getName().toLowerCase().endsWith("mp3");
 	}
 	
 }
