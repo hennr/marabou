@@ -166,18 +166,8 @@ public class MainMenu {
 		openDirectoryItem.setImage(imageLoader.getImage(AvailableImage.FOLDER_ICON));
 
 		// listener for File -> open directory
-		// TODO IMPORTANT threading!
-		// TODO progressbar
-		// TODO should we add an option to open only *.xxx files from the directory?
-		// TODO let the user choose to open dirs recursively or not
-		// TODO make opening of multiple dirs at once possible
-		// the problem is that not every platform seems to supports opening of
-		// multiple dirs at once
-		// we have to create our own dialog if we want that functionality :(
-		// http://java-gui.info/Wiley-Professional.Java.Interfaces.with.SWT.JFace/12093/BBL0061.html
-
 		openDirectoryItem.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(final Event e) {
+			public void handleEvent(Event e) {
 
 				DirectoryDialog directoryDialog = new DirectoryDialog(shell);
 				directoryDialog.setText(_("Choose directory..."));

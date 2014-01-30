@@ -46,7 +46,7 @@ public class Main {
 		}
 		
 		// create the gui
-		mw.createGUI();
+		mw.init();
 	}
 	
 	// helper methods

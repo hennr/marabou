@@ -122,18 +122,6 @@ public class MainWindow {
 		item1.setText(_("Tags"));
         FileAttributeSidePanel fileAttributeSidePanel = new FileAttributeSidePanel();
 		item1.setControl(fileAttributeSidePanel.init(tabFolder));
-//		item1.addListener(SWT.MouseExit, new Listener() {
-//			public void handleEvent(final Event event) {
-//				//TODO update database and table
-//				try {
-//					controller.updateDBandTable();
-//				} catch (GUINotConnectedException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//			}
-//			    
-//		});
 		
 		// Tab 2 - Filesystem
 		TabItem item2 = new TabItem(tabFolder, SWT.NONE);
@@ -152,15 +140,25 @@ public class MainWindow {
 		controller.connectTableShell(table);
 		
 		// Now we have the composites, and can set a ratio between them
-		// TODO make this 2/5 ratio storeable by the user
-		sashForm.setWeights(new int[]{2, 5});
+            int[] sashWeights = getStoredSashRation();
+		sashForm.setWeights(sashWeights);
 		sashForm.pack();
 	}
-	
-	/**
-	 * creates a new main window
-	 */
-	public void createGUI() {
+
+    private int[] getStoredSashRation() {
+        int[] result = {2, 5};
+        try {
+            System.out.println(PropertiesHelper.getProp(PropertiesAllowedKeys.tagBarWeight));
+            System.out.println(PropertiesHelper.getProp(PropertiesAllowedKeys.tableWeight));
+            result[0] = Integer.parseInt(PropertiesHelper.getProp(PropertiesAllowedKeys.tagBarWeight));
+            result[1] = Integer.parseInt(PropertiesHelper.getProp(PropertiesAllowedKeys.tableWeight));
+        } catch (Exception e) {
+            return result;
+        }
+        return result;
+    }
+
+    public void init() {
 	
 		// maximize on first run
 		shell.setMaximized(true);
@@ -184,16 +182,8 @@ public class MainWindow {
 		shell.addDisposeListener(new DisposeListener() {
 		    @Override
 		    public void widgetDisposed(DisposeEvent arg0) {
-			if (Boolean.parseBoolean(PropertiesHelper.getProp(PropertiesAllowedKeys.saveWindowSize))) {
-			    if (shell.getMaximized()) {
-				PropertiesHelper.setProp(PropertiesAllowedKeys.windowSizeX, "max");
-				PropertiesHelper.setProp(PropertiesAllowedKeys.windowSizeY, "max");
-			    }
-			    String x = String.valueOf(shell.getSize().x);
-			    String y = String.valueOf(shell.getSize().y);
-			    PropertiesHelper.setProp(PropertiesAllowedKeys.windowSizeX, x);
-			    PropertiesHelper.setProp(PropertiesAllowedKeys.windowSizeY, y);
-			}
+                persistWindowSize();
+                persistTagAndTableBarRation();
 		    }
 		});
 		
@@ -203,4 +193,25 @@ public class MainWindow {
 		}
 		display.dispose();
 	}
+
+    private void persistWindowSize() {
+        if (Boolean.parseBoolean(PropertiesHelper.getProp(PropertiesAllowedKeys.saveWindowSize))) {
+            if (shell.getMaximized()) {
+                PropertiesHelper.setProp(PropertiesAllowedKeys.windowSizeX, "max");
+                PropertiesHelper.setProp(PropertiesAllowedKeys.windowSizeY, "max");
+            } else {
+                String x = String.valueOf(shell.getSize().x);
+                String y = String.valueOf(shell.getSize().y);
+                PropertiesHelper.setProp(PropertiesAllowedKeys.windowSizeX, x);
+                PropertiesHelper.setProp(PropertiesAllowedKeys.windowSizeY, y);
+            }
+        }
+    }
+
+    private void persistTagAndTableBarRation() {
+        String tagBarWeight = Integer.toString(sashForm.getWeights()[0]);
+        String tableWeight = Integer.toString(sashForm.getWeights()[1]);
+        PropertiesHelper.setProp(PropertiesAllowedKeys.tagBarWeight, tagBarWeight);
+        PropertiesHelper.setProp(PropertiesAllowedKeys.tableWeight, tableWeight);
+    }
 }

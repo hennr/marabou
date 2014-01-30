@@ -1,23 +1,24 @@
 package com.github.marabou.helper;
 
 /**
- * these are all allowed keys that can the stored or read in the marabou.properties file
- * 
- * @author Jan-Hendrik Peters
- *
+ * allowed keys for marabou.properties
  */
 public enum PropertiesAllowedKeys {
 	
-	// marabou's version
+	// config's version
 	version,
-	// the window size on close 
+	// should we save the window size on exit?
 	saveWindowSize,
 	// the actual window size when user closes marabou
 	windowSizeX,
 	windowSizeY,
-	// the last path that the user opened
-	lastPath,
-	// should we safe the last used path?
-	safeLastPath;
+    // should we safe the last used path?
+    safeLastPath,
+    // the last path that the user opened
+    lastPath,
+    // size of the tag bar in relation to the table
+    tagBarWeight,
+    // size of the table in relation to the tag bar
+    tableWeight;
 
 }

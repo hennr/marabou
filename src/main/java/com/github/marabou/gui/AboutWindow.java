@@ -20,14 +20,17 @@
 package com.github.marabou.gui;
 
 import java.awt.Desktop;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URI;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 import com.github.marabou.helper.AvailableImage;
 import com.github.marabou.helper.ImageLoader;
-import com.github.marabou.helper.PropertiesAllowedKeys;
 import com.github.marabou.helper.PropertiesHelper;
 
+import com.sun.xml.internal.ws.util.StringUtils;
 import org.eclipse.swt.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.graphics.Image;
@@ -72,9 +75,15 @@ public class AboutWindow {
 
 		// project name and version
 		Label text = new Label(comp1, SWT.NONE);
-		String version = "";
-			version = PropertiesHelper.getProp(PropertiesAllowedKeys.version);
-		text.setText(_("Marabou - Audio Tagger \n" + "Version " + version));
+		String version = "UNKOWN";
+        Properties versionProp = new Properties();
+        try {
+            versionProp.load()
+                    new FileReader("marabou.version"));
+        } catch (IOException e) {
+            System.out.println("foo");
+        }
+        text.setText(_("Marabou - Audio Tagger \n" + "Version " + version));
 
 		Image logo = new ImageLoader(display).getImage(AvailableImage.LOGO_BIG);
 		Label labelImage = new Label(comp1, SWT.NONE);

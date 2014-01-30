@@ -20,8 +20,7 @@ import java.util.logging.Logger;
  */
 public class PropertiesHelper {
 
-	final static Logger log = Logger
-			.getLogger(PropertiesHelper.class.getName());
+	final static Logger log = Logger.getLogger(PropertiesHelper.class.getName());
 	static Properties properties = new Properties();
 	static File conf;
 
@@ -40,7 +39,7 @@ public class PropertiesHelper {
 			conf = new File(ph.getMarabouHomeFolder() + "marabou.properties");
 		} catch (UnknownPlatformException e1) {
 			log.severe("Your OS couldn't get detected properly.\n"
-					+ "Please file a bugreport.");
+					+ "Please file a bug report.");
 			return 1;
 		}
 		// if config is found, check if updates are needed
@@ -49,16 +48,9 @@ public class PropertiesHelper {
 				log.severe("Couldn't read or write config file."
 						+ " Please make sure that your file permissions are set properly.");
 				return 1;
-				// config is existens and accessable
 			} else {
 				try {
 					properties.load(new FileReader(conf.getAbsolutePath()));
-				} catch (FileNotFoundException e) {
-
-					log.severe("Couldn't find user's config file in path: "
-							+ conf.getAbsolutePath());
-
-					return 1;
 				} catch (IOException e) {
 					log.severe("Couldn't load config file: "
 							+ conf.getAbsolutePath());
@@ -66,8 +58,7 @@ public class PropertiesHelper {
 				}
 				Properties vendorProp = new Properties();
 
-				// TODO RELEASE replace path with method call of PathHelper (for
-				// specific OS)
+				// TODO RELEASE replace path with method call of PathHelper (for specific OS)
 
 				try {
 					vendorProp.load(new FileReader(
@@ -120,8 +111,7 @@ public class PropertiesHelper {
 			}
 			try {
 
-				// TODO RELEASE replace path with method call of PathHelper (for
-				// specific OS)
+				// TODO RELEASE replace path with method call of PathHelper (for specific OS)
 				BufferedReader vendorConf = new BufferedReader(new FileReader(
 						"src/main/resources/marabou.properties"));
 
@@ -144,7 +134,7 @@ public class PropertiesHelper {
 	 */
 	public static String getProp(PropertiesAllowedKeys key) {
 		try {
-			return (String) properties.get(key.toString());
+			return properties.getProperty(key.toString());
 		} catch (NullPointerException e) {
 			System.err
 					.println("You just found a bug in marabou. Marabou requested a config key from marabou.properties that is non existent.\n"
