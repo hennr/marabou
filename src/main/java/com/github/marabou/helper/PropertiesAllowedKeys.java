@@ -5,10 +5,8 @@ package com.github.marabou.helper;
  */
 public enum PropertiesAllowedKeys {
 	
-	// config's version
-	version,
 	// should we save the window size on exit?
-	saveWindowSize,
+    rememberWindowSize,
 	// the actual window size when user closes marabou
 	windowSizeX,
 	windowSizeY,

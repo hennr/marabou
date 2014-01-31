@@ -23,7 +23,6 @@ import com.github.marabou.gui.MainWindow;
 import com.github.marabou.helper.LoggingHelper;
 import com.github.marabou.helper.PropertiesHelper;
 
-import java.io.IOException;
 import java.util.Properties;
 
 public class Main {
@@ -36,7 +35,7 @@ public class Main {
         MainWindow mw = new MainWindow(applicationProperties);
 
 		// initilalise user properties, exit if it fails
-		if (PropertiesHelper.initUserProperties() != 0) {
+		if (PropertiesHelper.readOrCreateDefaultUserProperties() != 0) {
 			System.err.println("Properties couldn't get initialized properly.\n" +
 					"Please file a bugreport.");
 			System.exit(1);

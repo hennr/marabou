@@ -47,7 +47,6 @@ import java.util.Properties;
 
 public class MainWindow {
 
-    private Properties applicationProperties;
     Display display = new Display();
     Shell shell = new Shell(display);
     Composite comp = new Composite(shell, SWT.NONE);
@@ -152,8 +151,6 @@ public class MainWindow {
     private int[] getStoredSashRation() {
         int[] result = {2, 5};
         try {
-            System.out.println(PropertiesHelper.getProp(PropertiesAllowedKeys.tagBarWeight));
-            System.out.println(PropertiesHelper.getProp(PropertiesAllowedKeys.tableWeight));
             result[0] = Integer.parseInt(PropertiesHelper.getProp(PropertiesAllowedKeys.tagBarWeight));
             result[1] = Integer.parseInt(PropertiesHelper.getProp(PropertiesAllowedKeys.tableWeight));
         } catch (Exception e) {
@@ -166,7 +163,7 @@ public class MainWindow {
 	
 		// maximize on first run
 		shell.setMaximized(true);
-		if (Boolean.parseBoolean(PropertiesHelper.getProp(PropertiesAllowedKeys.saveWindowSize))) {
+		if (Boolean.parseBoolean(PropertiesHelper.getProp(PropertiesAllowedKeys.rememberWindowSize))) {
 			String x = PropertiesHelper.getProp(PropertiesAllowedKeys.windowSizeX);
 			String y = PropertiesHelper.getProp(PropertiesAllowedKeys.windowSizeY);
 			if (x.equals("max") && y.equals("max")) {
@@ -199,7 +196,7 @@ public class MainWindow {
 	}
 
     private void persistWindowSize() {
-        if (Boolean.parseBoolean(PropertiesHelper.getProp(PropertiesAllowedKeys.saveWindowSize))) {
+        if (Boolean.parseBoolean(PropertiesHelper.getProp(PropertiesAllowedKeys.rememberWindowSize))) {
             if (shell.getMaximized()) {
                 PropertiesHelper.setProp(PropertiesAllowedKeys.windowSizeX, "max");
                 PropertiesHelper.setProp(PropertiesAllowedKeys.windowSizeY, "max");

@@ -12,18 +12,15 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 /**
- * This class is intend to help you getting, setting, updating and saving users
- * properties
- * 
- * <b>NOTE</b>: This classes' initUserProperties() method gets invoked by the main
- * class, which means that a properties file gets created in any case
+ * Helps you getting, setting, updating and saving users properties
  */
 public class PropertiesHelper {
 
-	final static Logger log = Logger.getLogger(PropertiesHelper.class.getName());
-	static Properties userProperties = new Properties();
-	static File conf;
-	static String homeFolder;
+    static File conf;
+    static String homeFolder;
+    static Properties userProperties = new Properties();
+    final static Logger log = Logger.getLogger(PropertiesHelper.class.getName());
+    public static final String USER_PROPERTIES_FILE_PATH = "src/main/resources/marabou.properties";
 
 
     public static Properties getApplicationProperties() {
@@ -36,17 +33,13 @@ public class PropertiesHelper {
         return applicationProperties;
     }
 
-	/**
-	 * opens the properties file in the correct path or creates a new one if
-	 * none is found
-	 */
-	public static int initUserProperties() {
+	public static int readOrCreateDefaultUserProperties() {
 
 		// creating a new conf file if none exists yet
-		PathHelper ph = new PathHelper();
+		PathHelper pathHelper = new PathHelper();
 		try {
-			homeFolder = ph.getMarabouHomeFolder();
-			conf = new File(ph.getMarabouHomeFolder() + "marabou.properties");
+			homeFolder = pathHelper.getMarabouHomeFolder();
+			conf = new File(pathHelper.getMarabouHomeFolder() + "marabou.properties");
 		} catch (UnknownPlatformException e1) {
 			log.severe("Your OS couldn't get detected properly.\n"
 					+ "Please file a bug report.");
@@ -66,40 +59,19 @@ public class PropertiesHelper {
 							+ conf.getAbsolutePath());
 					return 1;
 				}
-				Properties vendorProp = new Properties();
-
-				// TODO RELEASE replace path with method call of PathHelper (for specific OS)
+				Properties userProperties = new Properties();
 
 				try {
-					vendorProp.load(new FileReader(
-							"src/main/resources/marabou.properties"));
-				} catch (FileNotFoundException e) {
+					userProperties.load(new FileReader(USER_PROPERTIES_FILE_PATH));
+                } catch (FileNotFoundException e) {
 					log.severe("Couldn't find vendor config.");
 					return 1;
 				} catch (IOException e) {
 					log.severe("Couldn't open vendor config.");
 					return 1;
 				}
-				// if the user's conf is older than the current marabou version,
-				// update the missing entries
-				if (userProperties.getProperty("version").compareTo(
-						vendorProp.getProperty("version")) < 0) {
-					Set<Object> vendorKeys = vendorProp.keySet();
-					Set<Object> userKeys = userProperties.keySet();
 
-					// set the latest version in users conf
-					userProperties.setProperty("version",
-							vendorProp.getProperty("version"));
-
-					// copy missing new key/value pairs
-					for (Object key : vendorKeys) {
-						if (!userKeys.contains(key)) {
-							userProperties.put(key, vendorProp.get(key));
-						}
-
-					}
-					persistSettings();
-				}
+                addNewConfigurationKeysToUsersConfigFile(userProperties);
 			}
 			// conf is not existent yet
 		} else {
@@ -108,8 +80,7 @@ public class PropertiesHelper {
 				// create folder if no folder exists yet
 				if (!mhfFile.exists()) {
 					if (!mhfFile.mkdir()) {
-						log.severe("Couldn't create marabou folder in your home.\n"
-								+ "Please file a bugreport.");
+						log.severe("Couldn't create marabou folder in your home.\n Please file a bug report.");
 						return 1;
 					}
 				}
@@ -121,9 +92,7 @@ public class PropertiesHelper {
 			}
 			try {
 
-				// TODO RELEASE replace path with method call of PathHelper (for specific OS)
-				BufferedReader vendorConf = new BufferedReader(new FileReader(
-						"src/main/resources/marabou.properties"));
+				BufferedReader vendorConf = new BufferedReader(new FileReader(USER_PROPERTIES_FILE_PATH));
 
 				userProperties.load(vendorConf);
 				// copy all entries to the new conf
@@ -138,7 +107,21 @@ public class PropertiesHelper {
 		return 0;
 	}
 
-	/**
+    private static void addNewConfigurationKeysToUsersConfigFile(Properties userProperties) {
+        Set<Object> vendorKeys = userProperties.keySet();
+        Set<Object> userKeys = PropertiesHelper.userProperties.keySet();
+
+        // copy missing new key/value pairs
+        for (Object key : vendorKeys) {
+            if (!userKeys.contains(key)) {
+                PropertiesHelper.userProperties.put(key, userProperties.get(key));
+            }
+
+        }
+        persistSettings();
+    }
+
+    /**
 	 * returns the users setting to the given key
 	 * 
 	 */
