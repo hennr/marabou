@@ -15,22 +15,32 @@ import java.util.logging.Logger;
  * This class is intend to help you getting, setting, updating and saving users
  * properties
  * 
- * <b>NOTE</b>: This classes' initProperties() method gets invoked by the main
+ * <b>NOTE</b>: This classes' initUserProperties() method gets invoked by the main
  * class, which means that a properties file gets created in any case
  */
 public class PropertiesHelper {
 
 	final static Logger log = Logger.getLogger(PropertiesHelper.class.getName());
-	static Properties properties = new Properties();
+	static Properties userProperties = new Properties();
 	static File conf;
-
 	static String homeFolder;
+
+
+    public static Properties getApplicationProperties() {
+        Properties applicationProperties = new Properties();
+        try {
+            applicationProperties.load(PropertiesHelper.class.getResourceAsStream("/application.properties"));
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
+        return applicationProperties;
+    }
 
 	/**
 	 * opens the properties file in the correct path or creates a new one if
 	 * none is found
 	 */
-	public static int initProperties() {
+	public static int initUserProperties() {
 
 		// creating a new conf file if none exists yet
 		PathHelper ph = new PathHelper();
@@ -50,7 +60,7 @@ public class PropertiesHelper {
 				return 1;
 			} else {
 				try {
-					properties.load(new FileReader(conf.getAbsolutePath()));
+					userProperties.load(new FileReader(conf.getAbsolutePath()));
 				} catch (IOException e) {
 					log.severe("Couldn't load config file: "
 							+ conf.getAbsolutePath());
@@ -72,19 +82,19 @@ public class PropertiesHelper {
 				}
 				// if the user's conf is older than the current marabou version,
 				// update the missing entries
-				if (properties.getProperty("version").compareTo(
+				if (userProperties.getProperty("version").compareTo(
 						vendorProp.getProperty("version")) < 0) {
 					Set<Object> vendorKeys = vendorProp.keySet();
-					Set<Object> userKeys = properties.keySet();
+					Set<Object> userKeys = userProperties.keySet();
 
 					// set the latest version in users conf
-					properties.setProperty("version",
+					userProperties.setProperty("version",
 							vendorProp.getProperty("version"));
 
 					// copy missing new key/value pairs
 					for (Object key : vendorKeys) {
 						if (!userKeys.contains(key)) {
-							properties.put(key, vendorProp.get(key));
+							userProperties.put(key, vendorProp.get(key));
 						}
 
 					}
@@ -115,7 +125,7 @@ public class PropertiesHelper {
 				BufferedReader vendorConf = new BufferedReader(new FileReader(
 						"src/main/resources/marabou.properties"));
 
-				properties.load(vendorConf);
+				userProperties.load(vendorConf);
 				// copy all entries to the new conf
 				persistSettings();
 				vendorConf.close();
@@ -134,7 +144,7 @@ public class PropertiesHelper {
 	 */
 	public static String getProp(PropertiesAllowedKeys key) {
 		try {
-			return properties.getProperty(key.toString());
+			return userProperties.getProperty(key.toString());
 		} catch (NullPointerException e) {
 			System.err
 					.println("You just found a bug in marabou. Marabou requested a config key from marabou.properties that is non existent.\n"
@@ -147,7 +157,7 @@ public class PropertiesHelper {
 	 * sets a setting and saves it to users config file
 	 */
 	public static void setProp(PropertiesAllowedKeys key, String value) {
-		properties.setProperty(key.toString(), value);
+		userProperties.setProperty(key.toString(), value);
 		persistSettings();
 	}
 
@@ -160,7 +170,7 @@ public class PropertiesHelper {
 		try {
 			BufferedWriter userConf = new BufferedWriter(new FileWriter(
 					conf.getAbsolutePath()));
-			properties.store(userConf, null);
+			userProperties.store(userConf, null);
 			// flush and close streams
 			userConf.flush();
 			userConf.close();

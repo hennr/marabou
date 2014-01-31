@@ -43,21 +43,24 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
+import java.util.Properties;
+
 public class MainWindow {
-		
-		Display display = new Display();
-		Shell shell = new Shell(display);
-		Composite comp = new Composite(shell, SWT.NONE);
-		SashForm sashForm;
-		MainMenu menu;
-		HSQLDBController controller;
-        ImageLoader imageLoader;
+
+    private Properties applicationProperties;
+    Display display = new Display();
+    Shell shell = new Shell(display);
+    Composite comp = new Composite(shell, SWT.NONE);
+    SashForm sashForm;
+    MainMenu menu;
+    HSQLDBController controller;
+    ImageLoader imageLoader;
 
 		/**
 		 * the main window holds elements such as the menu, the table,
 		 *  and the tabs on the left
 		 */
-		public MainWindow() {
+		public MainWindow(Properties applicationProperties) {
 
             imageLoader = new ImageLoader(display);
             shell.setLayout(new FillLayout(SWT.VERTICAL));
@@ -68,7 +71,8 @@ public class MainWindow {
             controller = HSQLDBController.getInstance();
 
             //Create a menu, place it in the shell and fill the menu
-            menu = new MainMenu(shell);
+            AboutWindow aboutWindow = new AboutWindow(applicationProperties);
+            menu = new MainMenu(shell, aboutWindow);
             menu.init();
             shell.setMenuBar(menu.getMenu());
 

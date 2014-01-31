@@ -30,7 +30,6 @@ import com.github.marabou.helper.AvailableImage;
 import com.github.marabou.helper.ImageLoader;
 import com.github.marabou.helper.PropertiesHelper;
 
-import com.sun.xml.internal.ws.util.StringUtils;
 import org.eclipse.swt.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.graphics.Image;
@@ -41,12 +40,18 @@ import static com.github.marabou.helper.I18nHelper._;
 
 public class AboutWindow {
 
-	final static Logger log = Logger.getLogger(PropertiesHelper.class.getName());
+    Properties applicationProperties;
+    final static Logger log = Logger.getLogger(PropertiesHelper.class.getName());
+
+    public AboutWindow(Properties applicationProperties) {
+
+        this.applicationProperties = applicationProperties;
+    }
 
 	/**
 	 * shows various information about marabou in a small window
 	 */
-	public static void showAbout() {
+	public void showAbout() {
 		final Display display = Display.getCurrent();
 		final Shell shell = new Shell(display);
 		shell.setText(_("About Marabou"));
@@ -75,14 +80,7 @@ public class AboutWindow {
 
 		// project name and version
 		Label text = new Label(comp1, SWT.NONE);
-		String version = "UNKOWN";
-        Properties versionProp = new Properties();
-        try {
-            versionProp.load()
-                    new FileReader("marabou.version"));
-        } catch (IOException e) {
-            System.out.println("foo");
-        }
+		String version = applicationProperties.getProperty("version", "UNKNOWN");
         text.setText(_("Marabou - Audio Tagger \n" + "Version " + version));
 
 		Image logo = new ImageLoader(display).getImage(AvailableImage.LOGO_BIG);

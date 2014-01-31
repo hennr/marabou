@@ -56,18 +56,20 @@ public class MainMenu {
 	private TableShell tableShell;
 	private Menu menu;
 	private HSQLDBController controller;
+    private AboutWindow aboutWindow;
 
-	/**
+    /**
 	 * Constructor for the MainMenu which will be used in the main window.
 	 * 
 	 * @param shell
 	 *            the shell which will hold the menu
 	 */
-	public MainMenu(final Shell shell) {
-		menu = new Menu(shell, SWT.BAR);
-		controller = HSQLDBController.getInstance();
+	public MainMenu(Shell shell, AboutWindow aboutWindow) {
+		this.menu = new Menu(shell, SWT.BAR);
+		this.controller = HSQLDBController.getInstance();
 		this.shell = shell;
-        imageLoader = new ImageLoader(shell.getDisplay());
+        this.imageLoader = new ImageLoader(shell.getDisplay());
+        this.aboutWindow = aboutWindow;
 	}
 
 	/**
@@ -231,8 +233,7 @@ public class MainMenu {
 		// listener for Help -> About
 		aboutItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(final Event e) {
-				// create a new about window
-				AboutWindow.showAbout();
+				aboutWindow.showAbout();
 			}
 		});
 	}
