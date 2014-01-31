@@ -54,24 +54,25 @@ public class MainWindow {
     MainMenu menu;
     HSQLDBController controller;
     ImageLoader imageLoader;
+    PropertiesHelper propertiesHelper;
 
 		/**
 		 * the main window holds elements such as the menu, the table,
 		 *  and the tabs on the left
 		 */
-		public MainWindow(Properties applicationProperties) {
+		public MainWindow(Properties applicationProperties, PropertiesHelper propertiesHelper) {
+
+            this.propertiesHelper =propertiesHelper;
+            this.controller = HSQLDBController.getInstance();
 
             imageLoader = new ImageLoader(display);
             shell.setLayout(new FillLayout(SWT.VERTICAL));
             shell.setImage(imageLoader.getImage(AvailableImage.LOGO_SMALL));
             shell.setText(_("Marabou - Audio tagger"));
 
-            // get Controller instance
-            controller = HSQLDBController.getInstance();
-
             //Create a menu, place it in the shell and fill the menu
             AboutWindow aboutWindow = new AboutWindow(applicationProperties);
-            menu = new MainMenu(shell, aboutWindow);
+            menu = new MainMenu(shell, aboutWindow, propertiesHelper);
             menu.init();
             shell.setMenuBar(menu.getMenu());
 
@@ -151,8 +152,8 @@ public class MainWindow {
     private int[] getStoredSashRation() {
         int[] result = {2, 5};
         try {
-            result[0] = Integer.parseInt(PropertiesHelper.getProp(PropertiesAllowedKeys.tagBarWeight));
-            result[1] = Integer.parseInt(PropertiesHelper.getProp(PropertiesAllowedKeys.tableWeight));
+            result[0] = Integer.parseInt(propertiesHelper.getProp(PropertiesAllowedKeys.tagBarWeight));
+            result[1] = Integer.parseInt(propertiesHelper.getProp(PropertiesAllowedKeys.tableWeight));
         } catch (Exception e) {
             return result;
         }
@@ -163,9 +164,9 @@ public class MainWindow {
 	
 		// maximize on first run
 		shell.setMaximized(true);
-		if (Boolean.parseBoolean(PropertiesHelper.getProp(PropertiesAllowedKeys.rememberWindowSize))) {
-			String x = PropertiesHelper.getProp(PropertiesAllowedKeys.windowSizeX);
-			String y = PropertiesHelper.getProp(PropertiesAllowedKeys.windowSizeY);
+		if (Boolean.parseBoolean(propertiesHelper.getProp(PropertiesAllowedKeys.rememberWindowSize))) {
+			String x = propertiesHelper.getProp(PropertiesAllowedKeys.windowSizeX);
+			String y = propertiesHelper.getProp(PropertiesAllowedKeys.windowSizeY);
 			if (x.equals("max") && y.equals("max")) {
 			    shell.setMaximized(true);
 			}
@@ -196,7 +197,7 @@ public class MainWindow {
 	}
 
     private void persistWindowSize() {
-        if (Boolean.parseBoolean(PropertiesHelper.getProp(PropertiesAllowedKeys.rememberWindowSize))) {
+        if (Boolean.parseBoolean(propertiesHelper.getProp(PropertiesAllowedKeys.rememberWindowSize))) {
             if (shell.getMaximized()) {
                 PropertiesHelper.setProp(PropertiesAllowedKeys.windowSizeX, "max");
                 PropertiesHelper.setProp(PropertiesAllowedKeys.windowSizeY, "max");

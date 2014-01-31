@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -22,6 +23,10 @@ public class PropertiesHelper {
     final static Logger log = Logger.getLogger(PropertiesHelper.class.getName());
     public static final String USER_PROPERTIES_FILE_PATH = "src/main/resources/marabou.properties";
 
+    public PropertiesHelper() {
+        readOrCreateDefaultUserProperties();
+    }
+
 
     public static Properties getApplicationProperties() {
         Properties applicationProperties = new Properties();
@@ -33,7 +38,7 @@ public class PropertiesHelper {
         return applicationProperties;
     }
 
-	public static int readOrCreateDefaultUserProperties() {
+	private int readOrCreateDefaultUserProperties() {
 
 		// creating a new conf file if none exists yet
 		PathHelper pathHelper = new PathHelper();
@@ -55,8 +60,7 @@ public class PropertiesHelper {
 				try {
 					userProperties.load(new FileReader(conf.getAbsolutePath()));
 				} catch (IOException e) {
-					log.severe("Couldn't load config file: "
-							+ conf.getAbsolutePath());
+					log.severe("Couldn't load config file: " + conf.getAbsolutePath());
 					return 1;
 				}
 				Properties userProperties = new Properties();
@@ -107,7 +111,7 @@ public class PropertiesHelper {
 		return 0;
 	}
 
-    private static void addNewConfigurationKeysToUsersConfigFile(Properties userProperties) {
+    private void addNewConfigurationKeysToUsersConfigFile(Properties userProperties) {
         Set<Object> vendorKeys = userProperties.keySet();
         Set<Object> userKeys = PropertiesHelper.userProperties.keySet();
 
@@ -121,19 +125,14 @@ public class PropertiesHelper {
         persistSettings();
     }
 
-    /**
-	 * returns the users setting to the given key
-	 * 
-	 */
-	public static String getProp(PropertiesAllowedKeys key) {
-		try {
-			return userProperties.getProperty(key.toString());
-		} catch (NullPointerException e) {
-			System.err
-					.println("You just found a bug in marabou. Marabou requested a config key from marabou.properties that is non existent.\n"
-							+ "Please file a bug report and include this messages and what you just did.");
-			return "";
-		}
+	public String getProp(PropertiesAllowedKeys key) {
+        String retrievedValue = userProperties.getProperty(key.toString());
+        if (retrievedValue != null) {
+            return retrievedValue;
+        } else {
+            log.log(Level.SEVERE, "Unable to retrieve user's configuration for key " + key.toString());
+            return "";
+        }
 	}
 
 	/**

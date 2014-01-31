@@ -57,6 +57,7 @@ public class MainMenu {
 	private Menu menu;
 	private HSQLDBController controller;
     private AboutWindow aboutWindow;
+    private PropertiesHelper propertiesHelper;
 
     /**
 	 * Constructor for the MainMenu which will be used in the main window.
@@ -64,12 +65,13 @@ public class MainMenu {
 	 * @param shell
 	 *            the shell which will hold the menu
 	 */
-	public MainMenu(Shell shell, AboutWindow aboutWindow) {
+	public MainMenu(Shell shell, AboutWindow aboutWindow, PropertiesHelper propertiesHelper) {
 		this.menu = new Menu(shell, SWT.BAR);
 		this.controller = HSQLDBController.getInstance();
 		this.shell = shell;
         this.imageLoader = new ImageLoader(shell.getDisplay());
         this.aboutWindow = aboutWindow;
+        this.propertiesHelper = propertiesHelper;
 	}
 
 	/**
@@ -117,7 +119,7 @@ public class MainMenu {
 				fileDialog.setText(_("Choose file..."));
 
 				// set the filter path, restore from the config file if possible
-				String lastPath = PropertiesHelper.getProp(PropertiesAllowedKeys.lastPath);
+				String lastPath = propertiesHelper.getProp(PropertiesAllowedKeys.lastPath);
 				fileDialog.setFilterPath(lastPath);
 
 				/**
@@ -142,7 +144,7 @@ public class MainMenu {
 				fileDialog.open();
 				// safe the last path if user wants us to
 				String dirToOpen = fileDialog.getFilterPath();
-				boolean safeLastPath = PropertiesHelper.getProp(PropertiesAllowedKeys.safeLastPath).equals("true");
+				boolean safeLastPath = propertiesHelper.getProp(PropertiesAllowedKeys.safeLastPath).equals("true");
 				if (safeLastPath && dirToOpen != null) {
 					// if it's null, the user aborted the opening process
 					PropertiesHelper.setProp(PropertiesAllowedKeys.lastPath, dirToOpen);
@@ -174,10 +176,10 @@ public class MainMenu {
 				DirectoryDialog directoryDialog = new DirectoryDialog(shell);
 				directoryDialog.setText(_("Choose directory..."));
 
-				String lastPath = PropertiesHelper.getProp(PropertiesAllowedKeys.lastPath);
+				String lastPath = propertiesHelper.getProp(PropertiesAllowedKeys.lastPath);
 				directoryDialog.setFilterPath(lastPath);
 				String dirToOpen = directoryDialog.open();
-				boolean safeLastPath = PropertiesHelper.getProp(PropertiesAllowedKeys.safeLastPath).equals("true");
+				boolean safeLastPath = propertiesHelper.getProp(PropertiesAllowedKeys.safeLastPath).equals("true");
 				if (safeLastPath && dirToOpen != null) {
 					// if it's null, the user aborted the opening process
 					PropertiesHelper.setProp(PropertiesAllowedKeys.lastPath, dirToOpen);
@@ -221,10 +223,10 @@ public class MainMenu {
 		MenuItem help = new MenuItem(menu, SWT.CASCADE);
 		help.setText(_("&Help"));
 
-		Menu helpmenu = new Menu(shell, SWT.DROP_DOWN);
-		help.setMenu(helpmenu);
+		Menu helpMenu = new Menu(shell, SWT.DROP_DOWN);
+		help.setMenu(helpMenu);
 
-		MenuItem aboutItem = new MenuItem(helpmenu, SWT.PUSH);
+		MenuItem aboutItem = new MenuItem(helpMenu, SWT.PUSH);
 		aboutItem.setText(_("&About\t F1"));
 		aboutItem.setAccelerator(SWT.F1);
 

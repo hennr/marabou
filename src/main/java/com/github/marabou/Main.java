@@ -26,44 +26,31 @@ import com.github.marabou.helper.PropertiesHelper;
 import java.util.Properties;
 
 public class Main {
-	// TODO parse passed arguments like a folder name or a file name to open it directly
+
 	public static void main(String[] args) {
 
-
         Properties applicationProperties = PropertiesHelper.getApplicationProperties();
+        PropertiesHelper propertiesHelper = new PropertiesHelper();
 
-        MainWindow mw = new MainWindow(applicationProperties);
+        if (startedWithDebugFlag(args)) {
+            LoggingHelper.initLoggingDebug();
+        } else {
+            LoggingHelper.initLogging();
+        }
 
-		// initilalise user properties, exit if it fails
-		if (PropertiesHelper.readOrCreateDefaultUserProperties() != 0) {
-			System.err.println("Properties couldn't get initialized properly.\n" +
-					"Please file a bugreport.");
-			System.exit(1);
-		}
-		
-		// initilalise logging
-		boolean debug = determineDebugMode(args);
-		if (debug) {
-			LoggingHelper.initLoggingDebug();
-		} else {
-			LoggingHelper.initLogging();
-		}
-		
-		// create the gui
-		mw.init();
+        MainWindow mainWindow = new MainWindow(applicationProperties, propertiesHelper);
+        mainWindow.init();
 	}
 
-    // helper methods
-	
 	// determines if marabou was started with --debug flag
-	private static boolean determineDebugMode(String[] args) {
-		boolean debug = false;
+	private static boolean startedWithDebugFlag(String[] args) {
+
 		for (String arg : args) {
 			if (arg.equalsIgnoreCase("--debug")) {
 				System.out.println("Starting marabou in debug mode.");
-				debug = true;
+				return true;
 			}
 		}
-		return debug;
+		return false;
 	}
 }
