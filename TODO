@@ -1,20 +1,12 @@
 -=Release 0.1=-
 
-jaudiotagger tilgen: grep -iI jaudiotagger .
-log4j aus der pom?
-
-jaudiotagger does not seem to be able to deal with hardlinks, what to do?
-
-exceptions abfangen!
-Kommentare
+auf SLF4j migiriren: http://www.slf4j.org/migrator.html
 maven pkg-plugin/IzPackInstaller
 sourcecode mit der GPL überall kommentieren
 auto updater, siehe rssowl: http://www.rssowl.org
 untere leiste auskommentieren?
 filesystem seitenleiste auskommentieren?
-reset version number of marabou.properties 0.1 before releasing
 use "optipng" to compress graphics
-image loader helper?
 
 -=Release 0.2=-
 Drag&Drop Support
