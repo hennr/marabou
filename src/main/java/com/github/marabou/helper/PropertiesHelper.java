@@ -126,13 +126,11 @@ public class PropertiesHelper {
     }
 
 	public String getProp(PropertiesAllowedKeys key) {
-        String retrievedValue = userProperties.getProperty(key.toString());
-        if (retrievedValue != null) {
-            return retrievedValue;
-        } else {
-            log.log(Level.SEVERE, "Unable to retrieve user's configuration for key " + key.toString());
-            return "";
+        String result = userProperties.getProperty(key.toString(), "");
+        if (result.isEmpty()) {
+            result = key.getDefaultValue();
         }
+        return result;
 	}
 
 	/**

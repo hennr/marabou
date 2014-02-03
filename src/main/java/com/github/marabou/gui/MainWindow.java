@@ -140,7 +140,7 @@ public class MainWindow {
 		// Table
 		TableShell table = new TableShell(rightComp);
 		menu.setTableShell(table);
-		// link tableshell with controller
+		// link table shell with controller
 		controller.connectTableShell(table);
 		
 		// Now we have the composites, and can set a ratio between them
@@ -150,13 +150,9 @@ public class MainWindow {
 	}
 
     private int[] getStoredSashRation() {
-        int[] result = {2, 5};
-        try {
-            result[0] = Integer.parseInt(propertiesHelper.getProp(PropertiesAllowedKeys.tagBarWeight));
-            result[1] = Integer.parseInt(propertiesHelper.getProp(PropertiesAllowedKeys.tableWeight));
-        } catch (Exception e) {
-            return result;
-        }
+        int[] result = new int[2];
+        result[0] = Integer.parseInt(propertiesHelper.getProp(PropertiesAllowedKeys.tagBarWeight));
+        result[1] = Integer.parseInt(propertiesHelper.getProp(PropertiesAllowedKeys.tableWeight));
         return result;
     }
 
@@ -167,13 +163,10 @@ public class MainWindow {
 		if (Boolean.parseBoolean(propertiesHelper.getProp(PropertiesAllowedKeys.rememberWindowSize))) {
 			String x = propertiesHelper.getProp(PropertiesAllowedKeys.windowSizeX);
 			String y = propertiesHelper.getProp(PropertiesAllowedKeys.windowSizeY);
-			if (x.equals("max") && y.equals("max")) {
-			    shell.setMaximized(true);
-			}
 			try {
-				int xInt = Integer.parseInt(x);
-				int yInt = Integer.parseInt(y);
-				shell.setSize(xInt, yInt);
+				int xSize = Integer.parseInt(x);
+				int ySize = Integer.parseInt(y);
+				shell.setSize(xSize, ySize);
 			} catch (NumberFormatException e) {}
 		} else {
 			shell.setMaximized(true);

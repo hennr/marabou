@@ -1,5 +1,6 @@
 package com.github.marabou.helper;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Properties;
@@ -19,7 +20,7 @@ public class PropertiesHelperTest {
     }
 
     @Test
-    public void gettingTableToTagBarRatioWorksProperly() {
+    public void gettingDefaultTableToTagBarRatioWorks() {
 
         // given
         PropertiesHelper propertiesHelper = new PropertiesHelper();
@@ -27,7 +28,14 @@ public class PropertiesHelperTest {
         String tableWeight = propertiesHelper.getProp(PropertiesAllowedKeys.tableWeight);
 
         // expect
-        assertThat(tagBarWeight).isNotEmpty();
-        assertThat(tableWeight).isNotEmpty();
+        assertThat(tagBarWeight).isEqualTo("2");
+        assertThat(tableWeight).isEqualTo("5");
     }
+
+    @Ignore
+    @Test
+    public void gettingTableToTagBarRatioFromPropertiesWorks() {
+
+    }
+
 }
