@@ -98,27 +98,9 @@ public class MainWindow {
 		//on the right side and the tabs on the left 
 		
 	    /* Left side */
-		
-	    Composite leftComp = new Composite(sashForm, SWT.NONE);
-		leftComp.setLayout(new FillLayout());
-		
-		// Tab folder
-		TabFolder tabFolder = new TabFolder(leftComp, SWT.NONE);
-		// link tabfolder to controller
-		controller.connectTabFolder(tabFolder);
-		
-		// Tab1 - Tags
-		TabItem item1 = new TabItem(tabFolder, SWT.NONE);
-		item1.setText(_("Tags"));
         FileAttributeSidePanel fileAttributeSidePanel = new FileAttributeSidePanel();
-		item1.setControl(fileAttributeSidePanel.init(tabFolder));
-		
-		// Tab 2 - Filesystem
-		TabItem item2 = new TabItem(tabFolder, SWT.NONE);
-		item2.setText(_("Filesystem"));
-		item2.setControl(FilesystemTab.init(tabFolder));
-		//TODO add Listener to open files from tree
-		
+        fileAttributeSidePanel.init(sashForm);
+
 		/* Right side */
 		Composite rightComp = new Composite(sashForm, SWT.NONE);
 		rightComp.setLayout(new FillLayout());

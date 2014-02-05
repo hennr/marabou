@@ -1,5 +1,14 @@
 package com.github.marabou.db;
 
+import com.github.marabou.gui.ErrorWindow;
+import com.github.marabou.gui.FileAttributeSidePanel;
+import com.github.marabou.gui.TableShell;
+import com.github.marabou.helper.AudioFileHelper;
+import com.github.marabou.helper.UnknownGenreException;
+import com.mpatric.mp3agic.*;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.TableItem;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.PreparedStatement;
@@ -7,23 +16,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.logging.Logger;
-
-import com.github.marabou.gui.ErrorWindow;
-import com.github.marabou.gui.FileAttributeSidePanel;
-import com.github.marabou.gui.TableShell;
-import com.github.marabou.helper.AudioFileHelper;
-import com.github.marabou.helper.UnknownGenreException;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TableItem;
-
-import com.mpatric.mp3agic.ID3v1;
-import com.mpatric.mp3agic.ID3v2;
-import com.mpatric.mp3agic.InvalidDataException;
-import com.mpatric.mp3agic.Mp3File;
-import com.mpatric.mp3agic.NotSupportedException;
-import com.mpatric.mp3agic.UnsupportedTagException;
 
 public final class HSQLDBController {
 
@@ -43,20 +35,16 @@ public final class HSQLDBController {
 
     protected TableShell table;
 
-    private boolean tabFolderConnected = false;
-
     private boolean tableConnected;
 
-    protected TabFolder tabFolder;
-
-    private HSQLDBController() {
+    private HSQLDBController(FileAttributeSidePanel fileAttributeSidePanel) {
         this.db = new HSQLDBClient();
-        fileAttributeSidePanel = new FileAttributeSidePanel();
+        this.fileAttributeSidePanel = fileAttributeSidePanel;
     }
 
     public static HSQLDBController getInstance() {
         if (singleton == null) {
-            singleton = new HSQLDBController();
+            singleton = new HSQLDBController(new FileAttributeSidePanel());
         }
         return singleton;
     }
@@ -370,7 +358,7 @@ public final class HSQLDBController {
 
     public void updateDBandTable() throws GUINotConnectedException {
 
-        if (!isTabFolderConnected() || !isTableConnected()) {
+        if (!isTableConnected()) {
             throw new GUINotConnectedException();
         }
 
@@ -388,10 +376,6 @@ public final class HSQLDBController {
         }
     }
 
-    private boolean isTabFolderConnected() {
-        return tabFolderConnected;
-    }
-
     public boolean isTableConnected() {
         return tableConnected;
     }
@@ -399,10 +383,6 @@ public final class HSQLDBController {
     public final void connectTableShell(TableShell tableShell) {
         table = tableShell;
         tableConnected = true;
-    }
-
-    public void connectTabFolder(TabFolder tabFolder) {
-        this.tabFolder = tabFolder;
     }
 
 }

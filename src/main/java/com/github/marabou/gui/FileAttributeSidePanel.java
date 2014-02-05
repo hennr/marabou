@@ -1,8 +1,7 @@
 package com.github.marabou.gui;
 
-import java.util.HashMap;
-
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.layout.GridData;
@@ -10,7 +9,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.TabFolder;
+
+import java.util.HashMap;
 
 import static com.github.marabou.helper.I18nHelper._;
 
@@ -20,16 +20,17 @@ public class FileAttributeSidePanel {
 	static Combo[] combos = new Combo[9];
 	private final static String[] labels = {"Artist", "Title", "Album", "Track", "Year",
 			"Genre", "Comments", "Disc Number", "Composer"};
-	/**
+
+    /**
 	 * creates a new composite holding a 2 column grid layout with labels and drop-downs
 	 *  
-	 * @param tabFolder
+	 * @param sashForm
 	 *            the object which should hold the returned composite object
-	 * @return a composite object with a 2 colomn GridLayout
+	 * @return a composite object with a 2 column GridLayout
 	 */
-	public Composite init(TabFolder tabFolder) {
+	public Composite init(SashForm sashForm) {
 		
-		Composite composite = new Composite(tabFolder, SWT.None);
+		Composite composite = new Composite(sashForm, SWT.None);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
 		composite.setLayout(gridLayout);		
@@ -44,16 +45,12 @@ public class FileAttributeSidePanel {
 				
 				@Override
 				public void focusLost(FocusEvent arg0) {
-					// TODO Auto-generated method stub
-					// TODO update DB and Table 
+					// TODO update DB and Table
 				}
 				
 				@Override
-				public void focusGained(FocusEvent arg0) {
-					// TODO Auto-generated method stub
-					
-				}
-			});
+				public void focusGained(FocusEvent arg0) { }
+            });
 		}
 		return composite;
 	}

@@ -4,7 +4,6 @@ auf SLF4j migiriren: http://www.slf4j.org/migrator.html
 maven pkg-plugin/IzPackInstaller
 sourcecode mit der GPL überall kommentieren
 auto updater, siehe rssowl: http://www.rssowl.org
-filesystem seitenleiste auskommentieren?
 use "optipng" to compress graphics
 
 -=Release 0.2=-
@@ -16,13 +15,10 @@ hier eintragen: http://alternativeto.net
 options dialogue
 seitenleiste ausblendbar machen
 leisten ausblendbar machen (view leiste)
-Neben der Baumstruktur einen NortonCommander Style einbauen 
 changelog
 
-exceptions abfangen!
 grafikdesign neu machen, z.B. platz zum Rahmen relativ setzen, nicht fest; siehe AboutWindow
 statusfenster beim enlesen der dateien
-create interfaces?
 neues Logo
 add saving support for soft/hard links under linux; links to folders sorted by genre, artist...
 grafiken unter den tags links
