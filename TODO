@@ -4,7 +4,6 @@ auf SLF4j migiriren: http://www.slf4j.org/migrator.html
 maven pkg-plugin/IzPackInstaller
 sourcecode mit der GPL überall kommentieren
 auto updater, siehe rssowl: http://www.rssowl.org
-untere leiste auskommentieren?
 filesystem seitenleiste auskommentieren?
 use "optipng" to compress graphics
 
