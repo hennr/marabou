@@ -19,13 +19,11 @@
 
 package com.github.marabou.gui;
 
-import static com.github.marabou.helper.I18nHelper._;
 import com.github.marabou.db.HSQLDBController;
 import com.github.marabou.helper.AvailableImage;
 import com.github.marabou.helper.ImageLoader;
 import com.github.marabou.helper.PropertiesAllowedKeys;
 import com.github.marabou.helper.PropertiesHelper;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.DisposeEvent;
@@ -33,17 +31,11 @@ import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
-import org.eclipse.swt.widgets.ToolBar;
-import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.swt.widgets.*;
 
 import java.util.Properties;
+
+import static com.github.marabou.helper.I18nHelper._;
 
 public class MainWindow {
 
@@ -102,12 +94,6 @@ public class MainWindow {
 		sashForm = new SashForm(comp, SWT.HORIZONTAL);
 		sashForm.setLayoutData(gd);
 
-		// the toolbar at the bottom
-		ToolBar toolbar2 = new ToolBar(comp, SWT.HORIZONTAL);
-		ToolItem ti2 = new ToolItem(toolbar2, SWT.PUSH);
-		ti2.setText("bar");
-		toolbar2.pack();
-		
 		//Create the composites that will hold the table
 		//on the right side and the tabs on the left 
 		
