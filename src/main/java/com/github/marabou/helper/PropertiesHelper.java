@@ -1,15 +1,8 @@
 package com.github.marabou.helper;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Properties;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -18,7 +11,6 @@ import java.util.logging.Logger;
 public class PropertiesHelper {
 
     static File conf;
-    static String homeFolder;
     static Properties userProperties = new Properties();
     final static Logger log = Logger.getLogger(PropertiesHelper.class.getName());
     public static final String USER_PROPERTIES_FILE_PATH = "src/main/resources/marabou.properties";
@@ -42,6 +34,7 @@ public class PropertiesHelper {
 
 		// creating a new conf file if none exists yet
 		PathHelper pathHelper = new PathHelper();
+        String homeFolder;
 		try {
 			homeFolder = pathHelper.getMarabouHomeFolder();
 			conf = new File(pathHelper.getMarabouHomeFolder() + "marabou.properties");
