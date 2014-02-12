@@ -19,23 +19,20 @@
 
 package com.github.marabou.gui;
 
-import static com.github.marabou.helper.I18nHelper._;
-
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.logging.Logger;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.*;
+
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.logging.Logger;
+
+import static com.github.marabou.helper.I18nHelper._;
 
 public class TableShell {
 
@@ -47,7 +44,7 @@ public class TableShell {
 
 	/**
 	 * Creates a new table object.
-	 * @param composite the comp to hold the table
+	 * @param composite the composite to hold the table
 	 */
 	public TableShell(Composite composite) {
 

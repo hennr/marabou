@@ -24,7 +24,6 @@ import com.github.marabou.helper.AvailableImage;
 import com.github.marabou.helper.ImageLoader;
 import com.github.marabou.helper.PropertiesAllowedKeys;
 import com.github.marabou.helper.PropertiesHelper;
-import com.github.marabou.properties.ApplicationProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.DisposeEvent;
@@ -38,11 +37,10 @@ import static com.github.marabou.helper.I18nHelper._;
 
 public class MainWindow {
 
-    Display display = new Display();
-    Shell shell = new Shell(display);
-    Composite comp = new Composite(shell, SWT.NONE);
+    Display display;
+    Shell shell;
+    Composite composite;
     SashForm sashForm;
-    MainMenu menu;
     HSQLDBController controller;
     ImageLoader imageLoader;
     PropertiesHelper propertiesHelper;
@@ -51,34 +49,36 @@ public class MainWindow {
 		 * the main window holds elements such as the menu, the table,
 		 *  and the tabs on the left
 		 */
-		public MainWindow(ApplicationProperties applicationProperties, PropertiesHelper propertiesHelper) {
+		public MainWindow(Shell shell, MainMenu mainMenu, PropertiesHelper propertiesHelper, ImageLoader imageLoader) {
 
-            this.propertiesHelper =propertiesHelper;
+            this.shell = shell;
+            this.display = shell.getDisplay();
+            this.imageLoader = imageLoader;
+            this.propertiesHelper = propertiesHelper;
             this.controller = HSQLDBController.getInstance();
 
-            imageLoader = new ImageLoader(display);
             shell.setLayout(new FillLayout(SWT.VERTICAL));
             shell.setImage(imageLoader.getImage(AvailableImage.LOGO_SMALL));
             shell.setText(_("Marabou - Audio tagger"));
 
-            //Create a menu, place it in the shell and fill the menu
-            AboutWindow aboutWindow = new AboutWindow(applicationProperties);
-            menu = new MainMenu(shell, aboutWindow, propertiesHelper);
-            menu.init();
-            shell.setMenuBar(menu.getMenu());
 
-            // the comp is a child of the shell which holds the toolbar
+            composite = new Composite(shell, SWT.NONE);
+
+            //Create a menu, place it in the shell and fill the menu
+            shell.setMenuBar(mainMenu.getMenu());
+
+            // the composite is a child of the shell which holds the toolbar
             GridLayout gl = new GridLayout();
             gl.marginHeight = 0;
             gl.marginWidth = 0;
             gl.horizontalSpacing = 0;
             gl.verticalSpacing = 0;
-            comp.setLayout(gl);
+            composite.setLayout(gl);
             GridData gd = new GridData(GridData.FILL_BOTH);
-            comp.setLayoutData(gd);
+            composite.setLayoutData(gd);
 
             // the upper toolbar below the menu
-            ToolBar toolbar = new ToolBar(comp, SWT.HORIZONTAL);
+            ToolBar toolbar = new ToolBar(composite, SWT.HORIZONTAL);
             ToolItem ti = new ToolItem(toolbar, SWT.PUSH);
             ti.setImage(imageLoader.getImage(AvailableImage.SAVE_ICON));
             ti.addListener(SWT.Selection, new Listener() {
@@ -87,10 +87,10 @@ public class MainWindow {
                     controller.saveSelectedFiles();
 			    }
 		});
-		toolbar.pack();
+            toolbar.pack();
 		
 		//Create a sashForm which will hold composites
-		sashForm = new SashForm(comp, SWT.HORIZONTAL);
+		sashForm = new SashForm(composite, SWT.HORIZONTAL);
 		sashForm.setLayoutData(gd);
 
 		//Create the composites that will hold the table
@@ -106,7 +106,7 @@ public class MainWindow {
 		
 		// Table
 		TableShell table = new TableShell(rightComp);
-		menu.setTableShell(table);
+        mainMenu.setTableShell(table);
 		// link table shell with controller
 		controller.connectTableShell(table);
 		

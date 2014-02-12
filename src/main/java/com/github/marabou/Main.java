@@ -19,10 +19,15 @@
 
 package com.github.marabou;
 
+import com.github.marabou.gui.AboutWindow;
+import com.github.marabou.gui.MainMenu;
 import com.github.marabou.gui.MainWindow;
+import com.github.marabou.helper.ImageLoader;
 import com.github.marabou.helper.LoggingHelper;
 import com.github.marabou.helper.PropertiesHelper;
 import com.github.marabou.properties.ApplicationProperties;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 public class Main {
 
@@ -37,11 +42,25 @@ public class Main {
             LoggingHelper.initLogging();
         }
 
-        MainWindow mainWindow = new MainWindow(applicationProperties, propertiesHelper);
-        mainWindow.init();
+
+
+        setupMainWindow(applicationProperties, propertiesHelper);
 	}
 
-	// determines if marabou was started with --debug flag
+    private static void setupMainWindow(ApplicationProperties applicationProperties, PropertiesHelper propertiesHelper) {
+        Display display = new Display();
+        Shell mainWindowShell = new Shell(display);
+        ImageLoader imageLoader = new ImageLoader(display);
+        AboutWindow aboutWindow = new AboutWindow(applicationProperties);
+
+        MainMenu mainMenu = new MainMenu(mainWindowShell, aboutWindow, propertiesHelper);
+        mainMenu.init();
+
+        MainWindow mainWindow = new MainWindow(mainWindowShell, mainMenu, propertiesHelper, imageLoader);
+        mainWindow.init();
+    }
+
+    // determines if marabou was started with --debug flag
 	private static boolean startedWithDebugFlag(String[] args) {
 
 		for (String arg : args) {
