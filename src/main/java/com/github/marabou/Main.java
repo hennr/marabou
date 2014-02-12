@@ -22,14 +22,13 @@ package com.github.marabou;
 import com.github.marabou.gui.MainWindow;
 import com.github.marabou.helper.LoggingHelper;
 import com.github.marabou.helper.PropertiesHelper;
-
-import java.util.Properties;
+import com.github.marabou.properties.ApplicationProperties;
 
 public class Main {
 
 	public static void main(String[] args) {
 
-        Properties applicationProperties = PropertiesHelper.getApplicationProperties();
+        ApplicationProperties applicationProperties = PropertiesHelper.getApplicationProperties();
         PropertiesHelper propertiesHelper = new PropertiesHelper();
 
         if (startedWithDebugFlag(args)) {

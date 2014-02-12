@@ -19,31 +19,32 @@
 
 package com.github.marabou.gui;
 
-import java.awt.Desktop;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URI;
-import java.util.Properties;
-import java.util.logging.Logger;
-
 import com.github.marabou.helper.AvailableImage;
 import com.github.marabou.helper.ImageLoader;
 import com.github.marabou.helper.PropertiesHelper;
-
-import org.eclipse.swt.*;
-import org.eclipse.swt.widgets.*;
+import com.github.marabou.properties.ApplicationProperties;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
+
+import java.awt.*;
+import java.net.URI;
+import java.util.logging.Logger;
 
 import static com.github.marabou.helper.I18nHelper._;
 
 public class AboutWindow {
 
-    Properties applicationProperties;
+    ApplicationProperties applicationProperties;
     final static Logger log = Logger.getLogger(PropertiesHelper.class.getName());
 
-    public AboutWindow(Properties applicationProperties) {
+    public AboutWindow(ApplicationProperties applicationProperties) {
 
         this.applicationProperties = applicationProperties;
     }
@@ -80,7 +81,7 @@ public class AboutWindow {
 
 		// project name and version
 		Label text = new Label(comp1, SWT.NONE);
-		String version = applicationProperties.getProperty("version", "UNKNOWN");
+		String version = applicationProperties.getVersion();
         text.setText(_("Marabou - Audio Tagger \n" + "Version " + version));
 
 		Image logo = new ImageLoader(display).getImage(AvailableImage.LOGO_BIG);

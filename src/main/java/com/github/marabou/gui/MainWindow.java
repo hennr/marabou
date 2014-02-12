@@ -24,6 +24,7 @@ import com.github.marabou.helper.AvailableImage;
 import com.github.marabou.helper.ImageLoader;
 import com.github.marabou.helper.PropertiesAllowedKeys;
 import com.github.marabou.helper.PropertiesHelper;
+import com.github.marabou.properties.ApplicationProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.DisposeEvent;
@@ -32,8 +33,6 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
-
-import java.util.Properties;
 
 import static com.github.marabou.helper.I18nHelper._;
 
@@ -52,7 +51,7 @@ public class MainWindow {
 		 * the main window holds elements such as the menu, the table,
 		 *  and the tabs on the left
 		 */
-		public MainWindow(Properties applicationProperties, PropertiesHelper propertiesHelper) {
+		public MainWindow(ApplicationProperties applicationProperties, PropertiesHelper propertiesHelper) {
 
             this.propertiesHelper =propertiesHelper;
             this.controller = HSQLDBController.getInstance();

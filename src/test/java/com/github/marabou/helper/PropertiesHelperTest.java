@@ -1,11 +1,11 @@
 package com.github.marabou.helper;
 
+import com.github.marabou.properties.ApplicationProperties;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 import static org.fest.assertions.api.Assertions.assertThat;
@@ -16,10 +16,10 @@ public class PropertiesHelperTest {
     public void programVersionIsSetInApplicationProperties() {
 
         // given
-        Properties appProperties = PropertiesHelper.getApplicationProperties();
+        ApplicationProperties appProperties = PropertiesHelper.getApplicationProperties();
 
         // expect
-        assertThat(appProperties.getProperty("version")).isNotEqualTo("${project.version}");
+        assertThat(appProperties.getVersion()).isNotEqualTo("${project.version}");
     }
 
     @Test

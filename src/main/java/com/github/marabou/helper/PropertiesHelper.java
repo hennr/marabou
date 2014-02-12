@@ -1,5 +1,7 @@
 package com.github.marabou.helper;
 
+import com.github.marabou.properties.ApplicationProperties;
+
 import java.io.*;
 import java.util.Properties;
 import java.util.Set;
@@ -20,14 +22,14 @@ public class PropertiesHelper {
     }
 
 
-    public static Properties getApplicationProperties() {
-        Properties applicationProperties = new Properties();
+    public static ApplicationProperties getApplicationProperties() {
+        Properties properties = new Properties();
         try {
-            applicationProperties.load(PropertiesHelper.class.getResourceAsStream("/application.properties"));
+            properties.load(PropertiesHelper.class.getResourceAsStream("/application.properties"));
         } catch (IOException e) {
             throw new RuntimeException();
         }
-        return applicationProperties;
+        return new ApplicationProperties(properties);
     }
 
 	private int readOrCreateDefaultUserProperties() {
