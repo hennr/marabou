@@ -27,7 +27,7 @@ public class PropertiesHelper {
         try {
             properties.load(PropertiesHelper.class.getResourceAsStream("/application.properties"));
         } catch (IOException e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
         return new ApplicationProperties(properties);
     }
