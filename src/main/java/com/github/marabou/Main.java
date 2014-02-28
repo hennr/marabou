@@ -24,6 +24,7 @@ import com.github.marabou.gui.MainMenu;
 import com.github.marabou.gui.MainWindow;
 import com.github.marabou.helper.ImageLoader;
 import com.github.marabou.helper.LoggingHelper;
+import com.github.marabou.helper.PathHelper;
 import com.github.marabou.helper.PropertiesHelper;
 import com.github.marabou.properties.ApplicationProperties;
 import org.eclipse.swt.widgets.Display;
@@ -34,7 +35,8 @@ public class Main {
 	public static void main(String[] args) {
 
         ApplicationProperties applicationProperties = PropertiesHelper.getApplicationProperties();
-        PropertiesHelper propertiesHelper = new PropertiesHelper();
+        PathHelper pathHelper = new PathHelper();
+        PropertiesHelper propertiesHelper = new PropertiesHelper(pathHelper);
 
         if (startedWithDebugFlag(args)) {
             LoggingHelper.initLoggingDebug();

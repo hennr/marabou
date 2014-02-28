@@ -3,12 +3,14 @@ package com.github.marabou.helper;
 import com.github.marabou.properties.ApplicationProperties;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
 import static org.fest.assertions.api.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.fail;
 
 public class PropertiesHelperTest {
 
@@ -26,13 +28,37 @@ public class PropertiesHelperTest {
     public void gettingDefaultTableToTagBarRatioWorks() {
 
         // given
-        PropertiesHelper propertiesHelper = new PropertiesHelper();
+        PropertiesHelper propertiesHelper = new PropertiesHelper(new PathHelper());
         String tagBarWeight = propertiesHelper.getProp(PropertiesAllowedKeys.tagBarWeight);
         String tableWeight = propertiesHelper.getProp(PropertiesAllowedKeys.tableWeight);
 
         // expect
         assertThat(tagBarWeight).isEqualTo("2");
         assertThat(tableWeight).isEqualTo("5");
+    }
+
+    @Test
+    public void shouldUseMockForLoadingPropertiesToHaveEqualTestRunsOnEveryMachine() {
+        fail("");
+    }
+
+    @Test
+    public void afterCreationUserPropertiesAreAccessible() {
+
+        // given
+        PropertiesHelper propertiesHelper = new PropertiesHelper(new PathHelper());
+
+        // expect
+        assertThat(propertiesHelper.getProp(PropertiesAllowedKeys.rememberWindowSize) != null);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void throwsRuntimeExceptionOnUnknownPlatform() throws UnknownPlatformException {
+
+        // given
+        PathHelper pathHelper = Mockito.mock(PathHelper.class);
+        Mockito.when(pathHelper.getMarabouHomeFolder()).thenThrow(UnknownPlatformException.class);
+        PropertiesHelper propertiesHelper = new PropertiesHelper(pathHelper);
     }
 
     @Ignore

@@ -12,12 +12,14 @@ import java.util.logging.Logger;
  */
 public class PropertiesHelper {
 
-    static File conf;
+    static File userPropertiesFile;
     static Properties userProperties = new Properties();
     final static Logger log = Logger.getLogger(PropertiesHelper.class.getName());
     public static final String USER_PROPERTIES_FILE_PATH = "src/main/resources/marabou.properties";
+    private PathHelper pathHelper;
 
-    public PropertiesHelper() {
+    public PropertiesHelper(PathHelper pathHelper) {
+        this.pathHelper = pathHelper;
         readOrCreateDefaultUserProperties();
     }
 
@@ -34,48 +36,36 @@ public class PropertiesHelper {
 
 	private int readOrCreateDefaultUserProperties() {
 
-		// creating a new conf file if none exists yet
-		PathHelper pathHelper = new PathHelper();
-        String homeFolder;
-		try {
-			homeFolder = pathHelper.getMarabouHomeFolder();
-			conf = new File(pathHelper.getMarabouHomeFolder() + "marabou.properties");
-		} catch (UnknownPlatformException e1) {
-			log.severe("Your OS couldn't get detected properly.\n"
-					+ "Please file a bug report.");
-			return 1;
-		}
+		// creating a new userPropertiesFile file if none exists yet
+        userPropertiesFile = new File(getHomeFolder() + "marabou.properties");
 		// if config is found, check if updates are needed
-		if (conf.exists()) {
-			if (!conf.canRead() || !conf.canWrite()) {
-				log.severe("Couldn't read or write config file."
-						+ " Please make sure that your file permissions are set properly.");
-				return 1;
+		if (userPropertiesFile.exists()) {
+			if (!userPropertiesFile.canRead() || !userPropertiesFile.canWrite()) {
+                throw new RuntimeException("Couldn't read or write config file. " +
+                        "Please make sure that your file permissions are set properly.");
 			} else {
 				try {
-					userProperties.load(new FileReader(conf.getAbsolutePath()));
+					userProperties.load(new FileReader(userPropertiesFile.getAbsolutePath()));
 				} catch (IOException e) {
-					log.severe("Couldn't load config file: " + conf.getAbsolutePath());
-					return 1;
+					log.severe("Couldn't load config file: " + userPropertiesFile.getAbsolutePath());
+                    throw new RuntimeException("Couldn't read config file. " +
+                            "Please make sure that your file permissions are set properly.");
 				}
 				Properties userProperties = new Properties();
 
 				try {
 					userProperties.load(new FileReader(USER_PROPERTIES_FILE_PATH));
-                } catch (FileNotFoundException e) {
-					log.severe("Couldn't find vendor config.");
-					return 1;
 				} catch (IOException e) {
-					log.severe("Couldn't open vendor config.");
-					return 1;
+                    throw new RuntimeException("Couldn't read config file. " +
+                            "Please make sure that your file permissions are set properly.");
 				}
 
                 addNewConfigurationKeysToUsersConfigFile(userProperties);
 			}
-			// conf is not existent yet
+			// userPropertiesFile is not existent yet
 		} else {
 			try {
-				File mhfFile = new File(homeFolder);
+				File mhfFile = new File(getHomeFolder());
 				// create folder if no folder exists yet
 				if (!mhfFile.exists()) {
 					if (!mhfFile.mkdir()) {
@@ -84,7 +74,7 @@ public class PropertiesHelper {
 					}
 				}
 				// create marabou.properties file in new folder
-				conf.createNewFile();
+				userPropertiesFile.createNewFile();
 			} catch (IOException e) {
 				log.severe("Couldn't create config file, please check your file permission in your home folder.");
 				return 1;
@@ -94,17 +84,24 @@ public class PropertiesHelper {
 				BufferedReader vendorConf = new BufferedReader(new FileReader(USER_PROPERTIES_FILE_PATH));
 
 				userProperties.load(vendorConf);
-				// copy all entries to the new conf
+				// copy all entries to the new userPropertiesFile
 				persistSettings();
 				vendorConf.close();
 			} catch (IOException e) {
-				log.warning("Couldn't create config file in "
-						+ System.getProperty("user.home"));
+				log.warning("Couldn't create config file in " + System.getProperty("user.home"));
 				log.warning(e.toString());
 			}
 		}
 		return 0;
 	}
+
+    private String getHomeFolder() {
+        try {
+            return pathHelper.getMarabouHomeFolder();
+        } catch (UnknownPlatformException e1) {
+            throw new RuntimeException("Your OS couldn't get detected properly. Please file a bug report.", e1);
+        }
+    }
 
     private void addNewConfigurationKeysToUsersConfigFile(Properties userProperties) {
         Set<Object> vendorKeys = userProperties.keySet();
@@ -144,7 +141,7 @@ public class PropertiesHelper {
 	private static void persistSettings() {
 		try {
 			BufferedWriter userConf = new BufferedWriter(new FileWriter(
-					conf.getAbsolutePath()));
+					userPropertiesFile.getAbsolutePath()));
 			userProperties.store(userConf, null);
 			// flush and close streams
 			userConf.flush();
