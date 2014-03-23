@@ -16,16 +16,21 @@ public class TableControllerTest {
     public void opensValidFile() throws Exception {
 
         // given
-        AudioFileFilter audioFileFilter = new AudioFileFilter();
+        AudioFileFilter audioFileFilter = mock(AudioFileFilter.class);
+        when(audioFileFilter.accept(any(File.class))).thenReturn(true);
+
         TableController controllerUnderTest = new TableController(audioFileFilter);
+
         HSQLDBController hsqldbControllerMock = mock(HSQLDBController.class);
         controllerUnderTest.hsqldbController = hsqldbControllerMock;
-        File file = aValidMockedFile("foo.mp3");
+
+        File file = aValidMockedFile();
 
         // when
         controllerUnderTest.openFile(file);
 
         // then
+        verify(audioFileFilter).accept(file);
         verify(hsqldbControllerMock).insertFile(file);
         verify(hsqldbControllerMock).addAllTableItems();
     }
@@ -35,13 +40,16 @@ public class TableControllerTest {
 
         // given
         AudioFileFilter audioFileFilter = new AudioFileFilter();
+        when(audioFileFilter.accept(any(File.class))).thenReturn(true);
+
         TableController controllerUnderTest = new TableController(audioFileFilter);
+
         HSQLDBController hsqldbControllerMock = mock(HSQLDBController.class);
         controllerUnderTest.hsqldbController = hsqldbControllerMock;
+
         List<File> files = new ArrayList<>(3);
-        files.add(aValidMockedFile("foo.mp3"));
-        files.add(aValidMockedFile("foo.mP3"));
-        files.add(aValidMockedFile("foo.MP3"));
+        files.add(aValidMockedFile());
+        files.add(aValidMockedFile());
 
         // when
         controllerUnderTest.openFiles(files);
@@ -49,30 +57,12 @@ public class TableControllerTest {
         // then
         verify(hsqldbControllerMock).insertFile(files.get(0));
         verify(hsqldbControllerMock).insertFile(files.get(1));
-        verify(hsqldbControllerMock).insertFile(files.get(2));
-        verify(hsqldbControllerMock, times(3)).addAllTableItems();
+        verify(hsqldbControllerMock, times(2)).addAllTableItems();
     }
 
-    @Test
-    public void ignoresFilesWithNonSupportedFileName() throws Exception{
-
-        // given
-        AudioFileFilter audioFileFilter = new AudioFileFilter();
-        TableController controllerUnderTest = new TableController(audioFileFilter);
-        HSQLDBController hsqldbControllerMock = mock(HSQLDBController.class);
-        controllerUnderTest.hsqldbController = hsqldbControllerMock;
-        File file = aValidMockedFile("foo.ogg");
-
-        // when
-        controllerUnderTest.openFile(file);
-
-        // then
-        verifyZeroInteractions(hsqldbControllerMock);
-    }
-
-    private File aValidMockedFile(String fileName) {
+    private File aValidMockedFile() {
         File file = mock(File.class);
-        when(file.getName()).thenReturn(fileName);
+        when(file.getName()).thenReturn("foo.mp3");
         when(file.canRead()).thenReturn(true);
         when(file.isDirectory()).thenReturn(false);
         return file;
