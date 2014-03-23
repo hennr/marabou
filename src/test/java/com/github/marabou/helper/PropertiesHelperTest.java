@@ -58,7 +58,9 @@ public class PropertiesHelperTest {
         // given
         PathHelper pathHelper = Mockito.mock(PathHelper.class);
         Mockito.when(pathHelper.getMarabouHomeFolder()).thenThrow(UnknownPlatformException.class);
-        PropertiesHelper propertiesHelper = new PropertiesHelper(pathHelper);
+
+        // expect exception
+        new PropertiesHelper(pathHelper);
     }
 
     @Ignore
