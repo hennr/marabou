@@ -22,22 +22,19 @@ package com.github.marabou.gui;
 import static com.github.marabou.helper.I18nHelper._;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
 import com.github.marabou.audio.AudioFileFilter;
-import com.github.marabou.db.GUINotConnectedException;
-import com.github.marabou.db.HSQLDBController;
+import com.github.marabou.controller.EditorController;
+import com.github.marabou.controller.TableController;
 import com.github.marabou.helper.*;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
 
-import com.mpatric.mp3agic.InvalidDataException;
-import com.mpatric.mp3agic.UnsupportedTagException;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Menu;
@@ -55,19 +52,16 @@ public class MainMenu {
     private Shell shell;
 	private TableShell tableShell;
 	private Menu menu;
-	private HSQLDBController controller;
     private AboutWindow aboutWindow;
     private PropertiesHelper propertiesHelper;
+    private EditorController editorController;
+    private TableController tableController;
 
-    /**
-	 * Constructor for the MainMenu which will be used in the main window.
-	 * 
-	 * @param shell
-	 *            the shell which will hold the menu
-	 */
-	public MainMenu(Shell shell, AboutWindow aboutWindow, PropertiesHelper propertiesHelper) {
-		this.menu = new Menu(shell, SWT.BAR);
-		this.controller = HSQLDBController.getInstance();
+
+	public MainMenu(Shell shell, AboutWindow aboutWindow, PropertiesHelper propertiesHelper, EditorController editorController, TableController tableController) {
+        this.editorController = editorController;
+        this.tableController = tableController;
+        this.menu = new Menu(shell, SWT.BAR);
 		this.shell = shell;
         this.imageLoader = new ImageLoader(shell.getDisplay());
         this.aboutWindow = aboutWindow;
@@ -77,18 +71,12 @@ public class MainMenu {
 	/**
 	 * sets the tableShell that is needed when invoking "open file" etc.
 	 * 
-	 * @param tableShell
 	 */
 	public final void setTableShell(final TableShell tableShell) {
 		this.tableShell = tableShell;
 	}
 
-	/**
-	 * Simple getter for a Menu object used in this class.
-	 * 
-	 * @return returns a Menu object
-	 */
-	public final Menu getMenu() {
+	public Menu getMenu() {
 		return menu;
 	}
 
@@ -155,7 +143,7 @@ public class MainMenu {
 				String filterPath = fileDialog.getFilterPath();
 				if (filesToOpen != null) {
 					for (String file: filesToOpen) {
-						openFile(new File(filterPath + "/" + file));
+                        tableController.openFile(new File(filterPath + "/" + file));
 					}
 					tableShell.setKeyboardFocus();
 				}
@@ -189,7 +177,7 @@ public class MainMenu {
 				if (dirToOpen != null) {
                     tableShell.setKeyboardFocus();
                     List<File> files = findFiles(new File(dirToOpen));
-					openFiles(files);
+					tableController.openFiles(files);
 				}
 			}
 		});
@@ -202,7 +190,7 @@ public class MainMenu {
 
 		saveItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
-					controller.saveSelectedFiles();
+					editorController.saveSelectedFiles();
 			}
 
 		});
@@ -261,43 +249,4 @@ public class MainMenu {
         }
         return acceptedFiles;
     }
-
-    /**
-	 * Utilises the {@link HSQLDBController} to open given files
-	 * Will notify the user if files fail to open
-	 */
-	private void openFiles(List<File> files) {
-		
-		for (File file: files) {
-			openFile(file);
-		}
-	}
-	
-	/**
-	 * Utilises the {@link HSQLDBController} to open given files.
-	 * Will notify the user if files fail to open
-	 */
-	private void openFile(File file) {
-	
-		if (!isFileSupported(file)) {
-			return;
-		}
-		try {
-		    controller.insertFile(file);
-		} catch (InvalidDataException | IOException | UnsupportedTagException e) {
-			ErrorWindow.appendError("couldn't open file: " + file);
-		}
-		try {
-		    controller.addAllTableItems();
-		} catch (GUINotConnectedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	private boolean isFileSupported(File file) {
-		// TODO use file filter here
-		return file.getName().toLowerCase().endsWith("mp3");
-	}
-	
 }
