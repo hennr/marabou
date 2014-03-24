@@ -2,6 +2,7 @@ package com.github.marabou.helper;
 
 import com.github.marabou.properties.ApplicationProperties;
 import com.github.marabou.properties.UserProperties;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
@@ -9,6 +10,19 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class PropertiesHelperTest {
+
+    @Ignore
+    @Test
+    public void savesUserProperties() {
+
+        // given
+        PropertiesHelper propertiesHelper = new PropertiesHelper(new PathHelper(), new PropertiesLoader());
+
+        //when
+        propertiesHelper.
+
+    }
+
 
     @Test(expected = RuntimeException.class)
     public void throwsRuntimeExceptionOnUnknownPlatform() throws UnknownPlatformException {

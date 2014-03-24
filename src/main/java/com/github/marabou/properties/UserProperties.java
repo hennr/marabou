@@ -1,5 +1,9 @@
 package com.github.marabou.properties;
 
+import com.github.marabou.helper.PathHelper;
+import com.github.marabou.helper.PropertiesHelper;
+import com.github.marabou.helper.PropertiesLoader;
+
 import java.util.Properties;
 
 public class UserProperties {
@@ -12,6 +16,14 @@ public class UserProperties {
 
     public boolean rememberWindowSize() {
         return Boolean.valueOf(properties.getProperty("rememberWindowSize", "false"));
+    }
+
+    // FIXME decide where and how to persist user properites
+    public void setRememberWindowSize(boolean rememberWindowSize) {
+
+        properties.setProperty("rememberWindowSize", String.valueOf(rememberWindowSize));
+        PropertiesHelper propertiesHelper = new PropertiesHelper(new PathHelper(), new PropertiesLoader());
+        propertiesHelper.persistUserProperties(properties);
     }
 
 //    //    // the actual window size when user closes marabou
