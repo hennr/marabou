@@ -19,6 +19,9 @@
 
 package com.github.marabou;
 
+import com.github.marabou.audio.AudioFileFilter;
+import com.github.marabou.controller.EditorController;
+import com.github.marabou.controller.TableController;
 import com.github.marabou.gui.AboutWindow;
 import com.github.marabou.gui.MainMenu;
 import com.github.marabou.gui.MainWindow;
@@ -55,7 +58,10 @@ public class Main {
         ImageLoader imageLoader = new ImageLoader(display);
         AboutWindow aboutWindow = new AboutWindow(applicationProperties);
 
-        MainMenu mainMenu = new MainMenu(mainWindowShell, aboutWindow, propertiesHelper);
+        EditorController editorController = new EditorController();
+        AudioFileFilter audioFileFilter = new AudioFileFilter();
+        TableController tableController = new TableController(audioFileFilter);
+        MainMenu mainMenu = new MainMenu(mainWindowShell, aboutWindow, propertiesHelper, editorController, tableController);
         mainMenu.init();
 
         MainWindow mainWindow = new MainWindow(mainWindowShell, mainMenu, propertiesHelper, imageLoader);

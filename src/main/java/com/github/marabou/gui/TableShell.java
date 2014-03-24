@@ -112,11 +112,15 @@ public class TableShell {
 			// handles a double click on a table item
 			@Override
 			public void handleEvent(Event event) {
-				int index = getTable().getSelectionIndex();
-				String path = getTable().getItem(index).getText(PATH);
+
+				int index = getTable(). getSelectionIndex();
+                if (index == -1) {
+                    return;
+                }
+                String path = getTable().getItem(index).getText(PATH);
 
 				try {
-					log.info("Trying to open file with default mediaplayer: " + path);
+					log.info("Trying to open file with default media player: " + path);
 					Desktop.getDesktop().open(new File(path));
 				} catch (IOException e) {
 					ErrorWindow.appendError(_("Error while opening file: ") + path);

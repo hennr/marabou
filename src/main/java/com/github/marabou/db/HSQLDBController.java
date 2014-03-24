@@ -17,7 +17,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-public final class HSQLDBController {
+public class HSQLDBController {
 
     final static Logger log = Logger.getLogger(HSQLDBController.class.getName());
 
@@ -214,10 +214,7 @@ public final class HSQLDBController {
         return row;
     }
 
-    public int addAllTableItems() throws GUINotConnectedException {
-        if (!isTableConnected()) {
-            throw new GUINotConnectedException();
-        }
+    public int addAllTableItems() {
         try {
             this.table.getTable().removeAll();
             // query table marabou for everything
@@ -244,8 +241,7 @@ public final class HSQLDBController {
     }
 
     private void setTableItemValues(ResultSet rs, TableItem tableItem) throws SQLException {
-        TableItem tbItem = tableItem;
-        tbItem.setText(new String[]{rs.getString("artist"),
+        tableItem.setText(new String[]{rs.getString("artist"),
                 rs.getString("title"), rs.getString("album"),
                 rs.getString("length"), rs.getString("track"),
                 rs.getString("bitrate"), rs.getString("samplerate"),
@@ -317,22 +313,10 @@ public final class HSQLDBController {
                     // save file
                     mp3File.save(filename);
 
-                    try {
-                        updateDBandTable();
-                    } catch (GUINotConnectedException e) {
-                    }
+                    updateDBandTable();
 
 
-                } catch (UnsupportedTagException e) {
-                    ErrorWindow.appendError("Couldn't save track " + filename);
-                    log.warning(e.getMessage());
-                } catch (InvalidDataException e) {
-                    ErrorWindow.appendError("Couldn't save track " + filename);
-                    log.warning(e.getMessage());
-                } catch (NotSupportedException e) {
-                    ErrorWindow.appendError("Couldn't save track " + filename);
-                    log.warning(e.getMessage());
-                } catch (IOException e) {
+                } catch (UnsupportedTagException| InvalidDataException | NotSupportedException | IOException  e) {
                     ErrorWindow.appendError("Couldn't save track " + filename);
                     log.warning(e.getMessage());
                 }
@@ -356,11 +340,7 @@ public final class HSQLDBController {
         return true;
     }
 
-    public void updateDBandTable() throws GUINotConnectedException {
-
-        if (!isTableConnected()) {
-            throw new GUINotConnectedException();
-        }
+    public void updateDBandTable() {
 
         boolean multiUpdate = false;
 
