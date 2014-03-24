@@ -1,6 +1,7 @@
 package com.github.marabou.helper;
 
 import com.github.marabou.properties.ApplicationProperties;
+import com.github.marabou.properties.UserProperties;
 
 import java.io.*;
 import java.util.Properties;
@@ -19,13 +20,15 @@ public class PropertiesHelper {
     private PathHelper pathHelper;
     private PropertiesLoader propertiesLoader;
 
-    public PropertiesHelper(PathHelper pathHelper) {
+
+
+    public PropertiesHelper(PathHelper pathHelper, PropertiesLoader propertiesLoader) {
         this.pathHelper = pathHelper;
+        this.propertiesLoader = propertiesLoader;
         readOrCreateDefaultUserProperties();
     }
 
-
-    public static ApplicationProperties getApplicationProperties() {
+    public ApplicationProperties getApplicationProperties() {
         Properties properties = new Properties();
         try {
             properties.load(PropertiesHelper.class.getResourceAsStream("/application.properties"));
@@ -35,10 +38,20 @@ public class PropertiesHelper {
         return new ApplicationProperties(properties);
     }
 
+    public UserProperties getUserProperties() {
+        Properties properties = new Properties();
+
+        // TODO use OS specific path to load user properties
+        // TODO create UserProperties on first program run
+        // use default properties if properties can not be created
+
+        return new UserProperties(properties);
+    }
+
 	private int readOrCreateDefaultUserProperties() {
 
 		// creating a new userPropertiesFile file if none exists yet
-        userPropertiesFile = new File(getHomeFolder() + "marabou.properties");
+        userPropertiesFile = new  File(getHomeFolder() + "marabou.properties");
 		// if config is found, check if updates are needed
 		if (userPropertiesFile.exists()) {
 			if (!userPropertiesFile.canRead() || !userPropertiesFile.canWrite()) {
@@ -81,17 +94,17 @@ public class PropertiesHelper {
 		return 0;
 	}
 
-    private Properties loadDefaultUserProperties() {
-        InputStream userPropertiesStream = getClass().getClassLoader().getResourceAsStream(DEFAULT_USER_PROPERTIES_FILE_PATH);
-        return propertiesLoader.loadProperties(userPropertiesStream);
-    }
-
     private String getHomeFolder() {
         try {
             return pathHelper.getMarabouHomeFolder();
         } catch (UnknownPlatformException e1) {
             throw new RuntimeException("Your OS couldn't get detected properly. Please file a bug report.", e1);
         }
+    }
+
+    private Properties loadDefaultUserProperties() {
+        InputStream userPropertiesStream = getClass().getClassLoader().getResourceAsStream(DEFAULT_USER_PROPERTIES_FILE_PATH);
+        return propertiesLoader.loadProperties(userPropertiesStream);
     }
 
     private void addNewConfigurationKeysToUsersConfigFile(Properties userProperties) {

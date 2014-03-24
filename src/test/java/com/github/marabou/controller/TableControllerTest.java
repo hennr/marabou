@@ -39,7 +39,7 @@ public class TableControllerTest {
     public void testOpenFiles() throws Exception {
 
         // given
-        AudioFileFilter audioFileFilter = new AudioFileFilter();
+        AudioFileFilter audioFileFilter = mock(AudioFileFilter.class);
         when(audioFileFilter.accept(any(File.class))).thenReturn(true);
 
         TableController controllerUnderTest = new TableController(audioFileFilter);

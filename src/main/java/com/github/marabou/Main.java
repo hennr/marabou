@@ -25,10 +25,7 @@ import com.github.marabou.controller.TableController;
 import com.github.marabou.gui.AboutWindow;
 import com.github.marabou.gui.MainMenu;
 import com.github.marabou.gui.MainWindow;
-import com.github.marabou.helper.ImageLoader;
-import com.github.marabou.helper.LoggingHelper;
-import com.github.marabou.helper.PathHelper;
-import com.github.marabou.helper.PropertiesHelper;
+import com.github.marabou.helper.*;
 import com.github.marabou.properties.ApplicationProperties;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -37,9 +34,10 @@ public class Main {
 
 	public static void main(String[] args) {
 
-        ApplicationProperties applicationProperties = PropertiesHelper.getApplicationProperties();
         PathHelper pathHelper = new PathHelper();
-        PropertiesHelper propertiesHelper = new PropertiesHelper(pathHelper);
+        PropertiesLoader propertiesLoader = new PropertiesLoader();
+        PropertiesHelper propertiesHelper = new PropertiesHelper(pathHelper, propertiesLoader);
+        ApplicationProperties applicationProperties = propertiesHelper.getApplicationProperties();
 
         if (startedWithDebugFlag(args)) {
             LoggingHelper.initLoggingDebug();
