@@ -15,8 +15,9 @@ public class PropertiesHelper {
     static File userPropertiesFile;
     static Properties userProperties = new Properties();
     final static Logger log = Logger.getLogger(PropertiesHelper.class.getName());
-    public static final String USER_PROPERTIES_FILE_PATH = "src/main/resources/marabou.properties";
+    public static final String DEFAULT_USER_PROPERTIES_FILE_PATH = "marabou.properties";
     private PathHelper pathHelper;
+    private PropertiesLoader propertiesLoader;
 
     public PropertiesHelper(PathHelper pathHelper) {
         this.pathHelper = pathHelper;
@@ -46,21 +47,14 @@ public class PropertiesHelper {
 			} else {
 				try {
 					userProperties.load(new FileReader(userPropertiesFile.getAbsolutePath()));
+                    addNewConfigurationKeysToUsersConfigFile(userProperties);
 				} catch (IOException e) {
 					log.severe("Couldn't load config file: " + userPropertiesFile.getAbsolutePath());
                     throw new RuntimeException("Couldn't read config file. " +
                             "Please make sure that your file permissions are set properly.");
 				}
-				Properties userProperties = new Properties();
 
-				try {
-					userProperties.load(new FileReader(USER_PROPERTIES_FILE_PATH));
-				} catch (IOException e) {
-                    throw new RuntimeException("Couldn't read config file. " +
-                            "Please make sure that your file permissions are set properly.");
-				}
-
-                addNewConfigurationKeysToUsersConfigFile(userProperties);
+                userProperties = loadDefaultUserProperties();
 			}
 			// userPropertiesFile is not existent yet
 		} else {
@@ -79,21 +73,18 @@ public class PropertiesHelper {
 				log.severe("Couldn't create config file, please check your file permission in your home folder.");
 				return 1;
 			}
-			try {
+                userProperties = loadDefaultUserProperties();
 
-				BufferedReader vendorConf = new BufferedReader(new FileReader(USER_PROPERTIES_FILE_PATH));
-
-				userProperties.load(vendorConf);
 				// copy all entries to the new userPropertiesFile
-				persistSettings();
-				vendorConf.close();
-			} catch (IOException e) {
-				log.warning("Couldn't create config file in " + System.getProperty("user.home"));
-				log.warning(e.toString());
-			}
+				persistSettings(userProperties, userPropertiesFile);
 		}
 		return 0;
 	}
+
+    private Properties loadDefaultUserProperties() {
+        InputStream userPropertiesStream = getClass().getClassLoader().getResourceAsStream(DEFAULT_USER_PROPERTIES_FILE_PATH);
+        return propertiesLoader.loadProperties(userPropertiesStream);
+    }
 
     private String getHomeFolder() {
         try {
@@ -114,7 +105,7 @@ public class PropertiesHelper {
             }
 
         }
-        persistSettings();
+        persistSettings(userProperties, userPropertiesFile);
     }
 
 	public String getProp(PropertiesAllowedKeys key) {
@@ -130,7 +121,7 @@ public class PropertiesHelper {
 	 */
 	public static void setProp(PropertiesAllowedKeys key, String value) {
 		userProperties.setProperty(key.toString(), value);
-		persistSettings();
+		persistSettings(userProperties, userPropertiesFile);
 	}
 
 	// helper methods
@@ -138,11 +129,10 @@ public class PropertiesHelper {
 	/**
 	 * persists all changes of the users properties
 	 */
-	private static void persistSettings() {
+	private static void persistSettings(Properties propertiesToPersist, File propertiesFile) {
 		try {
-			BufferedWriter userConf = new BufferedWriter(new FileWriter(
-					userPropertiesFile.getAbsolutePath()));
-			userProperties.store(userConf, null);
+			BufferedWriter userConf = new BufferedWriter(new FileWriter(propertiesFile.getAbsolutePath()));
+            propertiesToPersist.store(userConf, null);
 			// flush and close streams
 			userConf.flush();
 			userConf.close();

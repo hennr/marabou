@@ -38,11 +38,6 @@ public class PropertiesHelperTest {
     }
 
     @Test
-    public void shouldUseMockForLoadingPropertiesToHaveEqualTestRunsOnEveryMachine() {
-        fail("");
-    }
-
-    @Test
     public void afterCreationUserPropertiesAreAccessible() {
 
         // given
