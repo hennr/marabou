@@ -51,7 +51,7 @@ public class PropertiesHelper {
 	private int readOrCreateDefaultUserProperties() {
 
 		// creating a new userPropertiesFile file if none exists yet
-        userPropertiesFile = new  File(getHomeFolder() + "marabou.properties");
+        userPropertiesFile = new  File(getMarabouHomeFolder() + DEFAULT_USER_PROPERTIES_FILE_PATH);
 		// if config is found, check if updates are needed
 		if (userPropertiesFile.exists()) {
 			if (!userPropertiesFile.canRead() || !userPropertiesFile.canWrite()) {
@@ -72,7 +72,7 @@ public class PropertiesHelper {
 			// userPropertiesFile is not existent yet
 		} else {
 			try {
-				File mhfFile = new File(getHomeFolder());
+				File mhfFile = new File(getMarabouHomeFolder());
 				// create folder if no folder exists yet
 				if (!mhfFile.exists()) {
 					if (!mhfFile.mkdir()) {
@@ -94,11 +94,11 @@ public class PropertiesHelper {
 		return 0;
 	}
 
-    private String getHomeFolder() {
+    private String getMarabouHomeFolder() {
         try {
             return pathHelper.getMarabouHomeFolder();
         } catch (UnknownPlatformException e1) {
-            throw new RuntimeException("Your OS couldn't get detected properly. Please file a bug report.", e1);
+            throw new RuntimeException("Your operating system couldn't get detected properly. Please file a bug report.", e1);
         }
     }
 
@@ -136,6 +136,10 @@ public class PropertiesHelper {
 		userProperties.setProperty(key.toString(), value);
 		persistSettings(userProperties, userPropertiesFile);
 	}
+
+    public void persistUserProperties() {
+        persistSettings(userProperties, userPropertiesFile);
+    }
 
 	// helper methods
 

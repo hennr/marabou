@@ -1,9 +1,5 @@
 package com.github.marabou.properties;
 
-import com.github.marabou.helper.PathHelper;
-import com.github.marabou.helper.PropertiesHelper;
-import com.github.marabou.helper.PropertiesLoader;
-
 import java.util.Properties;
 
 public class UserProperties {
@@ -18,12 +14,27 @@ public class UserProperties {
         return Boolean.valueOf(properties.getProperty("rememberWindowSize", "false"));
     }
 
-    // FIXME decide where and how to persist user properites
     public void setRememberWindowSize(boolean rememberWindowSize) {
 
         properties.setProperty("rememberWindowSize", String.valueOf(rememberWindowSize));
-        PropertiesHelper propertiesHelper = new PropertiesHelper(new PathHelper(), new PropertiesLoader());
-        propertiesHelper.persistUserProperties(properties);
+    }
+
+    // size of the tag bar in relation to the table
+    public String getTagBarWeight() {
+        return properties.getProperty("tagBarWeight", "2");
+    }
+
+    public void setTagBarWeight(int weight) {
+        properties.setProperty("tagBarWeight", String.valueOf(weight));
+    }
+
+    // size of the table in relation to the tag bar
+    public String getTableWeight() {
+        return properties.getProperty("tableWeight", "5");
+    }
+
+    public void setTableWeight(int weight) {
+        properties.setProperty("tableWeight", String.valueOf(weight));
     }
 
 //    //    // the actual window size when user closes marabou
@@ -33,8 +44,4 @@ public class UserProperties {
 //    safeLastPath(""),
 //    //    // the last path that the user opened
 //    lastPath(""),
-//    // size of the tag bar in relation to the table
-//    tagBarWeight("2"),
-//    // size of the table in relation to the tag bar
-//    tableWeight("5");
 }

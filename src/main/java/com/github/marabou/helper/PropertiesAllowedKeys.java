@@ -5,19 +5,13 @@ package com.github.marabou.helper;
  */
 public enum PropertiesAllowedKeys {
 
-    // should we save the window size on exit?
-    rememberWindowSize("1"),
 //    // the actual window size when user closes marabou
     windowSizeX(""),
     windowSizeY(""),
 //    // should we safe the last used path?
     safeLastPath(""),
 //    // the last path that the user opened
-    lastPath(""),
-    // size of the tag bar in relation to the table
-    tagBarWeight("2"),
-    // size of the table in relation to the tag bar
-    tableWeight("5");
+    lastPath("");
 
     private String defaultValue;
 

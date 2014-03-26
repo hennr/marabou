@@ -24,6 +24,7 @@ import com.github.marabou.helper.AvailableImage;
 import com.github.marabou.helper.ImageLoader;
 import com.github.marabou.helper.PropertiesAllowedKeys;
 import com.github.marabou.helper.PropertiesHelper;
+import com.github.marabou.properties.UserProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.DisposeEvent;
@@ -44,18 +45,20 @@ public class MainWindow {
     HSQLDBController controller;
     ImageLoader imageLoader;
     PropertiesHelper propertiesHelper;
+    private UserProperties userProperties;
 
-		/**
+    /**
 		 * the main window holds elements such as the menu, the table,
 		 *  and the tabs on the left
 		 */
-		public MainWindow(Shell shell, MainMenu mainMenu, PropertiesHelper propertiesHelper, ImageLoader imageLoader) {
+		public MainWindow(Shell shell, MainMenu mainMenu, PropertiesHelper propertiesHelper, ImageLoader imageLoader, UserProperties userProperties) {
 
             this.shell = shell;
             this.display = shell.getDisplay();
             this.imageLoader = imageLoader;
             this.propertiesHelper = propertiesHelper;
             this.controller = HSQLDBController.getInstance();
+            this.userProperties = userProperties;
 
             shell.setLayout(new FillLayout(SWT.VERTICAL));
             shell.setImage(imageLoader.getImage(AvailableImage.LOGO_SMALL));
@@ -118,8 +121,8 @@ public class MainWindow {
 
     private int[] getStoredSashRation() {
         int[] result = new int[2];
-        result[0] = Integer.parseInt(propertiesHelper.getProp(PropertiesAllowedKeys.tagBarWeight));
-        result[1] = Integer.parseInt(propertiesHelper.getProp(PropertiesAllowedKeys.tableWeight));
+        result[0] = Integer.parseInt(userProperties.getTagBarWeight());
+        result[1] = Integer.parseInt(userProperties.getTableWeight());
         return result;
     }
 
@@ -127,7 +130,7 @@ public class MainWindow {
 	
 		// maximize on first run
 		shell.setMaximized(true);
-		if (Boolean.parseBoolean(propertiesHelper.getProp(PropertiesAllowedKeys.rememberWindowSize))) {
+		if (userProperties.rememberWindowSize()) {
 			String x = propertiesHelper.getProp(PropertiesAllowedKeys.windowSizeX);
 			String y = propertiesHelper.getProp(PropertiesAllowedKeys.windowSizeY);
 			try {
@@ -154,10 +157,11 @@ public class MainWindow {
 				display.sleep();
 		}
 		display.dispose();
-	}
+        propertiesHelper.persistUserProperties();
+    }
 
     private void persistWindowSize() {
-        if (Boolean.parseBoolean(propertiesHelper.getProp(PropertiesAllowedKeys.rememberWindowSize))) {
+        if (userProperties.rememberWindowSize()) {
             if (shell.getMaximized()) {
                 PropertiesHelper.setProp(PropertiesAllowedKeys.windowSizeX, "max");
                 PropertiesHelper.setProp(PropertiesAllowedKeys.windowSizeY, "max");
@@ -171,9 +175,7 @@ public class MainWindow {
     }
 
     private void persistTagAndTableBarRation() {
-        String tagBarWeight = Integer.toString(sashForm.getWeights()[0]);
-        String tableWeight = Integer.toString(sashForm.getWeights()[1]);
-        PropertiesHelper.setProp(PropertiesAllowedKeys.tagBarWeight, tagBarWeight);
-        PropertiesHelper.setProp(PropertiesAllowedKeys.tableWeight, tableWeight);
+        userProperties.setTagBarWeight(sashForm.getWeights()[0]);
+        userProperties.setTableWeight(sashForm.getWeights()[1]);
     }
 }

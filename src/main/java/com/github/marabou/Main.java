@@ -27,6 +27,7 @@ import com.github.marabou.gui.MainMenu;
 import com.github.marabou.gui.MainWindow;
 import com.github.marabou.helper.*;
 import com.github.marabou.properties.ApplicationProperties;
+import com.github.marabou.properties.UserProperties;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -37,10 +38,11 @@ public class Main {
         PathHelper pathHelper = new PathHelper();
         PropertiesLoader propertiesLoader = new PropertiesLoader();
         PropertiesHelper propertiesHelper = new PropertiesHelper(pathHelper, propertiesLoader);
+        UserProperties userProperties = propertiesHelper.getUserProperties();
         ApplicationProperties applicationProperties = propertiesHelper.getApplicationProperties();
 
         setupLogging(args);
-        setupMainWindow(applicationProperties, propertiesHelper);
+        setupMainWindow(applicationProperties, propertiesHelper, userProperties);
 	}
 
     private static void setupLogging(String[] args) {
@@ -63,7 +65,7 @@ public class Main {
         return false;
     }
 
-    private static void setupMainWindow(ApplicationProperties applicationProperties, PropertiesHelper propertiesHelper) {
+    private static void setupMainWindow(ApplicationProperties applicationProperties, PropertiesHelper propertiesHelper, UserProperties userProperties) {
         Display display = new Display();
         Shell mainWindowShell = new Shell(display);
         ImageLoader imageLoader = new ImageLoader(display);
@@ -75,7 +77,7 @@ public class Main {
         MainMenu mainMenu = new MainMenu(mainWindowShell, aboutWindow, propertiesHelper, editorController, tableController);
         mainMenu.init();
 
-        MainWindow mainWindow = new MainWindow(mainWindowShell, mainMenu, propertiesHelper, imageLoader);
+        MainWindow mainWindow = new MainWindow(mainWindowShell, mainMenu, propertiesHelper, imageLoader, userProperties);
         mainWindow.init();
     }
 }
