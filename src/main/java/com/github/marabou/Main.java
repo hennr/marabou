@@ -39,16 +39,29 @@ public class Main {
         PropertiesHelper propertiesHelper = new PropertiesHelper(pathHelper, propertiesLoader);
         ApplicationProperties applicationProperties = propertiesHelper.getApplicationProperties();
 
+        setupLogging(args);
+        setupMainWindow(applicationProperties, propertiesHelper);
+	}
+
+    private static void setupLogging(String[] args) {
         if (startedWithDebugFlag(args)) {
+            System.out.println("Starting marabou in debug mode.");
             LoggingHelper.initLoggingDebug();
         } else {
             LoggingHelper.initLogging();
         }
+    }
 
+    // determines if marabou was started with --debug flag
+    private static boolean startedWithDebugFlag(String[] args) {
 
-
-        setupMainWindow(applicationProperties, propertiesHelper);
-	}
+        for (String arg : args) {
+            if (arg.equalsIgnoreCase("--debug")) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     private static void setupMainWindow(ApplicationProperties applicationProperties, PropertiesHelper propertiesHelper) {
         Display display = new Display();
@@ -65,16 +78,4 @@ public class Main {
         MainWindow mainWindow = new MainWindow(mainWindowShell, mainMenu, propertiesHelper, imageLoader);
         mainWindow.init();
     }
-
-    // determines if marabou was started with --debug flag
-	private static boolean startedWithDebugFlag(String[] args) {
-
-		for (String arg : args) {
-			if (arg.equalsIgnoreCase("--debug")) {
-				System.out.println("Starting marabou in debug mode.");
-				return true;
-			}
-		}
-		return false;
-	}
 }
