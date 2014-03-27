@@ -133,4 +133,84 @@ public class UserPropertiesTest {
         //then
         assertEquals("1", properties.getProperty("tableWeight"));
     }
+
+    @Test
+    public void getWindowSizeXReturnsCorrectDefaultValue() throws Exception {
+
+        // given
+        UserProperties userProperties = new UserProperties(new Properties());
+
+        // expect
+        TestCase.assertEquals(-1, userProperties.getWindowSizeX());
+    }
+
+    @Test
+    public void getWindowSizeXUsesCorrectPropertiesKey() throws Exception {
+
+        // given
+        Properties properties = new Properties();
+        properties.put("windowSizeX", "1");
+        UserProperties userProperties = new UserProperties(properties);
+
+        // when
+        int result = userProperties.getWindowSizeX();
+
+        //then
+        TestCase.assertEquals(1, result);
+    }
+
+    @Test
+    public void setWindowSizeXUsesCorrectPropertiesKey() {
+
+        // given
+        Properties properties = new Properties();
+        properties.put("windowSizeX", "-1");
+        UserProperties userProperties = new UserProperties(properties);
+
+        // when
+        userProperties.setWindowSizeX(1);
+
+        //then
+        assertEquals("1", properties.getProperty("windowSizeX"));
+    }
+
+    @Test
+    public void getWindowSizeYReturnsCorrectDefaultValue() throws Exception {
+
+        // given
+        UserProperties userProperties = new UserProperties(new Properties());
+
+        // expect
+        TestCase.assertEquals(-1, userProperties.getWindowSizeY());
+    }
+
+    @Test
+    public void getWindowSizeYUsesCorrectPropertiesKey() throws Exception {
+
+        // given
+        Properties properties = new Properties();
+        properties.put("windowSizeY", "1");
+        UserProperties userProperties = new UserProperties(properties);
+
+        // when
+        int result = userProperties.getWindowSizeY();
+
+        //then
+        TestCase.assertEquals(1, result);
+    }
+
+    @Test
+    public void setWindowSizeYUsesCorrectPropertiesKey() {
+
+        // given
+        Properties properties = new Properties();
+        properties.put("windowSizeY", "-1");
+        UserProperties userProperties = new UserProperties(properties);
+
+        // when
+        userProperties.setWindowSizeY(1);
+
+        //then
+        assertEquals("1", properties.getProperty("windowSizeY"));
+    }
 }

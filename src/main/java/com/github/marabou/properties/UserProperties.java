@@ -15,7 +15,6 @@ public class UserProperties {
     }
 
     public void setRememberWindowSize(boolean rememberWindowSize) {
-
         properties.setProperty("rememberWindowSize", String.valueOf(rememberWindowSize));
     }
 
@@ -37,9 +36,22 @@ public class UserProperties {
         properties.setProperty("tableWeight", String.valueOf(weight));
     }
 
-//    //    // the actual window size when user closes marabou
-//    windowSizeX(""),
-//    windowSizeY(""),
+    public int getWindowSizeX() {
+        return Integer.valueOf(properties.getProperty("windowSizeX", "-1"));
+    }
+
+    public void setWindowSizeX(int windowSizeX) {
+        properties.setProperty("windowSizeX", String.valueOf(windowSizeX));
+    }
+
+    public int getWindowSizeY() {
+        return Integer.valueOf(properties.getProperty("windowSizeY", "-1"));
+    }
+
+    public void setWindowSizeY(int windowSizeY) {
+        properties.setProperty("windowSizeY", String.valueOf(windowSizeY));
+    }
+
 //    //    // should we safe the last used path?
 //    safeLastPath(""),
 //    //    // the last path that the user opened

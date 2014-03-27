@@ -5,9 +5,6 @@ package com.github.marabou.helper;
  */
 public enum PropertiesAllowedKeys {
 
-//    // the actual window size when user closes marabou
-    windowSizeX(""),
-    windowSizeY(""),
 //    // should we safe the last used path?
     safeLastPath(""),
 //    // the last path that the user opened

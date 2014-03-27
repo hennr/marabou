@@ -127,20 +127,20 @@ public class MainWindow {
     }
 
     public void init() {
-	
-		// maximize on first run
-		shell.setMaximized(true);
-		if (userProperties.rememberWindowSize()) {
-			String x = propertiesHelper.getProp(PropertiesAllowedKeys.windowSizeX);
-			String y = propertiesHelper.getProp(PropertiesAllowedKeys.windowSizeY);
-			try {
-				int xSize = Integer.parseInt(x);
-				int ySize = Integer.parseInt(y);
-				shell.setSize(xSize, ySize);
-			} catch (NumberFormatException e) {}
-		} else {
-			shell.setMaximized(true);
-		}
+
+        // TODO refactor and test
+		if (!userProperties.rememberWindowSize()) {
+            shell.setMaximized(true);
+            shell.open();
+        }
+        int x =userProperties.getWindowSizeX();
+        int y =userProperties.getWindowSizeY();
+        if (x < 0 || y < 0) {
+            shell.setMaximized(true);
+        } else {
+            shell.setSize(x, y);
+        }
+        shell.setMaximized(true);
 		shell.open();
 		
 		// save window size on exit to open it in that size again
@@ -163,13 +163,11 @@ public class MainWindow {
     private void persistWindowSize() {
         if (userProperties.rememberWindowSize()) {
             if (shell.getMaximized()) {
-                PropertiesHelper.setProp(PropertiesAllowedKeys.windowSizeX, "max");
-                PropertiesHelper.setProp(PropertiesAllowedKeys.windowSizeY, "max");
+                userProperties.setWindowSizeX(-1);
+                userProperties.setWindowSizeY(-1);
             } else {
-                String x = String.valueOf(shell.getSize().x);
-                String y = String.valueOf(shell.getSize().y);
-                PropertiesHelper.setProp(PropertiesAllowedKeys.windowSizeX, x);
-                PropertiesHelper.setProp(PropertiesAllowedKeys.windowSizeY, y);
+                userProperties.setWindowSizeX(shell.getSize().x);
+                userProperties.setWindowSizeY(shell.getSize().y);
             }
         }
     }
