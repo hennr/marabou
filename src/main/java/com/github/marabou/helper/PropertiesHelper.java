@@ -121,22 +121,6 @@ public class PropertiesHelper {
         persistSettings(userProperties, userPropertiesFile);
     }
 
-	public String getProp(PropertiesAllowedKeys key) {
-        String result = userProperties.getProperty(key.toString(), "");
-        if (result.isEmpty()) {
-            result = key.getDefaultValue();
-        }
-        return result;
-	}
-
-	/**
-	 * sets a setting and saves it to users config file
-	 */
-	public static void setProp(PropertiesAllowedKeys key, String value) {
-		userProperties.setProperty(key.toString(), value);
-		persistSettings(userProperties, userPropertiesFile);
-	}
-
     public void persistUserProperties() {
         persistSettings(userProperties, userPropertiesFile);
     }

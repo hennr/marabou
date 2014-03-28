@@ -52,8 +52,19 @@ public class UserProperties {
         properties.setProperty("windowSizeY", String.valueOf(windowSizeY));
     }
 
-//    //    // should we safe the last used path?
-//    safeLastPath(""),
-//    //    // the last path that the user opened
-//    lastPath(""),
+    public boolean rememberLastPath() {
+        return Boolean.valueOf(properties.getProperty("safeLastPath", "true"));
+    }
+
+    public void setRememberLastPath(boolean toggle) {
+        properties.setProperty("safeLastPath", String.valueOf(toggle));
+    }
+
+    public String getLastPath() {
+        return properties.getProperty("lastPath", "");
+    }
+
+    public void setLastPath(String lastPath) {
+        properties.setProperty("lastPath", lastPath);
+    }
 }

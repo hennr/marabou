@@ -74,7 +74,7 @@ public class Main {
         EditorController editorController = new EditorController();
         AudioFileFilter audioFileFilter = new AudioFileFilter();
         TableController tableController = new TableController(audioFileFilter);
-        MainMenu mainMenu = new MainMenu(mainWindowShell, aboutWindow, propertiesHelper, editorController, tableController);
+        MainMenu mainMenu = new MainMenu(mainWindowShell, aboutWindow, editorController, tableController, userProperties);
         mainMenu.init();
 
         MainWindow mainWindow = new MainWindow(mainWindowShell, mainMenu, propertiesHelper, imageLoader, userProperties);

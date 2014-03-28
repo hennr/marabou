@@ -22,7 +22,6 @@ package com.github.marabou.gui;
 import com.github.marabou.db.HSQLDBController;
 import com.github.marabou.helper.AvailableImage;
 import com.github.marabou.helper.ImageLoader;
-import com.github.marabou.helper.PropertiesAllowedKeys;
 import com.github.marabou.helper.PropertiesHelper;
 import com.github.marabou.properties.UserProperties;
 import org.eclipse.swt.SWT;

@@ -213,4 +213,84 @@ public class UserPropertiesTest {
         //then
         assertEquals("1", properties.getProperty("windowSizeY"));
     }
+
+    @Test
+    public void rememberLastPathReturnsCorrectDefaultValue() throws Exception {
+
+        // given
+        UserProperties userProperties = new UserProperties(new Properties());
+
+        // expect
+        TestCase.assertEquals(true, userProperties.rememberLastPath());
+    }
+
+    @Test
+    public void rememberLastPathUsesCorrectPropertiesKey() throws Exception {
+
+        // given
+        Properties properties = new Properties();
+        properties.put("safeLastPath", "false");
+        UserProperties userProperties = new UserProperties(properties);
+
+        // when
+        boolean result = userProperties.rememberLastPath();
+
+        //then
+        TestCase.assertEquals(false, result);
+    }
+
+    @Test
+    public void setRememberLastPathUsesCorrectPropertiesKey() {
+
+        // given
+        Properties properties = new Properties();
+        properties.put("safeLastPath", "true");
+        UserProperties userProperties = new UserProperties(properties);
+
+        // when
+        userProperties.setRememberLastPath(false);
+
+        //then
+        assertEquals("false", properties.getProperty("safeLastPath"));
+    }
+
+    @Test
+    public void getLastPathReturnsCorrectDefaultValue() throws Exception {
+
+        // given
+        UserProperties userProperties = new UserProperties(new Properties());
+
+        // expect
+        TestCase.assertEquals("", userProperties.getLastPath());
+    }
+
+    @Test
+    public void getLastPathUsesCorrectPropertiesKey() throws Exception {
+
+        // given
+        Properties properties = new Properties();
+        properties.put("lastPath", "foo");
+        UserProperties userProperties = new UserProperties(properties);
+
+        // when
+        String result = userProperties.getLastPath();
+
+        //then
+        TestCase.assertEquals("foo", result);
+    }
+
+    @Test
+    public void setLastPathUsesCorrectPropertiesKey() {
+
+        // given
+        Properties properties = new Properties();
+        properties.put("lastPath", "");
+        UserProperties userProperties = new UserProperties(properties);
+
+        // when
+        userProperties.setLastPath("foo");
+
+        //then
+        assertEquals("foo", properties.getProperty("lastPath"));
+    }
 }
