@@ -36,8 +36,9 @@ public class PathHelper {
 	private boolean isMacOS;
 	/** contains ending slash under Unix or backslash under Windows */
 	private String userHome;
+    final String DEFAULT_USER_PROPERTIES_FILE_PATH = "marabou.properties";
 
-	/**
+    /**
 	 * detects and remembers the OS marabou is running on
 	 */
 	public PathHelper() {
@@ -124,7 +125,7 @@ public class PathHelper {
 	 * including "/" at the end of the path
 	 * Does not check if file exists!
 	 */
-	public String getMarabouHomeFolder() throws UnknownPlatformException {
+	public String getMarabouHomeFolder() {
 		// Unix
 		if (isUnix) {
 			return userHome + ".marabou/";
@@ -135,8 +136,15 @@ public class PathHelper {
 			// TODO macos
 			return "";
 		} else {
-			throw new UnknownPlatformException();
+			throw new RuntimeException("Your operating system couldn't get detected properly. Please file a bug report.");
 		}
 	}
-	
+
+    public String getUserPropertiesFilePath() {
+        return getMarabouHomeFolder() + DEFAULT_USER_PROPERTIES_FILE_PATH;
+    }
+
+    public String getDefaultUserPropertiesPath() {
+        return DEFAULT_USER_PROPERTIES_FILE_PATH;
+    }
 }

@@ -5,9 +5,11 @@ import java.util.Properties;
 public class UserProperties {
 
     private Properties properties;
+    private PropertiesHelper propertiesHelper;
 
-    public UserProperties(Properties properties) {
+    UserProperties(Properties properties, PropertiesHelper propertiesHelper) {
         this.properties = properties;
+        this.propertiesHelper = propertiesHelper;
     }
 
     public boolean rememberWindowSize() {
@@ -20,7 +22,7 @@ public class UserProperties {
 
     // size of the tag bar in relation to the table
     public String getTagBarWeight() {
-        return properties.getProperty("tagBarWeight", "2");
+        return getStoredValueOrDefault("tagBarWeight", "2");
     }
 
     public void setTagBarWeight(int weight) {
@@ -29,7 +31,7 @@ public class UserProperties {
 
     // size of the table in relation to the tag bar
     public String getTableWeight() {
-        return properties.getProperty("tableWeight", "5");
+        return getStoredValueOrDefault("tableWeight", "5");
     }
 
     public void setTableWeight(int weight) {
@@ -37,7 +39,7 @@ public class UserProperties {
     }
 
     public int getWindowSizeX() {
-        return Integer.valueOf(properties.getProperty("windowSizeX", "-1"));
+        return getStoredValueOrDefaultAsInt("windowSizeX", -1);
     }
 
     public void setWindowSizeX(int windowSizeX) {
@@ -45,7 +47,7 @@ public class UserProperties {
     }
 
     public int getWindowSizeY() {
-        return Integer.valueOf(properties.getProperty("windowSizeY", "-1"));
+        return getStoredValueOrDefaultAsInt("windowSizeY", -1);
     }
 
     public void setWindowSizeY(int windowSizeY) {
@@ -53,7 +55,7 @@ public class UserProperties {
     }
 
     public boolean rememberLastPath() {
-        return Boolean.valueOf(properties.getProperty("safeLastPath", "true"));
+        return getStoredValueOrDefaultAsBoolean("safeLastPath", true);
     }
 
     public void setRememberLastPath(boolean toggle) {
@@ -61,10 +63,43 @@ public class UserProperties {
     }
 
     public String getLastPath() {
-        return properties.getProperty("lastPath", "");
+        return getStoredValueOrDefault("lastPath", "");
     }
 
     public void setLastPath(String lastPath) {
         properties.setProperty("lastPath", lastPath);
+    }
+
+    private String getStoredValueOrDefault(String key, String defaultValue) {
+        String propertyValue = properties.getProperty(key, defaultValue);
+        if (propertyValue.isEmpty()) {
+            return defaultValue;
+        } else {
+            return propertyValue;
+        }
+    }
+
+    private int getStoredValueOrDefaultAsInt(String key, int defaultValue) {
+        int result = defaultValue;
+        try {
+            result = Integer.valueOf(properties.getProperty(key, String.valueOf(defaultValue)));
+            return result;
+        } catch (Exception e) {
+            return result;
+        }
+    }
+
+    private boolean getStoredValueOrDefaultAsBoolean(String key, boolean defaultValue) {
+        boolean result = defaultValue;
+        try {
+            result = Boolean.valueOf(properties.getProperty(key, String.valueOf(defaultValue)));
+            return result;
+        } catch (Exception e) {
+            return result;
+        }
+    }
+
+    public void persistUserProperties() {
+        propertiesHelper.persistUserProperties(properties);
     }
 }

@@ -1,18 +1,12 @@
-package com.github.marabou.helper;
+package com.github.marabou.properties;
 
-import com.github.marabou.properties.ApplicationProperties;
-import com.github.marabou.properties.UserProperties;
-import org.junit.Ignore;
+import com.github.marabou.helper.PathHelper;
+import com.github.marabou.helper.PropertiesLoader;
+import com.github.marabou.helper.UnknownPlatformException;
+
 import org.junit.Test;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class PropertiesHelperTest {
 
@@ -76,4 +70,29 @@ public class PropertiesHelperTest {
         // then
         assertNotNull(userProperties);
     }
+
+    @Test
+    public void loadsDefaultUserPropertiesWhenFilePermissionsNotSufficient() {
+
+        // given
+        PathHelper pathHelperMock = mock(PathHelper.class);
+        when(pathHelperMock.getUserPropertiesFilePath()).thenReturn("");
+        when(pathHelperMock.getDefaultUserPropertiesPath()).thenReturn("");
+
+        PropertiesLoader propertiesLoaderMock = mock(PropertiesLoader.class);
+
+        // when
+        new PropertiesHelper(pathHelperMock, propertiesLoaderMock);
+
+        // then
+        verify(pathHelperMock).getDefaultUserPropertiesPath();
+    }
+
+//    @Test
+//    public void loadsUserPropertiesIfFileExistsAndCanBeRead() {
+//
+//
+//        // TODO
+//
+//    }
 }

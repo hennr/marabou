@@ -1,7 +1,6 @@
 package com.github.marabou.properties;
 
 import com.github.marabou.helper.PathHelper;
-import com.github.marabou.helper.PropertiesHelper;
 import com.github.marabou.helper.PropertiesLoader;
 import org.junit.Test;
 

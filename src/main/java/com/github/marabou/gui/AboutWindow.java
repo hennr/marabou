@@ -21,7 +21,7 @@ package com.github.marabou.gui;
 
 import com.github.marabou.helper.AvailableImage;
 import com.github.marabou.helper.ImageLoader;
-import com.github.marabou.helper.PropertiesHelper;
+import com.github.marabou.properties.PropertiesHelper;
 import com.github.marabou.properties.ApplicationProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
