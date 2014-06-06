@@ -19,15 +19,9 @@
 
 package com.github.marabou.helper;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-
 /**
  * this class is intended to find the correct path for files under several
  * operating systems
- * 
- * @author Jan-Hendrik Peters
- * 
  */
 public class PathHelper {
 
@@ -59,67 +53,6 @@ public class PathHelper {
 		}
 	}
 
-	/**
-	 * tries to find the correct path for a given filename in the users home folder
-	 * e.g. in "~/.marabou/" under unix systems
-	 * 
-	 * @return the full path for the filename given
-	 */
-	public String getUserPathForFile(String filename) throws FileNotFoundException, UnknownPlatformException {
-		if (isUnix) {
-			File f = new File(userHome + ".marabou/" + filename);
-			if (!f.exists() || !f.isFile()) {
-				throw new FileNotFoundException();
-			} else {
-				return f.getAbsolutePath();
-			}
-		} else if (isWindows) {
-			// TODO windows
-			return "";
-		} else if (isMacOS) {
-			// TODO macos
-			return "";
-		} else {
-			throw new UnknownPlatformException();
-		}
-	}
-	
-	/**
-	 * tries to find the correct path for a given filename in a system path
-	 * e.g. in "/usr/share/marabou/" or similar paths
-	 * 
-	 * @return the full path for the filename given
-	 */
-	public String getSystemPathForFile(String filename) throws FileNotFoundException, UnknownPlatformException {
-		if (isUnix) {
-			// TODO RELEASE
-			// STUB: "src/main/resources"
-			return "";
-		} else if (isWindows) {
-			// TODO windows
-			return "";
-		} else if (isMacOS) {
-			// TODO macos
-			return "";
-		} else {
-			throw new UnknownPlatformException();
-		}
-	}
-	
-	/**
-	 * 
-	 * @return the path to the users home folder, incl. "/" under Unix or MacOS
-	 */
-	public String getUsersHomeFolder() {
-		if (isUnix) {
-			return System.getProperty("user.home" + "/");
-		} else if (isMacOS) {
-			return System.getProperty("user.home" + "/");
-		} else {
-			return System.getProperty("user.home");
-		}
-	}
-	
 	/**
 	 * returns the path to marabou's config folder in the users home
 	 * including "/" at the end of the path

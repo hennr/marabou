@@ -10,8 +10,8 @@ import java.util.logging.Logger;
 
 public class PropertiesHelper {
 
-    UserProperties userPropertiesInstance;
-    final static Logger log = Logger.getLogger(PropertiesHelper.class.getName());
+    UserProperties userPropertiesInstance = null;
+    private Logger log = Logger.getLogger(PropertiesHelper.class.getName());
     private PathHelper pathHelper;
     private PropertiesLoader propertiesLoader;
 
@@ -19,29 +19,6 @@ public class PropertiesHelper {
     public PropertiesHelper(PathHelper pathHelper, PropertiesLoader propertiesLoader) {
         this.pathHelper = pathHelper;
         this.propertiesLoader = propertiesLoader;
-        File userPropertiesFile = new File(pathHelper.getUserPropertiesFilePath());
-        Properties properties;
-
-        // TODO diese Fälle ausimplementieren und testen
-        if (! userPropertiesFile.exists()) {
-            log.info("Couldn't find marabou config. Load defaults.");
-            properties = loadDefaultUserProperties();
-            persistUserProperties(properties);
-            userPropertiesInstance = new UserProperties(properties, this);
-        }
-        if (userPropertiesFile.exists() && ! canReadAndWrite(userPropertiesFile)) {
-            properties = loadUserProperties(userPropertiesFile);
-            userPropertiesInstance = new UserProperties(properties, this);
-        } else {
-            log.warning("Insufficient file permissions for marabou's properties found. Please make sure your file permissions are set properly.");
-            log.warning("Loading default properties.");
-            properties = loadDefaultUserProperties();
-            userPropertiesInstance = new UserProperties(properties, this);
-        }
-    }
-
-    private boolean canReadAndWrite(File userPropertiesFile) {
-        return userPropertiesFile.canRead() && userPropertiesFile.canWrite();
     }
 
     public ApplicationProperties getApplicationProperties() {
@@ -55,10 +32,28 @@ public class PropertiesHelper {
     }
 
     public UserProperties getUserProperties() {
+        if (userPropertiesInstance == null) {
+            initialiseUserProperties();
+        }
         return userPropertiesInstance;
     }
 
-	private Properties loadUserProperties(File userPropertiesFile) {
+    private void initialiseUserProperties() {
+
+        File userPropertiesFile = new File(pathHelper.getUserPropertiesFilePath());
+        Properties userProperties;
+
+        if (! userPropertiesFile.exists()) {
+            log.info("Couldn't find marabou configuration. Loading defaults.");
+            userProperties = loadDefaultUserProperties();
+            userPropertiesInstance = new UserProperties(userProperties, this);
+        } else {
+            userProperties = loadUserProperties(userPropertiesFile);
+            userPropertiesInstance = new UserProperties(userProperties, this);
+        }
+    }
+
+    private Properties loadUserProperties(File userPropertiesFile) {
 
         Properties properties = new Properties();
 

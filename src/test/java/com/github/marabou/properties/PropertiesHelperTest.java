@@ -2,48 +2,12 @@ package com.github.marabou.properties;
 
 import com.github.marabou.helper.PathHelper;
 import com.github.marabou.helper.PropertiesLoader;
-import com.github.marabou.helper.UnknownPlatformException;
 
 import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
 public class PropertiesHelperTest {
-
-//    @Test
-//    public void persistsUserProperties() throws Exception {
-//
-//        String propertiesFilePath = "/tmp/foo";
-//
-//        // given
-//        PathHelper pathHelper = mock(PathHelper.class);
-//        when(pathHelper.getMarabouHomeFolder()).thenReturn(propertiesFilePath);
-//
-//        PropertiesLoader propertiesLoader = new PropertiesLoader();
-//        String propertiesContent = "foo=bar";
-//        propertiesLoader.loadProperties(new ByteArrayInputStream(propertiesContent.getBytes()));
-//
-//        PropertiesHelper propertiesHelper = new PropertiesHelper(pathHelper, propertiesLoader);
-//
-//        //when
-//        propertiesHelper.persistUserProperties();
-//
-//        // then
-//        Properties properties = new Properties();
-//        properties.load(this.getClass().getClassLoader().getResourceAsStream(propertiesFilePath));
-//    }
-
-
-    @Test(expected = RuntimeException.class)
-    public void throwsRuntimeExceptionOnUnknownPlatform() throws UnknownPlatformException {
-
-        // given
-        PathHelper pathHelper = mock(PathHelper.class);
-        when(pathHelper.getMarabouHomeFolder()).thenThrow(UnknownPlatformException.class);
-
-        // expect exception
-        new PropertiesHelper(pathHelper, new PropertiesLoader());
-    }
 
     @Test
     public void returnsApplicationPropertiesObject() {
@@ -72,27 +36,20 @@ public class PropertiesHelperTest {
     }
 
     @Test
-    public void loadsDefaultUserPropertiesWhenFilePermissionsNotSufficient() {
+    public void loadsDefaultUserPropertiesWhenNoneAreFound() {
 
         // given
         PathHelper pathHelperMock = mock(PathHelper.class);
+        when(pathHelperMock.getDefaultUserPropertiesPath()).thenReturn("this-does-not-exist");
         when(pathHelperMock.getUserPropertiesFilePath()).thenReturn("");
-        when(pathHelperMock.getDefaultUserPropertiesPath()).thenReturn("");
 
         PropertiesLoader propertiesLoaderMock = mock(PropertiesLoader.class);
+        PropertiesHelper propertiesHelper = new PropertiesHelper(pathHelperMock, propertiesLoaderMock);
 
         // when
-        new PropertiesHelper(pathHelperMock, propertiesLoaderMock);
+        propertiesHelper.getUserProperties();
 
         // then
         verify(pathHelperMock).getDefaultUserPropertiesPath();
     }
-
-//    @Test
-//    public void loadsUserPropertiesIfFileExistsAndCanBeRead() {
-//
-//
-//        // TODO
-//
-//    }
 }
