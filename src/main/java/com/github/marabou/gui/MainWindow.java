@@ -123,7 +123,6 @@ public class MainWindow {
 
     public void init() {
 
-        // TODO refactor and test
 		if (!userProperties.rememberWindowSize()) {
             shell.setMaximized(true);
             shell.open();
