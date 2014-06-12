@@ -4,7 +4,7 @@ import java.util.Properties;
 
 public class UserProperties {
 
-    private Properties properties;
+    protected Properties properties;
     private PropertiesHelper propertiesHelper;
 
     UserProperties(Properties properties, PropertiesHelper propertiesHelper) {

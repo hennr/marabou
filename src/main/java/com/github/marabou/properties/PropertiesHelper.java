@@ -41,62 +41,35 @@ public class PropertiesHelper {
     private void initialiseUserProperties() {
 
         File userPropertiesFile = new File(pathHelper.getUserPropertiesFilePath());
-        Properties userProperties;
 
         if (! userPropertiesFile.exists()) {
             log.info("Couldn't find marabou configuration. Loading defaults.");
-            userProperties = loadDefaultUserProperties();
-            userPropertiesInstance = new UserProperties(userProperties, this);
+            userPropertiesInstance = loadDefaultUserProperties();
+            // TODO persist
         } else {
-            userProperties = loadUserProperties(userPropertiesFile);
-            userPropertiesInstance = new UserProperties(userProperties, this);
+            userPropertiesInstance = getExistingUserProperties();
         }
     }
 
-    private Properties loadUserProperties(File userPropertiesFile) {
+    private UserProperties getExistingUserProperties() {
 
-        Properties properties = new Properties();
 
-            // if config is found, check if updates are needed
-		if (userPropertiesFile.exists()) {
+        InputStream userPropertiesStream = null;
+        try {
+            userPropertiesStream = new FileInputStream(new File(pathHelper.getUserPropertiesFilePath()));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        Properties properties = propertiesLoader.loadProperties(userPropertiesStream);
 
-				try {
-					properties.load(new FileReader(userPropertiesFile.getAbsolutePath()));
-                    addNewConfigurationKeysToUsersConfigFile(properties);
-				} catch (IOException e) {
-					log.severe("Couldn't load config file: " + userPropertiesFile.getAbsolutePath());
-                    throw new RuntimeException("Couldn't read config file. " +
-                            "Please make sure that your file permissions are set properly.");
-				}
-
-                properties = loadDefaultUserProperties();
-
-			// userPropertiesFile is not existent yet
-		} else {
-			try {
-				File mhfFile = new File(pathHelper.getMarabouHomeFolder());
-				// create folder if no folder exists yet
-				if (!mhfFile.exists()) {
-					if (!mhfFile.mkdir()) {
-						log.severe("Couldn't create marabou folder in your home.\n Please file a bug report.");
-					}
-				}
-				// create marabou.properties file in new folder
-				userPropertiesFile.createNewFile();
-			} catch (IOException e) {
-				log.severe("Couldn't create config file, please check your file permission in your home folder.");
-			}
-                properties = loadDefaultUserProperties();
-
-				// copy all entries to the new userPropertiesFile
-            persistUserProperties(properties);
-		}
-        return  properties;
+        UserProperties userProperties = new UserProperties(properties, this);
+        return userProperties;
     }
 
-    Properties loadDefaultUserProperties() {
+    UserProperties loadDefaultUserProperties() {
         InputStream userPropertiesStream = getClass().getClassLoader().getResourceAsStream(pathHelper.getDefaultUserPropertiesPath());
-        return propertiesLoader.loadProperties(userPropertiesStream);
+        UserProperties userProperties = new UserProperties(propertiesLoader.loadProperties(userPropertiesStream), this);
+        return userProperties;
     }
 
     private void addNewConfigurationKeysToUsersConfigFile(Properties userProperties) {
