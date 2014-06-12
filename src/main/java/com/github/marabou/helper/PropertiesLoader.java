@@ -14,7 +14,7 @@ public class PropertiesLoader {
             properties.load(userPropertiesStream);
             return properties;
         } catch (IOException e) {
-            throw new RuntimeException("Couldn't load given input stream" + userPropertiesStream);
+            throw new RuntimeException("Couldn't load given input stream " + userPropertiesStream);
         }
     }
 }
