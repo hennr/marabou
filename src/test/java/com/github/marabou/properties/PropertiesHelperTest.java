@@ -17,32 +17,6 @@ import static org.mockito.Mockito.*;
 public class PropertiesHelperTest {
 
     @Test
-    public void returnsApplicationPropertiesObject() {
-
-        //given
-        PropertiesHelper propertiesHelper = new PropertiesHelper(new PathHelper(), new PropertiesLoader());
-
-        // when
-        ApplicationProperties applicationProperties = propertiesHelper.getApplicationProperties();
-
-        // then
-        assertNotNull(applicationProperties);
-    }
-
-    @Test
-    public void returnsUserPropertiesObject() {
-
-        //given
-        PropertiesHelper propertiesHelper = new PropertiesHelper(new PathHelper(), new PropertiesLoader());
-
-        // when
-        UserProperties userProperties = propertiesHelper.getUserProperties();
-
-        // then
-        assertNotNull(userProperties);
-    }
-
-    @Test
     public void loadsDefaultUserPropertiesWhenNoneAreFound() {
 
         // given
