@@ -18,7 +18,6 @@ public class PropertiesHelperTest {
 
     @Test
     public void loadsDefaultUserPropertiesWhenNoneAreFound() {
-
         // given
         PathHelper pathHelperMock = mock(PathHelper.class);
         when(pathHelperMock.getDefaultUserPropertiesPath()).thenReturn("marabou.properties");
@@ -26,20 +25,17 @@ public class PropertiesHelperTest {
         when(pathHelperMock.getUserPropertiesFilePath()).thenReturn("this-does-not-exist");
 
         PropertiesLoader propertiesLoader = new PropertiesLoader();
-        PropertiesHelper propertiesHelper = new PropertiesHelper(pathHelperMock, propertiesLoader);
-
-        Properties defaultProperties = new Properties();
-        try {
-            defaultProperties.load(this.getClass().getClassLoader().getResourceAsStream("marabou.properties"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        PropertiesHelper propertiesHelper = spy( new PropertiesHelper(pathHelperMock, propertiesLoader));
 
         // when
         UserProperties userProperties = propertiesHelper.getUserProperties();
 
         // then
-        assertEquals(defaultProperties, userProperties.properties);
+        verify(propertiesHelper).loadDefaultUserProperties();
+        verify(propertiesHelper, times(0)).getExistingUserProperties();
+
+        UserProperties defaultProperties = propertiesHelper.loadDefaultUserProperties();
+        assertEquals(defaultProperties.properties, userProperties.properties);
     }
 
     @Ignore

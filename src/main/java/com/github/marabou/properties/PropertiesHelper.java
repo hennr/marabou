@@ -51,9 +51,7 @@ public class PropertiesHelper {
         }
     }
 
-    private UserProperties getExistingUserProperties() {
-
-
+    protected UserProperties getExistingUserProperties() {
         InputStream userPropertiesStream = null;
         try {
             userPropertiesStream = new FileInputStream(new File(pathHelper.getUserPropertiesFilePath()));

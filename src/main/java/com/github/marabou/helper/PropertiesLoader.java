@@ -6,7 +6,6 @@ import java.util.Properties;
 
 public class PropertiesLoader {
 
-
     public Properties loadProperties(InputStream userPropertiesStream) {
 
         try {
