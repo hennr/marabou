@@ -1,7 +1,6 @@
 package com.github.marabou.properties;
 
 import com.github.marabou.helper.PathHelper;
-import com.github.marabou.helper.PropertiesLoader;
 
 import java.io.*;
 import java.util.Properties;
@@ -45,7 +44,7 @@ public class PropertiesHelper {
         if (! userPropertiesFile.exists()) {
             log.info("Couldn't find marabou configuration. Loading defaults.");
             userPropertiesInstance = loadDefaultUserProperties();
-            // TODO persist
+            persistUserProperties(userPropertiesInstance.properties);
         } else {
             userPropertiesInstance = getExistingUserProperties();
         }
@@ -65,7 +64,7 @@ public class PropertiesHelper {
     }
 
     UserProperties loadDefaultUserProperties() {
-        InputStream userPropertiesStream = getClass().getClassLoader().getResourceAsStream(pathHelper.getDefaultUserPropertiesPath());
+        InputStream userPropertiesStream = getClass().getClassLoader().getResourceAsStream(pathHelper.getUserPropertiesFileName());
         UserProperties userProperties = new UserProperties(propertiesLoader.loadProperties(userPropertiesStream), this);
         return userProperties;
     }
@@ -87,15 +86,6 @@ public class PropertiesHelper {
 	// helper methods
 
 	public void persistUserProperties(Properties userProperties) {
-		try {
-			BufferedWriter userConf = new BufferedWriter(new FileWriter(pathHelper.getUserPropertiesFilePath()));
-            userProperties.store(userConf, null);
-			// flush and close streams
-			userConf.flush();
-			userConf.close();
-		} catch (IOException e) {
-			log.severe("Couldn't save config file.");
-		}
+        propertiesLoader.persistUserProperties(userProperties, pathHelper);
 	}
-
 }

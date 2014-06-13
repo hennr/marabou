@@ -1,5 +1,6 @@
 package com.github.marabou.helper;
 
+import com.github.marabou.properties.PropertiesLoader;
 import org.fest.assertions.api.Assertions;
 import org.junit.Test;
 

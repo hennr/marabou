@@ -28,6 +28,7 @@ import com.github.marabou.gui.MainWindow;
 import com.github.marabou.helper.*;
 import com.github.marabou.properties.ApplicationProperties;
 import com.github.marabou.properties.PropertiesHelper;
+import com.github.marabou.properties.PropertiesLoader;
 import com.github.marabou.properties.UserProperties;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
