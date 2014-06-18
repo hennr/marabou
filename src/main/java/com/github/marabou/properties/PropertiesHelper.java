@@ -86,6 +86,6 @@ public class PropertiesHelper {
 	// helper methods
 
 	public void persistUserProperties(Properties userProperties) {
-        propertiesLoader.persistUserProperties(userProperties, pathHelper);
+        propertiesLoader.persistUserProperties(userProperties);
 	}
 }

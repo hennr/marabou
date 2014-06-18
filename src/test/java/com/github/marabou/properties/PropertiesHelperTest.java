@@ -58,6 +58,6 @@ public class PropertiesHelperTest {
         propertiesHelper.getUserProperties();
 
         // then
-        verify(propertiesLoaderMock).persistUserProperties(any(Properties.class), any(PathHelper.class));
+        verify(propertiesLoaderMock).persistUserProperties(any(Properties.class));
     }
 }

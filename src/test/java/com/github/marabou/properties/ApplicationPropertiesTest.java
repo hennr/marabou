@@ -11,7 +11,7 @@ public class ApplicationPropertiesTest {
     public void programVersionIsSetInApplicationProperties() {
 
         // given
-        ApplicationProperties appProperties = new PropertiesHelper(new PathHelper(), new PropertiesLoader()).getApplicationProperties();
+        ApplicationProperties appProperties = new PropertiesHelper(new PathHelper(), new PropertiesLoader(new PathHelper())).getApplicationProperties();
 
         // expect
         assertThat(appProperties.getVersion()).isNotEqualTo("${project.version}");

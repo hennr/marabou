@@ -3,12 +3,9 @@ package com.github.marabou.properties;
 import com.github.marabou.helper.PathHelper;
 import junit.framework.TestCase;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 import java.util.Properties;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.TestCase.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 public class UserPropertiesTest {
 
@@ -16,7 +13,7 @@ public class UserPropertiesTest {
     public void rememberWindowSizeReturnsFalseAsDefault() throws Exception {
 
         // given
-        UserProperties userProperties = new UserProperties(new Properties(), new PropertiesHelper(new PathHelper(), new PropertiesLoader()));
+        UserProperties userProperties = emptyUserProperties();
 
         // when
         boolean result = userProperties.rememberWindowSize();
@@ -31,7 +28,7 @@ public class UserPropertiesTest {
         // given
         Properties properties = new Properties();
         properties.put("rememberWindowSize", "true");
-        UserProperties userProperties = new UserProperties(properties, new PropertiesHelper(new PathHelper(), new PropertiesLoader()));
+        UserProperties userProperties = userProperties(properties);
 
         // when
         boolean result = userProperties.rememberWindowSize();
@@ -46,7 +43,7 @@ public class UserPropertiesTest {
         // given
         Properties properties = new Properties();
         properties.put("rememberWindowSize", "false");
-        UserProperties userProperties = new UserProperties(properties, new PropertiesHelper(new PathHelper(), new PropertiesLoader()));
+        UserProperties userProperties = userProperties(properties);
 
         // when
         userProperties.setRememberWindowSize(true);
@@ -59,7 +56,7 @@ public class UserPropertiesTest {
     public void getTagBarWeightReturnsCorrectDefaultValue() throws Exception {
 
         // given
-        UserProperties userProperties = new UserProperties(new Properties(), new PropertiesHelper(new PathHelper(), new PropertiesLoader()));
+        UserProperties userProperties = emptyUserProperties();
 
         // expect
         TestCase.assertEquals("2", userProperties.getTagBarWeight());
@@ -71,7 +68,7 @@ public class UserPropertiesTest {
         // given
         Properties properties = new Properties();
         properties.put("tagBarWeight", "1");
-        UserProperties userProperties = new UserProperties(properties, new PropertiesHelper(new PathHelper(), new PropertiesLoader()));
+        UserProperties userProperties = userProperties(properties);
 
         // when
         String result = userProperties.getTagBarWeight();
@@ -86,7 +83,7 @@ public class UserPropertiesTest {
         // given
         Properties properties = new Properties();
         properties.put("tagBarWeight", "2");
-        UserProperties userProperties = new UserProperties(properties, new PropertiesHelper(new PathHelper(), new PropertiesLoader()));
+        UserProperties userProperties = userProperties(properties);
 
         // when
         userProperties.setTagBarWeight(1);
@@ -99,7 +96,7 @@ public class UserPropertiesTest {
     public void getTableWeightReturnsCorrectDefaultValue() throws Exception {
 
         // given
-        UserProperties userProperties = new UserProperties(new Properties(), new PropertiesHelper(new PathHelper(), new PropertiesLoader()));
+        UserProperties userProperties = emptyUserProperties();
 
         // expect
         TestCase.assertEquals("5", userProperties.getTableWeight());
@@ -111,7 +108,7 @@ public class UserPropertiesTest {
         // given
         Properties properties = new Properties();
         properties.put("tableWeight", "1");
-        UserProperties userProperties = new UserProperties(properties, new PropertiesHelper(new PathHelper(), new PropertiesLoader()));
+        UserProperties userProperties = userProperties(properties);
 
         // when
         String result = userProperties.getTableWeight();
@@ -126,7 +123,7 @@ public class UserPropertiesTest {
         // given
         Properties properties = new Properties();
         properties.put("tableWeight", "2");
-        UserProperties userProperties = new UserProperties(properties, new PropertiesHelper(new PathHelper(), new PropertiesLoader()));
+        UserProperties userProperties = userProperties(properties);
 
         // when
         userProperties.setTableWeight(1);
@@ -139,7 +136,7 @@ public class UserPropertiesTest {
     public void getWindowSizeXReturnsCorrectDefaultValue() throws Exception {
 
         // given
-        UserProperties userProperties = new UserProperties(new Properties(), new PropertiesHelper(new PathHelper(), new PropertiesLoader()));
+        UserProperties userProperties = emptyUserProperties();
 
         // expect
         TestCase.assertEquals(-1, userProperties.getWindowSizeX());
@@ -151,7 +148,7 @@ public class UserPropertiesTest {
         // given
         Properties properties = new Properties();
         properties.put("windowSizeX", "1");
-        UserProperties userProperties = new UserProperties(properties, new PropertiesHelper(new PathHelper(), new PropertiesLoader()));
+        UserProperties userProperties = userProperties(properties);
 
         // when
         int result = userProperties.getWindowSizeX();
@@ -166,7 +163,7 @@ public class UserPropertiesTest {
         // given
         Properties properties = new Properties();
         properties.put("windowSizeX", "-1");
-        UserProperties userProperties = new UserProperties(properties, new PropertiesHelper(new PathHelper(), new PropertiesLoader()));
+        UserProperties userProperties = userProperties(properties);
 
         // when
         userProperties.setWindowSizeX(1);
@@ -179,7 +176,7 @@ public class UserPropertiesTest {
     public void getWindowSizeYReturnsCorrectDefaultValue() throws Exception {
 
         // given
-        UserProperties userProperties = new UserProperties(new Properties(), new PropertiesHelper(new PathHelper(), new PropertiesLoader()));
+        UserProperties userProperties = emptyUserProperties();
 
         // expect
         TestCase.assertEquals(-1, userProperties.getWindowSizeY());
@@ -191,7 +188,7 @@ public class UserPropertiesTest {
         // given
         Properties properties = new Properties();
         properties.put("windowSizeY", "1");
-        UserProperties userProperties = new UserProperties(properties, new PropertiesHelper(new PathHelper(), new PropertiesLoader()));
+        UserProperties userProperties = userProperties(properties);
 
         // when
         int result = userProperties.getWindowSizeY();
@@ -206,7 +203,7 @@ public class UserPropertiesTest {
         // given
         Properties properties = new Properties();
         properties.put("windowSizeY", "-1");
-        UserProperties userProperties = new UserProperties(properties, new PropertiesHelper(new PathHelper(), new PropertiesLoader()));
+        UserProperties userProperties = userProperties(properties);
 
         // when
         userProperties.setWindowSizeY(1);
@@ -219,7 +216,7 @@ public class UserPropertiesTest {
     public void rememberLastPathReturnsCorrectDefaultValue() throws Exception {
 
         // given
-        UserProperties userProperties = new UserProperties(new Properties(), new PropertiesHelper(new PathHelper(), new PropertiesLoader()));
+        UserProperties userProperties = emptyUserProperties();
 
         // expect
         TestCase.assertEquals(true, userProperties.rememberLastPath());
@@ -231,7 +228,7 @@ public class UserPropertiesTest {
         // given
         Properties properties = new Properties();
         properties.put("safeLastPath", "false");
-        UserProperties userProperties = new UserProperties(properties, new PropertiesHelper(new PathHelper(), new PropertiesLoader()));
+        UserProperties userProperties = userProperties(properties);
 
         // when
         boolean result = userProperties.rememberLastPath();
@@ -246,7 +243,7 @@ public class UserPropertiesTest {
         // given
         Properties properties = new Properties();
         properties.put("safeLastPath", "true");
-        UserProperties userProperties = new UserProperties(properties, new PropertiesHelper(new PathHelper(), new PropertiesLoader()));
+        UserProperties userProperties = userProperties(properties);
 
         // when
         userProperties.setRememberLastPath(false);
@@ -259,7 +256,7 @@ public class UserPropertiesTest {
     public void getLastPathReturnsCorrectDefaultValue() throws Exception {
 
         // given
-        UserProperties userProperties = new UserProperties(new Properties(), new PropertiesHelper(new PathHelper(), new PropertiesLoader()));
+        UserProperties userProperties = emptyUserProperties();
 
         // expect
         TestCase.assertEquals("", userProperties.getLastPath());
@@ -271,7 +268,7 @@ public class UserPropertiesTest {
         // given
         Properties properties = new Properties();
         properties.put("lastPath", "foo");
-        UserProperties userProperties = new UserProperties(properties, new PropertiesHelper(new PathHelper(), new PropertiesLoader()));
+        UserProperties userProperties = userProperties(properties);
 
         // when
         String result = userProperties.getLastPath();
@@ -286,12 +283,20 @@ public class UserPropertiesTest {
         // given
         Properties properties = new Properties();
         properties.put("lastPath", "");
-        UserProperties userProperties = new UserProperties(properties, new PropertiesHelper(new PathHelper(), new PropertiesLoader()));
+        UserProperties userProperties = userProperties(properties);
 
         // when
         userProperties.setLastPath("foo");
 
         //then
         assertEquals("foo", properties.getProperty("lastPath"));
+    }
+
+    private UserProperties emptyUserProperties() {
+        return new UserProperties(new Properties(), new PropertiesHelper(new PathHelper(), new PropertiesLoader(new PathHelper())));
+    }
+
+    private UserProperties userProperties(Properties properties) {
+        return new UserProperties(properties, new PropertiesHelper(new PathHelper(), new PropertiesLoader(new PathHelper())));
     }
 }

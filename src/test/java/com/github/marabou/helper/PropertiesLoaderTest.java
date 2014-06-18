@@ -14,7 +14,7 @@ public class PropertiesLoaderTest {
     public void testLoadProperties() throws Exception {
 
         // given
-        PropertiesLoader propertiesLoader = new PropertiesLoader();
+        PropertiesLoader propertiesLoader = new PropertiesLoader(new PathHelper());
         String propertiesContent = "foo=bar";
         Properties properties = propertiesLoader.loadProperties(new ByteArrayInputStream(propertiesContent.getBytes()));
 

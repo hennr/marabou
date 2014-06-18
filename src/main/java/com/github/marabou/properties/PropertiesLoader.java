@@ -11,7 +11,12 @@ import java.util.logging.Logger;
 //TODO: write a cool test
 public class PropertiesLoader {
 
+    private final PathHelper pathHelper;
     private Logger log = Logger.getLogger(PropertiesLoader.class.getName());
+
+    public PropertiesLoader(PathHelper pathHelper) {
+        this.pathHelper = pathHelper;
+    }
 
     public Properties loadProperties(InputStream userPropertiesStream) {
         try {
@@ -23,33 +28,32 @@ public class PropertiesLoader {
         }
     }
 
-    void persistUserProperties(Properties userProperties, PathHelper pathHelper) {
+    void persistUserProperties(Properties userProperties) {
         try {
-            createUserPropertiesPath(pathHelper);
-            writeUserProperties(userProperties, pathHelper);
+            createUserPropertiesDirectoryIfNonExistent();
+            writeUserProperties(userProperties);
         } catch (IOException e) {
             log.log(Level.SEVERE, "Couldn't save config file.", e);
         }
     }
 
-    private void writeUserProperties(Properties userProperties, PathHelper pathHelper) throws IOException {
-        BufferedWriter userConf = createWriter(pathHelper);
-        userProperties.store(userConf, null);
-        // flush and close streams
-        userConf.flush();
-        userConf.close();
-    }
-
-    private BufferedWriter createWriter(PathHelper pathHelper) throws IOException {
-        return new BufferedWriter(new FileWriter(pathHelper.getUserPropertiesFilePath()));
-    }
-
-    private void createUserPropertiesPath(PathHelper pathHelper) throws IOException {
+    private void createUserPropertiesDirectoryIfNonExistent() throws IOException {
         File userPropertiesDirectory = pathHelper.getUserPropertiesDirectory();
 
         if (!userPropertiesDirectory.exists()) {
             FileUtils.forceMkdir(userPropertiesDirectory);
         }
+    }
+
+    private void writeUserProperties(Properties userProperties) throws IOException {
+        BufferedWriter userConf = createWriter(pathHelper.getUserPropertiesFilePath());
+        userProperties.store(userConf, null);
+        userConf.flush();
+        userConf.close();
+    }
+
+    private BufferedWriter createWriter(String filePath) throws IOException {
+        return new BufferedWriter(new FileWriter(filePath));
     }
 
 }

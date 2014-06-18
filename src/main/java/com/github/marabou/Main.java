@@ -38,7 +38,7 @@ public class Main {
 	public static void main(String[] args) {
 
         PathHelper pathHelper = new PathHelper();
-        PropertiesLoader propertiesLoader = new PropertiesLoader();
+        PropertiesLoader propertiesLoader = new PropertiesLoader(pathHelper);
         PropertiesHelper propertiesHelper = new PropertiesHelper(pathHelper, propertiesLoader);
         UserProperties userProperties = propertiesHelper.getUserProperties();
         ApplicationProperties applicationProperties = propertiesHelper.getApplicationProperties();
