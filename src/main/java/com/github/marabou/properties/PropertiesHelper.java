@@ -4,7 +4,6 @@ import com.github.marabou.helper.PathHelper;
 
 import java.io.*;
 import java.util.Properties;
-import java.util.Set;
 import java.util.logging.Logger;
 
 public class PropertiesHelper {
@@ -31,10 +30,14 @@ public class PropertiesHelper {
     }
 
     public UserProperties getUserProperties() {
-        if (userPropertiesInstance == null) {
+        if (!userPropertiesInitialized()) {
             initialiseUserProperties();
         }
         return userPropertiesInstance;
+    }
+
+    private boolean userPropertiesInitialized() {
+        return userPropertiesInstance != null;
     }
 
     private void initialiseUserProperties() {
@@ -69,23 +72,9 @@ public class PropertiesHelper {
         return userProperties;
     }
 
-    private void addNewConfigurationKeysToUsersConfigFile(Properties userProperties) {
-        Set<Object> vendorKeys = userProperties.keySet();
-        Set<Object> userKeys = userProperties.keySet();
+    // helper methods
 
-        // copy missing new key/value pairs
-        for (Object key : vendorKeys) {
-            if (!userKeys.contains(key)) {
-                userProperties.put(key, userProperties.get(key));
-            }
-
-        }
-        persistUserProperties(userProperties);
-    }
-
-	// helper methods
-
-	public void persistUserProperties(Properties userProperties) {
+    public void persistUserProperties(Properties userProperties) {
         propertiesLoader.persistUserProperties(userProperties);
-	}
+    }
 }
