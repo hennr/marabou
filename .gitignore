@@ -5,6 +5,6 @@
 *.iml
 .idea/
 *.class
-bin
+bin/
 /nb-configuration.xml
 nbactions.xml
