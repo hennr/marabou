@@ -6,7 +6,7 @@ public class ApplicationProperties {
 
     private final Properties properties;
 
-    public ApplicationProperties(Properties properties) {
+    ApplicationProperties(Properties properties) {
         this.properties = properties;
     }
 

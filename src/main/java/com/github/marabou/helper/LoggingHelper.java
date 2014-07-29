@@ -53,15 +53,9 @@ public class LoggingHelper {
 		// Create a FileHandler to log messages into a log file
 		FileHandler fh;
 		PathHelper ph = new PathHelper();
-		String home;
-		String logFilePath = "";
-		try {
-			home = ph.getMarabouHomeFolder();
-			logFilePath = home + "marabou.log";
-		} catch (UnknownPlatformException e1) {
-			System.err.println("OS couldn't get detected properly, please file a bugreport!\n" +
-					"No logfile will be used.");
-		}
+        String home = ph.getMarabouHomeFolder();
+        String	logFilePath = home + "marabou.log";
+
 		if (! logFilePath.equals("")) {
 			try {
 				// use five logfiles with 1MB in size, do not append but use a new log file for every start

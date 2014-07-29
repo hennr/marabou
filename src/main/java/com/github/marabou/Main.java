@@ -25,11 +25,11 @@ import com.github.marabou.controller.TableController;
 import com.github.marabou.gui.AboutWindow;
 import com.github.marabou.gui.MainMenu;
 import com.github.marabou.gui.MainWindow;
-import com.github.marabou.helper.ImageLoader;
-import com.github.marabou.helper.LoggingHelper;
-import com.github.marabou.helper.PathHelper;
-import com.github.marabou.helper.PropertiesHelper;
+import com.github.marabou.helper.*;
 import com.github.marabou.properties.ApplicationProperties;
+import com.github.marabou.properties.PropertiesHelper;
+import com.github.marabou.properties.PropertiesLoader;
+import com.github.marabou.properties.UserProperties;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -37,22 +37,36 @@ public class Main {
 
 	public static void main(String[] args) {
 
-        ApplicationProperties applicationProperties = PropertiesHelper.getApplicationProperties();
         PathHelper pathHelper = new PathHelper();
-        PropertiesHelper propertiesHelper = new PropertiesHelper(pathHelper);
+        PropertiesLoader propertiesLoader = new PropertiesLoader(pathHelper);
+        PropertiesHelper propertiesHelper = new PropertiesHelper(pathHelper, propertiesLoader);
+        UserProperties userProperties = propertiesHelper.getUserProperties();
+        ApplicationProperties applicationProperties = propertiesHelper.getApplicationProperties();
 
-        if (startedWithDebugFlag(args)) {
+        setupLogging(args);
+        setupMainWindow(applicationProperties, userProperties);
+	}
+
+    private static void setupLogging(String[] args) {
+        if (startedInDebugMode(args)) {
+            System.out.println("Starting marabou in debug mode.");
             LoggingHelper.initLoggingDebug();
         } else {
             LoggingHelper.initLogging();
         }
+    }
 
+    private static boolean startedInDebugMode(String[] args) {
 
+        for (String arg : args) {
+            if (arg.equalsIgnoreCase("--debug")) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-        setupMainWindow(applicationProperties, propertiesHelper);
-	}
-
-    private static void setupMainWindow(ApplicationProperties applicationProperties, PropertiesHelper propertiesHelper) {
+    private static void setupMainWindow(ApplicationProperties applicationProperties, UserProperties userProperties) {
         Display display = new Display();
         Shell mainWindowShell = new Shell(display);
         ImageLoader imageLoader = new ImageLoader(display);
@@ -61,22 +75,10 @@ public class Main {
         EditorController editorController = new EditorController();
         AudioFileFilter audioFileFilter = new AudioFileFilter();
         TableController tableController = new TableController(audioFileFilter);
-        MainMenu mainMenu = new MainMenu(mainWindowShell, aboutWindow, propertiesHelper, editorController, tableController);
+        MainMenu mainMenu = new MainMenu(mainWindowShell, aboutWindow, editorController, tableController, userProperties);
         mainMenu.init();
 
-        MainWindow mainWindow = new MainWindow(mainWindowShell, mainMenu, propertiesHelper, imageLoader);
+        MainWindow mainWindow = new MainWindow(mainWindowShell, mainMenu, imageLoader, userProperties);
         mainWindow.init();
     }
-
-    // determines if marabou was started with --debug flag
-	private static boolean startedWithDebugFlag(String[] args) {
-
-		for (String arg : args) {
-			if (arg.equalsIgnoreCase("--debug")) {
-				System.out.println("Starting marabou in debug mode.");
-				return true;
-			}
-		}
-		return false;
-	}
 }

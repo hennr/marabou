@@ -32,6 +32,7 @@ import com.github.marabou.controller.EditorController;
 import com.github.marabou.controller.TableController;
 import com.github.marabou.helper.*;
 
+import com.github.marabou.properties.UserProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
 
@@ -53,19 +54,19 @@ public class MainMenu {
 	private TableShell tableShell;
 	private Menu menu;
     private AboutWindow aboutWindow;
-    private PropertiesHelper propertiesHelper;
     private EditorController editorController;
     private TableController tableController;
+    private UserProperties userProperties;
 
 
-	public MainMenu(Shell shell, AboutWindow aboutWindow, PropertiesHelper propertiesHelper, EditorController editorController, TableController tableController) {
+    public MainMenu(Shell shell, AboutWindow aboutWindow, EditorController editorController, TableController tableController, UserProperties userProperties) {
         this.editorController = editorController;
         this.tableController = tableController;
+        this.userProperties = userProperties;
         this.menu = new Menu(shell, SWT.BAR);
 		this.shell = shell;
         this.imageLoader = new ImageLoader(shell.getDisplay());
         this.aboutWindow = aboutWindow;
-        this.propertiesHelper = propertiesHelper;
 	}
 
 	/**
@@ -107,8 +108,7 @@ public class MainMenu {
 				fileDialog.setText(_("Choose file..."));
 
 				// set the filter path, restore from the config file if possible
-				String lastPath = propertiesHelper.getProp(PropertiesAllowedKeys.lastPath);
-				fileDialog.setFilterPath(lastPath);
+				fileDialog.setFilterPath(userProperties.getLastPath());
 
 				/**
 				 * currently supported file endings, text for GUI
@@ -132,10 +132,9 @@ public class MainMenu {
 				fileDialog.open();
 				// safe the last path if user wants us to
 				String dirToOpen = fileDialog.getFilterPath();
-				boolean safeLastPath = propertiesHelper.getProp(PropertiesAllowedKeys.safeLastPath).equals("true");
-				if (safeLastPath && dirToOpen != null) {
+				if (userProperties.rememberLastPath() && dirToOpen != null) {
 					// if it's null, the user aborted the opening process
-					PropertiesHelper.setProp(PropertiesAllowedKeys.lastPath, dirToOpen);
+					userProperties.setLastPath(dirToOpen);
 				}
 
 				// open the selected files
@@ -164,13 +163,11 @@ public class MainMenu {
 				DirectoryDialog directoryDialog = new DirectoryDialog(shell);
 				directoryDialog.setText(_("Choose directory..."));
 
-				String lastPath = propertiesHelper.getProp(PropertiesAllowedKeys.lastPath);
-				directoryDialog.setFilterPath(lastPath);
+				directoryDialog.setFilterPath(userProperties.getLastPath());
 				String dirToOpen = directoryDialog.open();
-				boolean safeLastPath = propertiesHelper.getProp(PropertiesAllowedKeys.safeLastPath).equals("true");
-				if (safeLastPath && dirToOpen != null) {
+				if (userProperties.rememberLastPath() && dirToOpen != null) {
 					// if it's null, the user aborted the opening process
-					PropertiesHelper.setProp(PropertiesAllowedKeys.lastPath, dirToOpen);
+					userProperties.setLastPath(dirToOpen);
 				}
 				log.log(Level.INFO, "Directory to open: {0}", dirToOpen);
 
