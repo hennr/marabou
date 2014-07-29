@@ -8,9 +8,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.Properties;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class PropertiesHelperTest {
@@ -59,5 +57,36 @@ public class PropertiesHelperTest {
 
         // then
         verify(propertiesLoaderMock).persistUserProperties(any(Properties.class));
+    }
+
+    @Test
+    public void checksUserPropertiesFileExistenceCorrectly() {
+        // given
+        PathHelper pathHelperMock = mock(PathHelper.class);
+        when(pathHelperMock.getUserPropertiesFilePath()).thenReturn("this-file-does-not-exist");
+        PropertiesLoader propertiesLoaderMock = mock(PropertiesLoader.class);
+        PropertiesHelper propertiesHelper = new PropertiesHelper(pathHelperMock, propertiesLoaderMock);
+
+        // expect
+        assertTrue(propertiesHelper.userPropertiesNonExistent());
+    }
+
+    @Test
+    public void checksUserPropertiesFileReadabilityCorrectly() {
+        // given
+        PathHelper pathHelperMock = mock(PathHelper.class);
+        when(pathHelperMock.getUserPropertiesFilePath()).thenReturn("this-file-does-not-exist");
+        File f = mock(File.class);
+        when(f.canRead()).thenReturn(true);
+
+        PropertiesLoader propertiesLoaderMock = mock(PropertiesLoader.class);
+        PropertiesHelper propertiesHelper = spy(new PropertiesHelper(pathHelperMock, propertiesLoaderMock));
+        File nonReadableFile = mock(File.class);
+        when(nonReadableFile.canRead()).thenReturn(false);
+
+        doReturn(nonReadableFile).when(propertiesHelper).getUserPropertiesFile();
+
+        // expect
+        assertTrue(propertiesHelper.userPropertiesNotReadable());
     }
 }

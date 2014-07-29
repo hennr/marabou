@@ -42,21 +42,36 @@ public class PropertiesHelper {
 
     private void initialiseUserProperties() {
 
-        File userPropertiesFile = new File(pathHelper.getUserPropertiesFilePath());
-
-        if (! userPropertiesFile.exists()) {
+        if (userPropertiesNonExistent()) {
             log.info("Couldn't find marabou configuration. Loading defaults.");
             userPropertiesInstance = loadDefaultUserProperties();
             persistUserProperties(userPropertiesInstance.properties);
-        } else {
+        } else if(userPropertiesNotReadable()) {
+            log.info("Couldn't find marabou configuration. Loading defaults.");
+            userPropertiesInstance = loadDefaultUserProperties();
+        }else{
             userPropertiesInstance = getExistingUserProperties();
         }
+    }
+
+    protected boolean userPropertiesNonExistent() {
+        File userPropertiesFile = getUserPropertiesFile();
+       return !userPropertiesFile.exists();
+    }
+
+    protected boolean userPropertiesNotReadable() {
+        File userPropertiesFile = getUserPropertiesFile();
+        return !userPropertiesFile.canRead();
+    }
+
+    protected File getUserPropertiesFile() {
+        return new File(pathHelper.getUserPropertiesFilePath());
     }
 
     protected UserProperties getExistingUserProperties() {
         InputStream userPropertiesStream = null;
         try {
-            userPropertiesStream = new FileInputStream(new File(pathHelper.getUserPropertiesFilePath()));
+            userPropertiesStream = new FileInputStream(getUserPropertiesFile());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
