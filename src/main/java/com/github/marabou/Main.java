@@ -48,7 +48,7 @@ public class Main {
 	}
 
     private static void setupLogging(String[] args) {
-        if (startedWithDebugFlag(args)) {
+        if (startedInDebugMode(args)) {
             System.out.println("Starting marabou in debug mode.");
             LoggingHelper.initLoggingDebug();
         } else {
@@ -56,8 +56,7 @@ public class Main {
         }
     }
 
-    // determines if marabou was started with --debug flag
-    private static boolean startedWithDebugFlag(String[] args) {
+    private static boolean startedInDebugMode(String[] args) {
 
         for (String arg : args) {
             if (arg.equalsIgnoreCase("--debug")) {
