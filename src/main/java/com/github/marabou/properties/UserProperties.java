@@ -21,8 +21,8 @@ public class UserProperties {
     }
 
     // size of the tag bar in relation to the table
-    public String getTagBarWeight() {
-        return getStoredValueOrDefault("tagBarWeight", "2");
+    public int getTagBarWeight() {
+        return getStoredValueOrDefaultAsInt("tagBarWeight", 2);
     }
 
     public void setTagBarWeight(int weight) {
@@ -30,8 +30,8 @@ public class UserProperties {
     }
 
     // size of the table in relation to the tag bar
-    public String getTableWeight() {
-        return getStoredValueOrDefault("tableWeight", "5");
+    public int getTableWeight() {
+        return getStoredValueOrDefaultAsInt("tableWeight", 5);
     }
 
     public void setTableWeight(int weight) {

@@ -59,7 +59,7 @@ public class UserPropertiesTest {
         UserProperties userProperties = emptyUserProperties();
 
         // expect
-        TestCase.assertEquals("2", userProperties.getTagBarWeight());
+        TestCase.assertEquals(2, userProperties.getTagBarWeight());
     }
 
     @Test
@@ -71,10 +71,10 @@ public class UserPropertiesTest {
         UserProperties userProperties = userProperties(properties);
 
         // when
-        String result = userProperties.getTagBarWeight();
+        int result = userProperties.getTagBarWeight();
 
         //then
-        TestCase.assertEquals("1", result);
+        TestCase.assertEquals(1, result);
     }
 
     @Test
@@ -99,7 +99,7 @@ public class UserPropertiesTest {
         UserProperties userProperties = emptyUserProperties();
 
         // expect
-        TestCase.assertEquals("5", userProperties.getTableWeight());
+        TestCase.assertEquals(5, userProperties.getTableWeight());
     }
 
     @Test
@@ -111,10 +111,10 @@ public class UserPropertiesTest {
         UserProperties userProperties = userProperties(properties);
 
         // when
-        String result = userProperties.getTableWeight();
+        int result = userProperties.getTableWeight();
 
         //then
-        TestCase.assertEquals("1", result);
+        TestCase.assertEquals(1, result);
     }
 
     @Test

@@ -116,8 +116,8 @@ public class MainWindow {
 
     private int[] getStoredSashRation() {
         int[] result = new int[2];
-        result[0] = Integer.parseInt(userProperties.getTagBarWeight());
-        result[1] = Integer.parseInt(userProperties.getTableWeight());
+        result[0] = userProperties.getTagBarWeight();
+        result[1] = userProperties.getTableWeight();
         return result;
     }
 
