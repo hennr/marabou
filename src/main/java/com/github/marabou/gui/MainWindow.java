@@ -134,7 +134,6 @@ public class MainWindow {
         } else {
             shell.setSize(x, y);
         }
-        shell.setMaximized(true);
 		shell.open();
 		
         saveUserSpecificSettingsOnExit();
