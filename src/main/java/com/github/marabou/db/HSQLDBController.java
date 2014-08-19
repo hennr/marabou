@@ -35,8 +35,6 @@ public class HSQLDBController {
 
     protected TableShell table;
 
-    private boolean tableConnected;
-
     private HSQLDBController(FileAttributeSidePanel fileAttributeSidePanel) {
         this.db = new HSQLDBClient();
         this.fileAttributeSidePanel = fileAttributeSidePanel;
@@ -232,7 +230,7 @@ public class HSQLDBController {
         return -1;
     }
 
-    private void setTableItemValues(HashMap<String, String> newTags, TableItem tableItem, boolean multiUpdate) {
+    private void setTableItemValues(HashMap<String, String> newTags, TableItem tableItem) {
 
         tableItem.setText(0, newTags.get("Artist"));
         tableItem.setText(3, newTags.get("Album"));
@@ -342,27 +340,16 @@ public class HSQLDBController {
 
     public void updateDBandTable() {
 
-        boolean multiUpdate = false;
-
         HashMap<String, String> newTags = fileAttributeSidePanel.getTags();
         TableItem[] tblItems = table.getTable().getSelection();
 
-        if (tblItems.length > 1) {
-            multiUpdate = true;
-        }
-
         for (TableItem ti : tblItems) {
-            setTableItemValues(newTags, ti, multiUpdate);
+            setTableItemValues(newTags, ti);
         }
-    }
-
-    public boolean isTableConnected() {
-        return tableConnected;
     }
 
     public final void connectTableShell(TableShell tableShell) {
         table = tableShell;
-        tableConnected = true;
     }
 
 }
