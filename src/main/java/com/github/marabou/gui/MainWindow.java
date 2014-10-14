@@ -104,7 +104,6 @@ public class MainWindow {
 
         // Table
         TableShell table = new TableShell(rightComp);
-        mainMenu.setTableShell(table);
         // link table shell with controller
         controller.connectTableShell(table);
 

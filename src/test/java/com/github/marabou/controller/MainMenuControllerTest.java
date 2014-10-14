@@ -2,6 +2,10 @@ package com.github.marabou.controller;
 
 import com.github.marabou.audio.AudioFileFilter;
 import com.github.marabou.db.HSQLDBController;
+import com.github.marabou.gui.AboutWindow;
+import com.github.marabou.properties.UserProperties;
+import com.github.marabou.service.AudioFileService;
+import org.eclipse.swt.widgets.Shell;
 import org.junit.Test;
 
 import java.io.File;
@@ -16,10 +20,7 @@ public class MainMenuControllerTest {
     public void opensValidFile() throws Exception {
 
         // given
-        AudioFileFilter audioFileFilter = mock(AudioFileFilter.class);
-        when(audioFileFilter.accept(any(File.class))).thenReturn(true);
-
-        MainMenuController controllerUnderTest = new MainMenuController(audioFileFilter);
+        MainMenuController controllerUnderTest = givenAMainMenuControllerWithMocks();
 
         HSQLDBController hsqldbControllerMock = mock(HSQLDBController.class);
         controllerUnderTest.hsqldbController = hsqldbControllerMock;
@@ -30,7 +31,6 @@ public class MainMenuControllerTest {
         controllerUnderTest.openFile(file);
 
         // then
-        verify(audioFileFilter).accept(file);
         verify(hsqldbControllerMock).insertFile(file);
         verify(hsqldbControllerMock).addAllTableItems();
     }
@@ -39,10 +39,7 @@ public class MainMenuControllerTest {
     public void testOpenFiles() throws Exception {
 
         // given
-        AudioFileFilter audioFileFilter = mock(AudioFileFilter.class);
-        when(audioFileFilter.accept(any(File.class))).thenReturn(true);
-
-        MainMenuController controllerUnderTest = new MainMenuController(audioFileFilter);
+        MainMenuController controllerUnderTest = givenAMainMenuControllerWithMocks();
 
         HSQLDBController hsqldbControllerMock = mock(HSQLDBController.class);
         controllerUnderTest.hsqldbController = hsqldbControllerMock;
@@ -58,6 +55,17 @@ public class MainMenuControllerTest {
         verify(hsqldbControllerMock).insertFile(files.get(0));
         verify(hsqldbControllerMock).insertFile(files.get(1));
         verify(hsqldbControllerMock, times(2)).addAllTableItems();
+    }
+
+    private MainMenuController givenAMainMenuControllerWithMocks() {
+        AudioFileFilter audioFileFilterMock = mock(AudioFileFilter.class);
+        when(audioFileFilterMock.accept(any(File.class))).thenReturn(true);
+        UserProperties userPropertiesMock = mock(UserProperties.class);
+        Shell shellMock = mock(Shell.class);
+        AudioFileService audioFileServiceMock = mock(AudioFileService.class);
+        AboutWindow aboutWindowMock = mock(AboutWindow.class);
+
+        return new MainMenuController(audioFileFilterMock, shellMock, userPropertiesMock, audioFileServiceMock, aboutWindowMock);
     }
 
     private File aValidMockedFile() {

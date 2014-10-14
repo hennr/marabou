@@ -223,6 +223,7 @@ public class HSQLDBController {
                 setTableItemValues(rs,
                         new TableItem(table.getTable(), SWT.None));
             }
+            this.table.setKeyboardFocus();
         } catch (SQLException e) {
             // TODO Auto-generated catch block add ErrorAppending stuff
             e.printStackTrace();

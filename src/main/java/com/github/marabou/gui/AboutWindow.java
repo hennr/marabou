@@ -52,7 +52,7 @@ public class AboutWindow {
 	/**
 	 * shows various information about marabou in a small window
 	 */
-	public void showAbout() {
+	public void show() {
 		final Display display = Display.getCurrent();
 		final Shell shell = new Shell(display);
 		shell.setText(_("About Marabou"));

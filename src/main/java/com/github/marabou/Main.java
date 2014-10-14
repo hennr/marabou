@@ -30,6 +30,7 @@ import com.github.marabou.properties.ApplicationProperties;
 import com.github.marabou.properties.PropertiesHelper;
 import com.github.marabou.properties.PropertiesLoader;
 import com.github.marabou.properties.UserProperties;
+import com.github.marabou.service.AudioFileService;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -74,8 +75,9 @@ public class Main {
 
         EditorController editorController = new EditorController();
         AudioFileFilter audioFileFilter = new AudioFileFilter();
-        MainMenuController mainMenuController = new MainMenuController(audioFileFilter);
-        MainMenu mainMenu = new MainMenu(mainWindowShell, aboutWindow, editorController, mainMenuController, userProperties);
+        AudioFileService audioFileService = new AudioFileService(audioFileFilter);
+        MainMenuController mainMenuController = new MainMenuController(audioFileFilter, mainWindowShell, userProperties, audioFileService, aboutWindow);
+        MainMenu mainMenu = new MainMenu(mainWindowShell, editorController, mainMenuController);
         mainMenu.init();
 
         MainWindow mainWindow = new MainWindow(mainWindowShell, mainMenu, imageLoader, userProperties);
