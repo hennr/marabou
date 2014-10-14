@@ -10,12 +10,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class TableController {
+public class MainMenuController {
 
     private AudioFileFilter audioFileFilter;
     HSQLDBController hsqldbController = HSQLDBController.getInstance();
 
-    public TableController(AudioFileFilter audioFileFilter) {
+    public MainMenuController(AudioFileFilter audioFileFilter) {
         this.audioFileFilter = audioFileFilter;
     }
 

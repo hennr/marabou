@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-public class TableControllerTest {
+public class MainMenuControllerTest {
 
     @Test
     public void opensValidFile() throws Exception {
@@ -19,7 +19,7 @@ public class TableControllerTest {
         AudioFileFilter audioFileFilter = mock(AudioFileFilter.class);
         when(audioFileFilter.accept(any(File.class))).thenReturn(true);
 
-        TableController controllerUnderTest = new TableController(audioFileFilter);
+        MainMenuController controllerUnderTest = new MainMenuController(audioFileFilter);
 
         HSQLDBController hsqldbControllerMock = mock(HSQLDBController.class);
         controllerUnderTest.hsqldbController = hsqldbControllerMock;
@@ -42,7 +42,7 @@ public class TableControllerTest {
         AudioFileFilter audioFileFilter = mock(AudioFileFilter.class);
         when(audioFileFilter.accept(any(File.class))).thenReturn(true);
 
-        TableController controllerUnderTest = new TableController(audioFileFilter);
+        MainMenuController controllerUnderTest = new MainMenuController(audioFileFilter);
 
         HSQLDBController hsqldbControllerMock = mock(HSQLDBController.class);
         controllerUnderTest.hsqldbController = hsqldbControllerMock;

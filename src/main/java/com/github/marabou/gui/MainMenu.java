@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 
 import com.github.marabou.audio.AudioFileFilter;
 import com.github.marabou.controller.EditorController;
-import com.github.marabou.controller.TableController;
+import com.github.marabou.controller.MainMenuController;
 import com.github.marabou.helper.*;
 
 import com.github.marabou.properties.UserProperties;
@@ -55,13 +55,13 @@ public class MainMenu {
 	private Menu menu;
     private AboutWindow aboutWindow;
     private EditorController editorController;
-    private TableController tableController;
+    private MainMenuController mainMenuController;
     private UserProperties userProperties;
 
 
-    public MainMenu(Shell shell, AboutWindow aboutWindow, EditorController editorController, TableController tableController, UserProperties userProperties) {
+    public MainMenu(Shell shell, AboutWindow aboutWindow, EditorController editorController, MainMenuController mainMenuController, UserProperties userProperties) {
         this.editorController = editorController;
-        this.tableController = tableController;
+        this.mainMenuController = mainMenuController;
         this.userProperties = userProperties;
         this.menu = new Menu(shell, SWT.BAR);
 		this.shell = shell;
@@ -73,7 +73,7 @@ public class MainMenu {
 	 * sets the tableShell that is needed when invoking "open file" etc.
 	 * 
 	 */
-	public final void setTableShell(final TableShell tableShell) {
+	public void setTableShell(final TableShell tableShell) {
 		this.tableShell = tableShell;
 	}
 
@@ -142,7 +142,7 @@ public class MainMenu {
 				String filterPath = fileDialog.getFilterPath();
 				if (filesToOpen != null) {
 					for (String file: filesToOpen) {
-                        tableController.openFile(new File(filterPath + "/" + file));
+                        mainMenuController.openFile(new File(filterPath + "/" + file));
 					}
 					tableShell.setKeyboardFocus();
 				}
@@ -174,7 +174,7 @@ public class MainMenu {
 				if (dirToOpen != null) {
                     tableShell.setKeyboardFocus();
                     List<File> files = findFiles(new File(dirToOpen));
-					tableController.openFiles(files);
+					mainMenuController.openFiles(files);
 				}
 			}
 		});
