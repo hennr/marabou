@@ -1,10 +1,7 @@
 package com.github.marabou.helper;
 
-import org.eclipse.swt.widgets.Display;
 import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 
 public class ImageLoaderTest {
 
@@ -12,8 +9,7 @@ public class ImageLoaderTest {
     public void filePathMappingsAreCorrectlySet() {
 
         // given
-        Display display = mock(Display.class);
-        ImageLoader imageLoader = new ImageLoader(display);
+        ImageLoader imageLoader = new ImageLoader();
 
         // expect
         assertEquals("audiofile.png", imageLoader.filePathMapping.get(AvailableImage.AUDIO_ICON));

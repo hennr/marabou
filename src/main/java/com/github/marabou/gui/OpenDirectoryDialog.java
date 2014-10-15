@@ -1,22 +1,15 @@
 package com.github.marabou.gui;
 
 import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.Shell;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.github.marabou.helper.I18nHelper._;
 
-public class OpenDirectoryDialog {
+public class OpenDirectoryDialog extends BaseGuiClass {
 
-    private final Shell shell;
     private Logger log = Logger.getLogger(OpenDirectoryDialog.class.getName());
-
-    public OpenDirectoryDialog(Shell shell) {
-        this.shell = shell;
-    }
-
 
     public String getDirectoryToOpen(String openPath) {
 

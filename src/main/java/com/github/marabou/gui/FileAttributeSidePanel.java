@@ -126,7 +126,7 @@ public class FileAttributeSidePanel {
 	 * returns a HashMap with all sections (like genre, etc) and attributes of selected file
 	 */
 	public HashMap<String,String> getTags() {
-		HashMap<String,String> tags = new HashMap<String, String>();
+		HashMap<String,String> tags = new HashMap<>();
 		for (int i=0; i < combos.length; ++i) {
 			tags.put(labels[i], combos[i].getText());
 		}

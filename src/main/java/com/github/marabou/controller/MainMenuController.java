@@ -10,7 +10,6 @@ import com.github.marabou.properties.UserProperties;
 import com.github.marabou.service.AudioFileService;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
-import org.eclipse.swt.widgets.Shell;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,15 +17,13 @@ import java.util.List;
 
 public class MainMenuController {
 
-    private final Shell shell;
     private final UserProperties userProperties;
     private AudioFileFilter audioFileFilter;
     HSQLDBController hsqldbController = HSQLDBController.getInstance();
     private AudioFileService audioFileService;
     private AboutWindow aboutWindow;
 
-    public MainMenuController(AudioFileFilter audioFileFilter, Shell shell, UserProperties userProperties, AudioFileService audioFileService, AboutWindow aboutWindow) {
-        this.shell = shell;
+    public MainMenuController(AudioFileFilter audioFileFilter, UserProperties userProperties, AudioFileService audioFileService, AboutWindow aboutWindow) {
         this.audioFileFilter = audioFileFilter;
         this.userProperties = userProperties;
         this.audioFileService = audioFileService;
@@ -55,7 +52,7 @@ public class MainMenuController {
 
     public void handleOpenDirectoryEvent() {
 
-        OpenDirectoryDialog openDirectoryDialog = new OpenDirectoryDialog(shell);
+        OpenDirectoryDialog openDirectoryDialog = new OpenDirectoryDialog();
         String dirToOpen = openDirectoryDialog.getDirectoryToOpen(userProperties.getLastPath());
 
         if (userProperties.rememberLastPath() && dirToOpen != null) {
@@ -70,7 +67,7 @@ public class MainMenuController {
 
     public void handleOpenFileEvent() {
 
-        OpenFileDialog openFileDialog = new OpenFileDialog(shell);
+        OpenFileDialog openFileDialog = new OpenFileDialog();
         List<File> filesToOpen = openFileDialog.getFilesToOpen(userProperties.getLastPath());
 
         if (userProperties.rememberLastPath() && !openFileDialog.getLastPath().isEmpty()) {

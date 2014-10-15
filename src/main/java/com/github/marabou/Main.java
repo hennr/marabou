@@ -23,6 +23,7 @@ import com.github.marabou.audio.AudioFileFilter;
 import com.github.marabou.controller.EditorController;
 import com.github.marabou.controller.MainMenuController;
 import com.github.marabou.gui.AboutWindow;
+import com.github.marabou.gui.BaseGuiClass;
 import com.github.marabou.gui.MainMenu;
 import com.github.marabou.gui.MainWindow;
 import com.github.marabou.helper.*;
@@ -31,8 +32,6 @@ import com.github.marabou.properties.PropertiesHelper;
 import com.github.marabou.properties.PropertiesLoader;
 import com.github.marabou.properties.UserProperties;
 import com.github.marabou.service.AudioFileService;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
 public class Main {
 
@@ -68,19 +67,18 @@ public class Main {
     }
 
     private static void setupMainWindow(ApplicationProperties applicationProperties, UserProperties userProperties) {
-        Display display = new Display();
-        Shell mainWindowShell = new Shell(display);
-        ImageLoader imageLoader = new ImageLoader(display);
+        new BaseGuiClass();
+        ImageLoader imageLoader = new ImageLoader();
         AboutWindow aboutWindow = new AboutWindow(applicationProperties);
 
         EditorController editorController = new EditorController();
         AudioFileFilter audioFileFilter = new AudioFileFilter();
         AudioFileService audioFileService = new AudioFileService(audioFileFilter);
-        MainMenuController mainMenuController = new MainMenuController(audioFileFilter, mainWindowShell, userProperties, audioFileService, aboutWindow);
-        MainMenu mainMenu = new MainMenu(mainWindowShell, editorController, mainMenuController);
+        MainMenuController mainMenuController = new MainMenuController(audioFileFilter, userProperties, audioFileService, aboutWindow);
+        MainMenu mainMenu = new MainMenu(editorController, mainMenuController);
         mainMenu.init();
 
-        MainWindow mainWindow = new MainWindow(mainWindowShell, mainMenu, imageLoader, userProperties);
+        MainWindow mainWindow = new MainWindow(mainMenu, imageLoader, userProperties);
         mainWindow.init();
     }
 }

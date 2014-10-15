@@ -44,7 +44,7 @@ public class CreditsWindow {
 		
 		final Shell shell = new Shell(display);
 		shell.setText(_("Credits"));
-		shell.setImage(new ImageLoader(display).getImage(AvailableImage.LOGO_SMALL));
+		shell.setImage(new ImageLoader().getImage(AvailableImage.LOGO_SMALL));
 		
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;

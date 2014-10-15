@@ -52,7 +52,7 @@ public class ErrorWindow {
 		shell.setLayout(new FillLayout());
 		shell.setSize(500, 300);
 		shell.setText(_("Marabou - Error Occurred"));
-		shell.setImage(new ImageLoader(display).getImage(AvailableImage.LOGO_SMALL));
+		shell.setImage(new ImageLoader().getImage(AvailableImage.LOGO_SMALL));
 		errorText = new List(shell, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 
 		// when the window gets closed destroy the 

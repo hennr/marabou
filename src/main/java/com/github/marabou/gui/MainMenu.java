@@ -36,20 +36,18 @@ import org.eclipse.swt.widgets.MenuItem;
  * This class creates and fills (if init is invoked) a menu object which will be
  * used as SWT.BAR menu in the main window.
  */
-public class MainMenu {
+public class MainMenu extends BaseGuiClass {
     private final ImageLoader imageLoader;
-    private Shell shell;
 	private Menu menu;
     private EditorController editorController;
     private MainMenuController mainMenuController;
 
 
-    public MainMenu(Shell shell, EditorController editorController, MainMenuController mainMenuController) {
+    public MainMenu(EditorController editorController, MainMenuController mainMenuController) {
         this.editorController = editorController;
         this.mainMenuController = mainMenuController;
         this.menu = new Menu(shell, SWT.BAR);
-		this.shell = shell;
-        this.imageLoader = new ImageLoader(shell.getDisplay());
+        this.imageLoader = new ImageLoader();
 	}
 
 	public Menu getMenu() {

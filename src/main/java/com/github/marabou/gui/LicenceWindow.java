@@ -27,14 +27,11 @@ import org.eclipse.swt.layout.RowLayout;
 
 import static com.github.marabou.helper.I18nHelper._;
 
-public class LicenceWindow {
+public class LicenceWindow extends BaseGuiClass {
 
 	public static void showLicence() {
-		final Display display = Display.getCurrent();
-		
-		final Shell shell = new Shell(display);
 		shell.setText(_("Licence"));
-		shell.setImage(new ImageLoader(display).getImage(AvailableImage.LOGO_BIG));
+		shell.setImage(new ImageLoader().getImage(AvailableImage.LOGO_BIG));
 		
 		RowLayout rowLayout = new RowLayout(1);
 		rowLayout.center = true;

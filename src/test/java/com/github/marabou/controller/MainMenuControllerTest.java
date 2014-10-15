@@ -5,7 +5,6 @@ import com.github.marabou.db.HSQLDBController;
 import com.github.marabou.gui.AboutWindow;
 import com.github.marabou.properties.UserProperties;
 import com.github.marabou.service.AudioFileService;
-import org.eclipse.swt.widgets.Shell;
 import org.junit.Test;
 
 import java.io.File;
@@ -61,11 +60,10 @@ public class MainMenuControllerTest {
         AudioFileFilter audioFileFilterMock = mock(AudioFileFilter.class);
         when(audioFileFilterMock.accept(any(File.class))).thenReturn(true);
         UserProperties userPropertiesMock = mock(UserProperties.class);
-        Shell shellMock = mock(Shell.class);
         AudioFileService audioFileServiceMock = mock(AudioFileService.class);
         AboutWindow aboutWindowMock = mock(AboutWindow.class);
 
-        return new MainMenuController(audioFileFilterMock, shellMock, userPropertiesMock, audioFileServiceMock, aboutWindowMock);
+        return new MainMenuController(audioFileFilterMock, userPropertiesMock, audioFileServiceMock, aboutWindowMock);
     }
 
     private File aValidMockedFile() {

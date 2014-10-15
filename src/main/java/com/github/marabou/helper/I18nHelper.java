@@ -46,4 +46,4 @@ public class I18nHelper {
 	public static String _(String str) {
 		return i18n.tr(str);
 	}
-};
+}

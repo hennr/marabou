@@ -32,9 +32,8 @@ import org.eclipse.swt.widgets.*;
 
 import static com.github.marabou.helper.I18nHelper._;
 
-public class MainWindow {
+public class MainWindow extends BaseGuiClass {
 
-    Shell shell;
     Composite composite;
     SashForm sashForm;
     HSQLDBController controller;
@@ -45,8 +44,7 @@ public class MainWindow {
 		 * the main window holds elements such as the menu, the table,
 		 *  and the tabs on the left
 		 */
-		public MainWindow(Shell shell, MainMenu mainMenu, ImageLoader imageLoader, UserProperties userProperties) {
-            this.shell = shell;
+		public MainWindow(MainMenu mainMenu, ImageLoader imageLoader, UserProperties userProperties) {
             this.imageLoader = imageLoader;
             this.controller = HSQLDBController.getInstance();
             this.userProperties = userProperties;

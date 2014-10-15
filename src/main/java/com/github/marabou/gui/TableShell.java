@@ -34,10 +34,9 @@ import java.util.logging.Logger;
 
 import static com.github.marabou.helper.I18nHelper._;
 
-public class TableShell {
+public class TableShell extends BaseGuiClass {
 
 	final Table table;
-	final Shell shell;
 	final static HashMap<String, Integer> columnsOrder = new HashMap<>();
 	final static Logger log = Logger.getLogger(TableShell.class.getName());
     FileAttributeSidePanel fileAttributeSidePanel;
@@ -48,7 +47,6 @@ public class TableShell {
 	 */
 	public TableShell(Composite composite) {
 
-		this.shell = composite.getParent().getShell();
 		this.table = new Table(composite, SWT.MULTI);
 		this.getTable().setLinesVisible(true);
 		this.getTable().setHeaderVisible(true);

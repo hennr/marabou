@@ -2,7 +2,6 @@ package com.github.marabou.gui;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Shell;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -12,16 +11,10 @@ import java.util.logging.Logger;
 
 import static com.github.marabou.helper.I18nHelper._;
 
-public class OpenFileDialog {
+public class OpenFileDialog extends BaseGuiClass {
 
-    private final Shell shell;
     private Logger log = Logger.getLogger(OpenFileDialog.class.getName());
     private String lastPath = "";
-
-    public OpenFileDialog(Shell shell) {
-        this.shell = shell;
-    }
-
 
     public List<File> getFilesToOpen(String openPath) {
 

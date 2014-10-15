@@ -56,7 +56,7 @@ public class AboutWindow {
 		final Display display = Display.getCurrent();
 		final Shell shell = new Shell(display);
 		shell.setText(_("About Marabou"));
-		shell.setImage(new ImageLoader(display).getImage(AvailableImage.LOGO_SMALL));
+		shell.setImage(new ImageLoader().getImage(AvailableImage.LOGO_SMALL));
 		FormLayout formLayout = new FormLayout();
 		formLayout.marginBottom = 10;
 		formLayout.marginTop = 10;
@@ -84,7 +84,7 @@ public class AboutWindow {
 		String version = applicationProperties.getVersion();
         text.setText(_("Marabou - Audio Tagger \n" + "Version " + version));
 
-		Image logo = new ImageLoader(display).getImage(AvailableImage.LOGO_BIG);
+		Image logo = new ImageLoader().getImage(AvailableImage.LOGO_BIG);
 		Label labelImage = new Label(comp1, SWT.NONE);
 		labelImage.setImage(logo);
 		labelImage.pack();

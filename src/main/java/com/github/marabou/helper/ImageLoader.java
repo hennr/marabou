@@ -1,21 +1,18 @@
 package com.github.marabou.helper;
 
+import com.github.marabou.gui.BaseGuiClass;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
 
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ImageLoader {
+public class ImageLoader extends BaseGuiClass {
 
     private final Object IMAGE_PATH = "graphics/";
-    private Display display;
     Map<AvailableImage, String> filePathMapping = new HashMap<>();
 
-    public ImageLoader(Display display) {
-        this.display = display;
-
+    public ImageLoader() {
         initFilePathMapping();
     }
 
