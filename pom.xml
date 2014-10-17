@@ -121,7 +121,7 @@
 	    -->
 	    <plugin>
 		<groupId>com.googlecode.gettext-commons</groupId>
-		<artifactId>maven-gettext-plugin</artifactId>
+		<artifactId>gettext-maven-plugin</artifactId>
 		<version>1.2.4</version>
 		<configuration>
 		    <poDirectory>${basedir}/resources/i18n</poDirectory>
