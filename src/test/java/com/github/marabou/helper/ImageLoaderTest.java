@@ -12,7 +12,7 @@ public class ImageLoaderTest {
         ImageLoader imageLoader = new ImageLoader();
 
         // expect
-        assertEquals("audiofile.png", imageLoader.filePathMapping.get(AvailableImage.AUDIO_ICON));
+        assertEquals("audio_file.png", imageLoader.filePathMapping.get(AvailableImage.AUDIO_ICON));
         assertEquals("marabou_16.png", imageLoader.filePathMapping.get(AvailableImage.LOGO_SMALL));
         assertEquals("marabou_300.png", imageLoader.filePathMapping.get(AvailableImage.LOGO_BIG));
         assertEquals("exit.png", imageLoader.filePathMapping.get(AvailableImage.EXIT_ICON));

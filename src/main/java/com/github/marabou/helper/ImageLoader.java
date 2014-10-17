@@ -23,7 +23,7 @@ public class ImageLoader extends BaseGuiClass {
         filePathMapping.put(AvailableImage.FOLDER_ICON, "folder.png");
         filePathMapping.put(AvailableImage.HELP_ICON, "help.png");
         filePathMapping.put(AvailableImage.SAVE_ICON, "save.png");
-        filePathMapping.put(AvailableImage.AUDIO_ICON, "audiofile.png");
+        filePathMapping.put(AvailableImage.AUDIO_ICON, "audio_file.png");
     }
 
     public Image getImage(AvailableImage availableImage) {
