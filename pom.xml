@@ -74,9 +74,9 @@
 
         <!-- gettext for internationalisation -->
         <dependency>
-            <groupId>org.xnap.commons</groupId>
+            <groupId>com.googlecode.gettext-commons</groupId>
             <artifactId>gettext-commons</artifactId>
-            <version>0.9.6</version>
+            <version>0.9.8</version>
         </dependency>
 
         <!-- mp3 tag lib -->
@@ -120,9 +120,9 @@
 	    the po files for the internationalisation
 	    -->
 	    <plugin>
-		<groupId>org.xnap.commons</groupId>
+		<groupId>com.googlecode.gettext-commons</groupId>
 		<artifactId>maven-gettext-plugin</artifactId>
-		<version>1.1</version>
+		<version>1.2.4</version>
 		<configuration>
 		    <poDirectory>${basedir}/resources/i18n</poDirectory>
 		    <targetBundle>i18n.Messages</targetBundle>
@@ -252,11 +252,6 @@
     </profiles>
 	
     <repositories>
-	<!-- gettext -->
-	<repository>
-	    <id>gettext-commons-site</id>
-	    <url>http://gettext-commons.googlecode.com/svn/maven-repository/</url>
-	</repository>
 	<!-- unoffical swt repo; co-maintained by hennr -->
 	<repository>
 	    <id>swt-repo</id>
