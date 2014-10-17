@@ -22,7 +22,6 @@ package com.github.marabou.gui;
 import com.github.marabou.helper.AvailableImage;
 import com.github.marabou.helper.ImageLoader;
 import com.github.marabou.properties.PropertiesHelper;
-import com.github.marabou.properties.ApplicationProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormLayout;
@@ -41,12 +40,11 @@ import static com.github.marabou.helper.I18nHelper._;
 
 public class AboutWindow {
 
-    ApplicationProperties applicationProperties;
     final static Logger log = Logger.getLogger(PropertiesHelper.class.getName());
+    private final String projectVersion;
 
-    public AboutWindow(ApplicationProperties applicationProperties) {
-
-        this.applicationProperties = applicationProperties;
+    public AboutWindow(String projectVersion) {
+        this.projectVersion = projectVersion;
     }
 
 	/**
@@ -81,15 +79,13 @@ public class AboutWindow {
 
 		// project name and version
 		Label text = new Label(comp1, SWT.NONE);
-		String version = applicationProperties.getVersion();
-        text.setText(_("Marabou - Audio Tagger \n" + "Version " + version));
+        text.setText(_("Marabou - Audio Tagger \n" + "Version " + projectVersion));
 
 		Image logo = new ImageLoader().getImage(AvailableImage.LOGO_BIG);
 		Label labelImage = new Label(comp1, SWT.NONE);
 		labelImage.setImage(logo);
 		labelImage.pack();
 
-		// nifty grifty text
 		Label labelText = new Label(comp1, SWT.NONE);
 		labelText.setAlignment(SWT.CENTER);
 		labelText

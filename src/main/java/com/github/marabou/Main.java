@@ -68,7 +68,7 @@ public class Main {
     private static void setupMainWindow(ApplicationProperties applicationProperties, UserProperties userProperties) {
         new BaseGuiClass();
         ImageLoader imageLoader = new ImageLoader();
-        AboutWindow aboutWindow = new AboutWindow(applicationProperties);
+        AboutWindow aboutWindow = new AboutWindow(applicationProperties.getVersion());
 
         AudioFileFilter audioFileFilter = new AudioFileFilter();
         AudioFileService audioFileService = new AudioFileService(audioFileFilter);
