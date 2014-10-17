@@ -107,7 +107,7 @@ public class MainMenu extends BaseGuiClass {
 		// listener for File -> Exit
 		exitItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(final Event e) {
-				System.exit(0);
+				mainMenuController.handleExitEvent();
 			}
 		});
 

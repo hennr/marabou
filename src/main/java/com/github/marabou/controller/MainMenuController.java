@@ -86,4 +86,8 @@ public class MainMenuController {
     public void handleShowAboutWindow() {
         aboutWindow.show();
     }
+
+    public void handleExitEvent() {
+        System.exit(0);
+    }
 }
