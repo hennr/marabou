@@ -8,17 +8,5 @@ import static org.mockito.Mockito.verify;
 
 public class EditorControllerTest {
 
-    @Test
-    public void saveSelectedFilesInvokesServiceMethod() throws Exception {
 
-        // given
-        EditorController controller = new EditorController();
-        controller.hsqldbController = mock(HSQLDBController.class);
-
-        // when
-        controller.saveSelectedFiles();
-
-        // then
-        verify(controller.hsqldbController).saveSelectedFiles();
-    }
 }

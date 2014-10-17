@@ -21,7 +21,6 @@ package com.github.marabou.gui;
 
 import static com.github.marabou.helper.I18nHelper._;
 
-import com.github.marabou.controller.EditorController;
 import com.github.marabou.controller.MainMenuController;
 import com.github.marabou.helper.*;
 
@@ -39,12 +38,10 @@ import org.eclipse.swt.widgets.MenuItem;
 public class MainMenu extends BaseGuiClass {
     private final ImageLoader imageLoader;
 	private Menu menu;
-    private EditorController editorController;
     private MainMenuController mainMenuController;
 
 
-    public MainMenu(EditorController editorController, MainMenuController mainMenuController) {
-        this.editorController = editorController;
+    public MainMenu(MainMenuController mainMenuController) {
         this.mainMenuController = mainMenuController;
         this.menu = new Menu(shell, SWT.BAR);
         this.imageLoader = new ImageLoader();
@@ -98,7 +95,7 @@ public class MainMenu extends BaseGuiClass {
 
 		saveItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
-					editorController.saveSelectedFiles();
+					mainMenuController.saveSelectedFiles();
 			}
 		});
 

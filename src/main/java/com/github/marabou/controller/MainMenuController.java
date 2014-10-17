@@ -50,6 +50,10 @@ public class MainMenuController {
         hsqldbController.addAllTableItems();
     }
 
+    public void saveSelectedFiles() {
+        hsqldbController.saveSelectedFiles();
+    }
+
     public void handleOpenDirectoryEvent() {
 
         OpenDirectoryDialog openDirectoryDialog = new OpenDirectoryDialog();

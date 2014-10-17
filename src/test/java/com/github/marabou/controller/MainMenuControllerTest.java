@@ -56,6 +56,20 @@ public class MainMenuControllerTest {
         verify(hsqldbControllerMock, times(2)).addAllTableItems();
     }
 
+    @Test
+    public void saveSelectedFilesInvokesServiceMethod() throws Exception {
+
+        // given
+        MainMenuController controller = givenAMainMenuControllerWithMocks();
+        controller.hsqldbController = mock(HSQLDBController.class);
+
+        // when
+        controller.saveSelectedFiles();
+
+        // then
+        verify(controller.hsqldbController).saveSelectedFiles();
+    }
+
     private MainMenuController givenAMainMenuControllerWithMocks() {
         AudioFileFilter audioFileFilterMock = mock(AudioFileFilter.class);
         when(audioFileFilterMock.accept(any(File.class))).thenReturn(true);
