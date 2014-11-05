@@ -10,6 +10,7 @@ import com.github.marabou.properties.UserProperties;
 import com.github.marabou.service.AudioFileService;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
+import org.eclipse.swt.widgets.Shell;
 
 import java.io.File;
 import java.io.IOException;
@@ -87,7 +88,7 @@ public class MainMenuController {
         aboutWindow.show();
     }
 
-    public void handleExitEvent() {
-        System.exit(0);
+    public void handleExitEvent(Shell shell) {
+            shell.dispose();
     }
 }

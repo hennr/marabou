@@ -25,6 +25,7 @@ import com.github.marabou.helper.ImageLoader;
 import com.github.marabou.properties.UserProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -139,7 +140,6 @@ public class MainWindow extends BaseGuiClass {
 			if (!shell.getDisplay().readAndDispatch())
 				shell.getDisplay().sleep();
 		}
-		shell.getDisplay().dispose();
     }
 
     private void saveUserSpecificSettingsOnExit() {
