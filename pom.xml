@@ -258,14 +258,5 @@
 	    <url>https://swt-repo.googlecode.com/svn/repo/</url>
 	</repository>
     </repositories>
-	
-    <pluginRepositories>
-	<!-- gettext-maven-plugin -->
-	<pluginRepository>
-	    <id>xnap-commons</id>
-	    <name>XNap Commons Repository</name>
-	    <url>http://xnap-commons.sourceforge.net/repository/</url>
-	</pluginRepository>
-    </pluginRepositories>
 
 </project>
