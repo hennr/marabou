@@ -95,7 +95,7 @@ public class MainMenu extends BaseGuiClass {
 
 		saveItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
-					mainMenuController.saveSelectedFiles();
+					mainMenuController.handleSaveSelectedFilesEvent();
 			}
 		});
 

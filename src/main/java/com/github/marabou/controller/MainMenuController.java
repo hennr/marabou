@@ -51,7 +51,7 @@ public class MainMenuController {
         hsqldbController.addAllTableItems();
     }
 
-    public void saveSelectedFiles() {
+    public void handleSaveSelectedFilesEvent() {
         hsqldbController.saveSelectedFiles();
     }
 

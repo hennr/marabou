@@ -64,7 +64,7 @@ public class MainMenuControllerTest {
         controller.hsqldbController = mock(HSQLDBController.class);
 
         // when
-        controller.saveSelectedFiles();
+        controller.handleSaveSelectedFilesEvent();
 
         // then
         verify(controller.hsqldbController).saveSelectedFiles();
