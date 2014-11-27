@@ -5,8 +5,8 @@ Marabou is a cross platform audio tagger written in Java.
 
 It uses SWT to provide a native look and feel on all major platforms.
 
-Here you can find a  somewhat older screenshot:
-http://bayimg.com/KaMEIAaCF
+Here you can find a screenshot:
+http://bayimg.com/PAHmpAagA
 
 
 Marabou is still under development, there is no stable release out yet, sorry.
