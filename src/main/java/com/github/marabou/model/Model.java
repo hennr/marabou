@@ -17,40 +17,26 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-public class HSQLDBController {
+public class Model {
 
-    final static Logger log = Logger.getLogger(HSQLDBController.class.getName());
-
-    /**
-     * (static) Reference to the only instance of HSQLDBController.
-     */
-    private static HSQLDBController singleton;
+    final static Logger log = Logger.getLogger(Model.class.getName());
 
     /**
      * Reference to the Database client.
      */
-    private final HSQLDBClient db;
+    private HSQLDBClient dbClient;
 
     FileAttributeSidePanel fileAttributeSidePanel;
 
     protected TableShell table;
 
-    private HSQLDBController(FileAttributeSidePanel fileAttributeSidePanel) {
-        this.db = new HSQLDBClient();
+    public Model(FileAttributeSidePanel fileAttributeSidePanel, HSQLDBClient dbClient) {
+        this.dbClient = dbClient;
         this.fileAttributeSidePanel = fileAttributeSidePanel;
-    }
-
-    public static HSQLDBController getInstance() {
-        if (singleton == null) {
-            singleton = new HSQLDBController(new FileAttributeSidePanel());
-        }
-        return singleton;
     }
 
     /**
      * Insert audio file into DB.
-     *
-     * If you want the file to show up in the GUI you have to call addAllTableItems (or similar function) afterwards
      *
      * @throws InvalidDataException if file is not a supported file type or if it's corrupt
      */
@@ -179,7 +165,7 @@ public class HSQLDBController {
                              final String encoding, final String fullPath) {
 
         int row = -1;
-        PreparedStatement stmt = this.db.getPreparedInsertStatement();
+        PreparedStatement stmt = this.dbClient.getPreparedInsertStatement();
         if (stmt == null) {
             return -1;
         }
@@ -212,23 +198,19 @@ public class HSQLDBController {
         return row;
     }
 
-    public int addAllTableItems() {
+    public void addAllTableItems() {
         try {
             this.table.getTable().removeAll();
             // query table marabou for everything
-            ResultSet rs = db.query("SELECT * FROM marabou");
+            ResultSet loadedFiles = dbClient.query("SELECT * FROM marabou");
 
-            // iterate through resultset
-            while (rs.next()) {
-                setTableItemValues(rs,
-                        new TableItem(table.getTable(), SWT.None));
+            while (loadedFiles.next()) {
+                setTableItemValues(loadedFiles, new TableItem(table.getTable(), SWT.None));
             }
             this.table.setKeyboardFocus();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block add ErrorAppending stuff
             e.printStackTrace();
         }
-        return -1;
     }
 
     private void setTableItemValues(HashMap<String, String> newTags, TableItem tableItem) {
@@ -251,7 +233,7 @@ public class HSQLDBController {
     }
 
     public void saveFile(int index) {
-        PreparedStatement stmt = this.db.getPreparedSelectStatement("id");
+        PreparedStatement stmt = this.dbClient.getPreparedSelectStatement("id");
         try {
             stmt.setInt(1, index);
             ResultSet rs = stmt.executeQuery();

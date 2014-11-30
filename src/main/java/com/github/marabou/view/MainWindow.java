@@ -19,7 +19,7 @@
 
 package com.github.marabou.view;
 
-import com.github.marabou.model.HSQLDBController;
+import com.github.marabou.model.Model;
 import com.github.marabou.helper.AvailableImage;
 import com.github.marabou.helper.ImageLoader;
 import com.github.marabou.properties.UserProperties;
@@ -36,7 +36,7 @@ public class MainWindow extends BaseGuiClass {
 
     Composite composite;
     SashForm sashForm;
-    HSQLDBController controller;
+    Model controller;
     ImageLoader imageLoader;
     private UserProperties userProperties;
 
@@ -44,9 +44,9 @@ public class MainWindow extends BaseGuiClass {
 		 * the main window holds elements such as the menu, the table,
 		 *  and the tabs on the left
 		 */
-		public MainWindow(MainMenu mainMenu, ImageLoader imageLoader, UserProperties userProperties) {
+		public MainWindow(MainMenu mainMenu, ImageLoader imageLoader, UserProperties userProperties, Model model) {
             this.imageLoader = imageLoader;
-            this.controller = HSQLDBController.getInstance();
+            this.controller = model;
             this.userProperties = userProperties;
 
             createWidgetsAndLayout(mainMenu);

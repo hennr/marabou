@@ -1,7 +1,7 @@
 package com.github.marabou.controller;
 
 import com.github.marabou.audio.AudioFileFilter;
-import com.github.marabou.model.HSQLDBController;
+import com.github.marabou.model.Model;
 import com.github.marabou.view.AboutWindow;
 import com.github.marabou.view.ErrorWindow;
 import com.github.marabou.view.OpenDirectoryDialog;
@@ -19,12 +19,13 @@ import java.util.List;
 public class MainMenuController {
 
     private final UserProperties userProperties;
-    private AudioFileFilter audioFileFilter;
-    HSQLDBController hsqldbController = HSQLDBController.getInstance();
-    private AudioFileService audioFileService;
-    private AboutWindow aboutWindow;
+    protected Model model;
+    private final AudioFileFilter audioFileFilter;
+    private final AudioFileService audioFileService;
+    private final AboutWindow aboutWindow;
 
-    public MainMenuController(AudioFileFilter audioFileFilter, UserProperties userProperties, AudioFileService audioFileService, AboutWindow aboutWindow) {
+    public MainMenuController(Model model, AudioFileFilter audioFileFilter, UserProperties userProperties, AudioFileService audioFileService, AboutWindow aboutWindow) {
+        this.model = model;
         this.audioFileFilter = audioFileFilter;
         this.userProperties = userProperties;
         this.audioFileService = audioFileService;
@@ -44,15 +45,15 @@ public class MainMenuController {
             return;
         }
         try {
-            hsqldbController.insertFile(file);
+            model.insertFile(file);
         } catch (InvalidDataException | IOException | UnsupportedTagException e) {
             ErrorWindow.appendError("Couldn't open file: " + file);
         }
-        hsqldbController.addAllTableItems();
+        model.addAllTableItems();
     }
 
     public void handleSaveSelectedFilesEvent() {
-        hsqldbController.saveSelectedFiles();
+        model.saveSelectedFiles();
     }
 
     public void handleOpenDirectoryEvent() {

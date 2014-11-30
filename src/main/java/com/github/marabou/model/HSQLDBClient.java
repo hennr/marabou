@@ -31,11 +31,11 @@ import java.sql.Statement;
  * @author Markus Herpich
  * 
  */
-final class HSQLDBClient {
+public class HSQLDBClient {
 
 	private Connection conn;
 
-	protected HSQLDBClient() {
+	public HSQLDBClient() {
 		try {
 			conn = DriverManager.getConnection("jdbc:hsqldb:mem:maraboudb",
 					"SA", "");

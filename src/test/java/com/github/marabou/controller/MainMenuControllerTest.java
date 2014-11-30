@@ -1,7 +1,7 @@
 package com.github.marabou.controller;
 
 import com.github.marabou.audio.AudioFileFilter;
-import com.github.marabou.model.HSQLDBController;
+import com.github.marabou.model.Model;
 import com.github.marabou.view.AboutWindow;
 import com.github.marabou.properties.UserProperties;
 import com.github.marabou.service.AudioFileService;
@@ -21,8 +21,8 @@ public class MainMenuControllerTest {
         // given
         MainMenuController controllerUnderTest = givenAMainMenuControllerWithMocks();
 
-        HSQLDBController hsqldbControllerMock = mock(HSQLDBController.class);
-        controllerUnderTest.hsqldbController = hsqldbControllerMock;
+        Model modelMock = mock(Model.class);
+        controllerUnderTest.model = modelMock;
 
         File file = aValidMockedFile();
 
@@ -30,8 +30,8 @@ public class MainMenuControllerTest {
         controllerUnderTest.openFile(file);
 
         // then
-        verify(hsqldbControllerMock).insertFile(file);
-        verify(hsqldbControllerMock).addAllTableItems();
+        verify(modelMock).insertFile(file);
+        verify(modelMock).addAllTableItems();
     }
 
     @Test
@@ -40,8 +40,8 @@ public class MainMenuControllerTest {
         // given
         MainMenuController controllerUnderTest = givenAMainMenuControllerWithMocks();
 
-        HSQLDBController hsqldbControllerMock = mock(HSQLDBController.class);
-        controllerUnderTest.hsqldbController = hsqldbControllerMock;
+        Model modelMock = mock(Model.class);
+        controllerUnderTest.model = modelMock;
 
         List<File> files = new ArrayList<>(3);
         files.add(aValidMockedFile());
@@ -51,9 +51,9 @@ public class MainMenuControllerTest {
         controllerUnderTest.openFiles(files);
 
         // then
-        verify(hsqldbControllerMock).insertFile(files.get(0));
-        verify(hsqldbControllerMock).insertFile(files.get(1));
-        verify(hsqldbControllerMock, times(2)).addAllTableItems();
+        verify(modelMock).insertFile(files.get(0));
+        verify(modelMock).insertFile(files.get(1));
+        verify(modelMock, times(2)).addAllTableItems();
     }
 
     @Test
@@ -61,13 +61,13 @@ public class MainMenuControllerTest {
 
         // given
         MainMenuController controller = givenAMainMenuControllerWithMocks();
-        controller.hsqldbController = mock(HSQLDBController.class);
+        controller.model = mock(Model.class);
 
         // when
         controller.handleSaveSelectedFilesEvent();
 
         // then
-        verify(controller.hsqldbController).saveSelectedFiles();
+        verify(controller.model).saveSelectedFiles();
     }
 
     private MainMenuController givenAMainMenuControllerWithMocks() {
@@ -76,8 +76,9 @@ public class MainMenuControllerTest {
         UserProperties userPropertiesMock = mock(UserProperties.class);
         AudioFileService audioFileServiceMock = mock(AudioFileService.class);
         AboutWindow aboutWindowMock = mock(AboutWindow.class);
+        Model model = mock(Model.class);
 
-        return new MainMenuController(audioFileFilterMock, userPropertiesMock, audioFileServiceMock, aboutWindowMock);
+        return new MainMenuController(model, audioFileFilterMock, userPropertiesMock, audioFileServiceMock, aboutWindowMock);
     }
 
     private File aValidMockedFile() {
