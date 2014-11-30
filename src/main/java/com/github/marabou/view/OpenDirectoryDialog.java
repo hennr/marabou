@@ -1,4 +1,4 @@
-package com.github.marabou.gui;
+package com.github.marabou.view;
 
 import org.eclipse.swt.widgets.DirectoryDialog;
 

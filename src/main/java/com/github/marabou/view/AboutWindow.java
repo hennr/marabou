@@ -17,7 +17,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.marabou.gui;
+package com.github.marabou.view;
 
 import com.github.marabou.helper.AvailableImage;
 import com.github.marabou.helper.ImageLoader;

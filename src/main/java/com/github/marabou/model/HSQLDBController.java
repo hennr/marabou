@@ -1,8 +1,8 @@
-package com.github.marabou.db;
+package com.github.marabou.model;
 
-import com.github.marabou.gui.ErrorWindow;
-import com.github.marabou.gui.FileAttributeSidePanel;
-import com.github.marabou.gui.TableShell;
+import com.github.marabou.view.ErrorWindow;
+import com.github.marabou.view.FileAttributeSidePanel;
+import com.github.marabou.view.TableShell;
 import com.github.marabou.helper.AudioFileHelper;
 import com.github.marabou.helper.UnknownGenreException;
 import com.mpatric.mp3agic.*;

@@ -1,11 +1,11 @@
 package com.github.marabou.controller;
 
 import com.github.marabou.audio.AudioFileFilter;
-import com.github.marabou.db.HSQLDBController;
-import com.github.marabou.gui.AboutWindow;
-import com.github.marabou.gui.ErrorWindow;
-import com.github.marabou.gui.OpenDirectoryDialog;
-import com.github.marabou.gui.OpenFileDialog;
+import com.github.marabou.model.HSQLDBController;
+import com.github.marabou.view.AboutWindow;
+import com.github.marabou.view.ErrorWindow;
+import com.github.marabou.view.OpenDirectoryDialog;
+import com.github.marabou.view.OpenFileDialog;
 import com.github.marabou.properties.UserProperties;
 import com.github.marabou.service.AudioFileService;
 import com.mpatric.mp3agic.InvalidDataException;

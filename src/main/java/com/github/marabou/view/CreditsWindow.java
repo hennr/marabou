@@ -17,7 +17,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.github.marabou.gui;
+package com.github.marabou.view;
 
 import java.awt.Desktop;
 import java.io.IOException;

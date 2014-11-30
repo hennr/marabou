@@ -1,8 +1,8 @@
 package com.github.marabou.controller;
 
 import com.github.marabou.audio.AudioFileFilter;
-import com.github.marabou.db.HSQLDBController;
-import com.github.marabou.gui.AboutWindow;
+import com.github.marabou.model.HSQLDBController;
+import com.github.marabou.view.AboutWindow;
 import com.github.marabou.properties.UserProperties;
 import com.github.marabou.service.AudioFileService;
 import org.junit.Test;

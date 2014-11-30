@@ -1,6 +1,6 @@
 package com.github.marabou.helper;
 
-import com.github.marabou.gui.BaseGuiClass;
+import com.github.marabou.view.BaseGuiClass;
 import org.eclipse.swt.graphics.Image;
 
 import java.io.InputStream;

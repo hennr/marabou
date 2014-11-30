@@ -21,10 +21,10 @@ package com.github.marabou;
 
 import com.github.marabou.audio.AudioFileFilter;
 import com.github.marabou.controller.MainMenuController;
-import com.github.marabou.gui.AboutWindow;
-import com.github.marabou.gui.BaseGuiClass;
-import com.github.marabou.gui.MainMenu;
-import com.github.marabou.gui.MainWindow;
+import com.github.marabou.view.AboutWindow;
+import com.github.marabou.view.BaseGuiClass;
+import com.github.marabou.view.MainMenu;
+import com.github.marabou.view.MainWindow;
 import com.github.marabou.helper.*;
 import com.github.marabou.properties.ApplicationProperties;
 import com.github.marabou.properties.PropertiesHelper;

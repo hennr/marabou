@@ -1,4 +1,4 @@
-package com.github.marabou.gui;
+package com.github.marabou.view;
 
 import com.github.marabou.properties.UserProperties;
 import org.eclipse.swt.events.DisposeEvent;
