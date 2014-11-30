@@ -19,10 +19,12 @@
 
 package com.github.marabou.view;
 
+import com.github.marabou.events.SaveSelectedFilesEvent;
 import com.github.marabou.model.Model;
 import com.github.marabou.helper.AvailableImage;
 import com.github.marabou.helper.ImageLoader;
 import com.github.marabou.properties.UserProperties;
+import com.google.common.eventbus.EventBus;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.FillLayout;
@@ -39,12 +41,14 @@ public class MainWindow extends BaseGuiClass {
     Model controller;
     ImageLoader imageLoader;
     private UserProperties userProperties;
+    private EventBus bus;
 
     /**
 		 * the main window holds elements such as the menu, the table,
 		 *  and the tabs on the left
 		 */
-		public MainWindow(MainMenu mainMenu, ImageLoader imageLoader, UserProperties userProperties, Model model) {
+		public MainWindow(EventBus bus, MainMenu mainMenu, ImageLoader imageLoader, UserProperties userProperties, Model model) {
+            this.bus = bus;
             this.imageLoader = imageLoader;
             this.controller = model;
             this.userProperties = userProperties;
@@ -80,7 +84,7 @@ public class MainWindow extends BaseGuiClass {
         ti.addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
-                controller.saveSelectedFiles();
+                bus.post(new SaveSelectedFilesEvent());
             }
     });
         toolbar.pack();

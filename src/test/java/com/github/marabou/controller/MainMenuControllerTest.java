@@ -1,10 +1,12 @@
 package com.github.marabou.controller;
 
 import com.github.marabou.audio.AudioFileFilter;
+import com.github.marabou.events.SaveSelectedFilesEvent;
 import com.github.marabou.model.Model;
 import com.github.marabou.view.AboutWindow;
 import com.github.marabou.properties.UserProperties;
 import com.github.marabou.service.AudioFileService;
+import com.google.common.eventbus.EventBus;
 import org.junit.Test;
 
 import java.io.File;
@@ -31,7 +33,6 @@ public class MainMenuControllerTest {
 
         // then
         verify(modelMock).insertFile(file);
-        verify(modelMock).addAllTableItems();
     }
 
     @Test
@@ -53,21 +54,19 @@ public class MainMenuControllerTest {
         // then
         verify(modelMock).insertFile(files.get(0));
         verify(modelMock).insertFile(files.get(1));
-        verify(modelMock, times(2)).addAllTableItems();
     }
 
     @Test
-    public void saveSelectedFilesInvokesServiceMethod() throws Exception {
+    public void saveSelectedFilesFiresEvent() throws Exception {
 
         // given
         MainMenuController controller = givenAMainMenuControllerWithMocks();
-        controller.model = mock(Model.class);
 
         // when
         controller.handleSaveSelectedFilesEvent();
 
         // then
-        verify(controller.model).saveSelectedFiles();
+        verify(controller.bus).post(any(SaveSelectedFilesEvent.class));
     }
 
     private MainMenuController givenAMainMenuControllerWithMocks() {
@@ -77,8 +76,9 @@ public class MainMenuControllerTest {
         AudioFileService audioFileServiceMock = mock(AudioFileService.class);
         AboutWindow aboutWindowMock = mock(AboutWindow.class);
         Model model = mock(Model.class);
+        EventBus bus = mock(EventBus.class);
 
-        return new MainMenuController(model, audioFileFilterMock, userPropertiesMock, audioFileServiceMock, aboutWindowMock);
+        return new MainMenuController(bus, model, audioFileFilterMock, userPropertiesMock, audioFileServiceMock, aboutWindowMock);
     }
 
     private File aValidMockedFile() {

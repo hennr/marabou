@@ -4,6 +4,7 @@ import com.github.marabou.helper.ImageLoader;
 import com.github.marabou.model.Model;
 import com.github.marabou.properties.UserProperties;
 
+import com.google.common.eventbus.EventBus;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -27,6 +28,7 @@ public class MainWindowTest {
 
         // given
         Shell shell = mock(Shell.class);
+        EventBus bus = new EventBus();
         Model model = mock(Model.class);
         when(shell.getDisplay()).thenReturn(mock(Display.class));
         when(shell.isDisposed()).thenReturn(true);
@@ -35,7 +37,7 @@ public class MainWindowTest {
         MainMenu mainMenu = mock(MainMenu.class);
         UserProperties userProperties = mock(UserProperties.class);
         ImageLoader imageLoader = mock(ImageLoader.class);
-        MainWindow mainWindow = new MainWindow(mainMenu, imageLoader, userProperties, model)  {
+        MainWindow mainWindow = new MainWindow(bus, mainMenu, imageLoader, userProperties, model)  {
             @Override
             protected void createWidgetsAndLayout(MainMenu mainMenu) {
             }
@@ -53,6 +55,7 @@ public class MainWindowTest {
 
         // given
         Shell spyShell = spy(new Shell());
+        EventBus bus = new EventBus();
         Model model = mock(Model.class);
         when(spyShell.getDisplay()).thenReturn(mock(Display.class));
         when(spyShell.isDisposed()).thenReturn(true);
@@ -64,7 +67,7 @@ public class MainWindowTest {
         when(userProperties.getWindowSizeY()).thenReturn(667);
         when(userProperties.getTagBarWeight()).thenReturn(1);
         when(userProperties.getTableWeight()).thenReturn(1);
-        MainWindow mainWindow = new MainWindow(mainMenu, imageLoader, userProperties, model)  {
+        MainWindow mainWindow = new MainWindow(bus, mainMenu, imageLoader, userProperties, model)  {
             @Override
             protected void createWidgetsAndLayout(MainMenu mainMenu) {
             }

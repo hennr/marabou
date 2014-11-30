@@ -1,6 +1,7 @@
 package com.github.marabou.controller;
 
 import com.github.marabou.audio.AudioFileFilter;
+import com.github.marabou.events.SaveSelectedFilesEvent;
 import com.github.marabou.model.Model;
 import com.github.marabou.view.AboutWindow;
 import com.github.marabou.view.ErrorWindow;
@@ -10,6 +11,7 @@ import com.github.marabou.properties.UserProperties;
 import com.github.marabou.service.AudioFileService;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
+import com.google.common.eventbus.EventBus;
 import org.eclipse.swt.widgets.Shell;
 
 import java.io.File;
@@ -23,8 +25,10 @@ public class MainMenuController {
     private final AudioFileFilter audioFileFilter;
     private final AudioFileService audioFileService;
     private final AboutWindow aboutWindow;
+    protected EventBus bus;
 
-    public MainMenuController(Model model, AudioFileFilter audioFileFilter, UserProperties userProperties, AudioFileService audioFileService, AboutWindow aboutWindow) {
+    public MainMenuController(EventBus bus, Model model, AudioFileFilter audioFileFilter, UserProperties userProperties, AudioFileService audioFileService, AboutWindow aboutWindow) {
+        this.bus = bus;
         this.model = model;
         this.audioFileFilter = audioFileFilter;
         this.userProperties = userProperties;
@@ -49,11 +53,10 @@ public class MainMenuController {
         } catch (InvalidDataException | IOException | UnsupportedTagException e) {
             ErrorWindow.appendError("Couldn't open file: " + file);
         }
-        model.addAllTableItems();
     }
 
     public void handleSaveSelectedFilesEvent() {
-        model.saveSelectedFiles();
+        bus.post(new SaveSelectedFilesEvent());
     }
 
     public void handleOpenDirectoryEvent() {

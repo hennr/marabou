@@ -30,6 +30,7 @@ import com.github.marabou.properties.PropertiesHelper;
 import com.github.marabou.properties.PropertiesLoader;
 import com.github.marabou.properties.UserProperties;
 import com.github.marabou.service.AudioFileService;
+import com.google.common.eventbus.EventBus;
 
 public class Main {
 
@@ -73,12 +74,14 @@ public class Main {
         AudioFileService audioFileService = new AudioFileService(audioFileFilter);
         FileAttributeSidePanel fileAttributeSidePanel = new FileAttributeSidePanel();
         HSQLDBClient hsqldbClient = new HSQLDBClient();
-        Model model = new Model(fileAttributeSidePanel, hsqldbClient);
-        MainMenuController mainMenuController = new MainMenuController(model, audioFileFilter, userProperties, audioFileService, aboutWindow);
+        EventBus bus = new EventBus();
+        Model model = new Model(bus, hsqldbClient, fileAttributeSidePanel);
+        bus.register(model);
+        MainMenuController mainMenuController = new MainMenuController(bus, model, audioFileFilter, userProperties, audioFileService, aboutWindow);
         MainMenu mainMenu = new MainMenu(mainMenuController);
         mainMenu.init();
 
-        MainWindow mainWindow = new MainWindow(mainMenu, imageLoader, userProperties, model);
+        MainWindow mainWindow = new MainWindow(bus, mainMenu, imageLoader, userProperties, model);
         mainWindow.init();
     }
 }
