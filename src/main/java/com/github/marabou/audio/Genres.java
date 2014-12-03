@@ -1,8 +1,11 @@
-package com.github.marabou.helper;
+package com.github.marabou.audio;
 
-public class AudioFileHelper {
+import com.github.marabou.helper.UnknownGenreException;
 
-	// "official list" used by winamp
+public class Genres {
+
+	// genre list used by winamp
+	// see; http://en.wikipedia.org/wiki/ID3#Winamp_Extensions
 	private final static String[] genres = {
 		"Blues",
 		"Classic Rock",
@@ -151,41 +154,58 @@ public class AudioFileHelper {
 		"Trash Metal",
 		"Anime",
 		"Jpop",
-		"Synthpop"
+		"Synthpop",
+		"Abstract",
+		"ArtRock",
+		"Baroque",
+		"Bhangra",
+		"BigBeat",
+		"Breakbeat",
+		"Chillout",
+		"Downtempo",
+		"Dub",
+		"EBM",
+		"Eclectic",
+		"Electro",
+		"Electroclash",
+		"Emo",
+		"Experimental	",
+		"Garage",
+		"Global",
+		"IDM",
+		"Illbient",
+		"Industro-Goth",
+		"JamBand",
+		"Krautrock",
+		"Leftfield",
+		"Lounge",
+		"MathRock",
+		"NewRomantic",
+		"Nu-Breakz",
+		"Post-Punk",
+		"Post-Rock",
+		"Psytrance",
+		"Shoegaze",
+		"SpaceRock",
+		"TropRock",
+		"WorldMusic",
+		"Neoclassical",
+		"Audiobook",
+		"AudioTheatre",
+		"NeueDeutscheWelle",
+		"Podcast",
+		"IndieRock",
+		"G-Funk",
+		"Dubstep",
+		"GarageRock",
+		"Psybient"
 	};
 
 	public static String getGenreById(final int id) throws UnknownGenreException {
-		if (id < 0) {
-			throw new UnknownGenreException();
-		} else if (id < genres.length) {
+		try {
 			return genres[id];
-		} else {
+		} catch (ArrayIndexOutOfBoundsException e) {
 			throw new UnknownGenreException();
 		}
 	}
-
-	/**
-	 * converts seconds to the following format: min:secs
-	 * @return min:secs as a string
-	 */
-	public static String calculateTrackLength(int secs) throws IllegalArgumentException {
-
-        if (secs < 0) throw new IllegalArgumentException();
-
-        int mins = secs / 60;
-
-        if (mins == 0) {
-            if (secs < 10) {
-                return "0:0" + secs;
-            } else {
-                return "0:" + secs;
-            }
-        } else {
-            String seconds = String.valueOf(secs - (60 * mins));
-            if (seconds.length() < 2) {
-                seconds = "0" + seconds;
-            }
-            return mins + ":" + seconds;
-        }
-    }
 }

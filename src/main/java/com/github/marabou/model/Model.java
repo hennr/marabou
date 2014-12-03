@@ -3,7 +3,7 @@ package com.github.marabou.model;
 import com.github.marabou.events.FileOpenedEvent;
 import com.github.marabou.view.FileAttributeSidePanel;
 import com.github.marabou.view.TableShell;
-import com.github.marabou.helper.AudioFileHelper;
+import com.github.marabou.audio.Genres;
 import com.github.marabou.helper.UnknownGenreException;
 import com.google.common.eventbus.Subscribe;
 import com.mpatric.mp3agic.*;
@@ -76,7 +76,7 @@ public class Model {
             // genre
             int genreId = id31Tag.getGenre();
             try {
-                genre = AudioFileHelper.getGenreById(genreId);
+                genre = Genres.getGenreById(genreId);
             } catch (UnknownGenreException e) {
                 genre = "";
             }
@@ -104,7 +104,7 @@ public class Model {
             // genre
             int genreId = id32Tag.getGenre();
             try {
-                genre = AudioFileHelper.getGenreById(genreId);
+                genre = Genres.getGenreById(genreId);
             } catch (UnknownGenreException e) {
                 genre = "";
             }
@@ -121,7 +121,7 @@ public class Model {
         // duration
         String duration;
         try {
-            duration = AudioFileHelper.calculateTrackLength((int) mp3File.getLengthInSeconds());
+            duration = calculateTrackLength((int) mp3File.getLengthInSeconds());
         } catch (IllegalArgumentException e) {
             duration = "0";
         }
@@ -144,6 +144,33 @@ public class Model {
         bus.post(new FileOpenedEvent());
     }
 
+    /**
+     * converts seconds to the following format: min:secs
+     * @return min:secs as a string
+     */
+    private String calculateTrackLength(int secs) throws IllegalArgumentException {
+
+        if (secs < 0) {
+            throw new IllegalArgumentException();
+        }
+
+        int mins = secs / 60;
+
+        if (mins == 0) {
+            if (secs < 10) {
+                return "0:0" + secs;
+            } else {
+                return "0:" + secs;
+            }
+        } else {
+            String seconds = String.valueOf(secs - (60 * mins));
+            if (seconds.length() < 2) {
+                seconds = "0" + seconds;
+            }
+            return mins + ":" + seconds;
+        }
+    }
+
     private void insertValues(final String artist, final String title,
                              final String album, final String trackNumber, final String year,
                              final String genre, final String comment, final String discNo,
@@ -154,7 +181,6 @@ public class Model {
         PreparedStatement stmt = this.dbClient.getPreparedInsertStatement();
 
         try {
-            // TODO use constants for parameterIndex
             stmt.setString(1, fullPath);
             stmt.setString(2, artist);
             stmt.setString(3, title);
