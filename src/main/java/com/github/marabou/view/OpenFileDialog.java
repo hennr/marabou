@@ -6,14 +6,14 @@ import org.eclipse.swt.widgets.FileDialog;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.github.marabou.helper.I18nHelper._;
 
 public class OpenFileDialog extends BaseGuiClass {
 
-    private Logger log = Logger.getLogger(OpenFileDialog.class.getName());
+    private Logger log = LoggerFactory.getLogger(OpenFileDialog.class);
     private String lastPath = "";
 
     public List<File> getFilesToOpen(String openPath) {
@@ -51,7 +51,7 @@ public class OpenFileDialog extends BaseGuiClass {
             filesToOpen.add(f);
         }
 
-        log.log(Level.INFO,"Files to open: {0}", filesToOpen.toString());
+        log.info("Files to open: {}", filesToOpen.toString());
 
         return filesToOpen;
     }

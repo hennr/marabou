@@ -4,12 +4,13 @@ import com.github.marabou.helper.PathHelper;
 
 import java.io.*;
 import java.util.Properties;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PropertiesHelper {
 
     UserProperties userPropertiesInstance = null;
-    private Logger log = Logger.getLogger(PropertiesHelper.class.getName());
+    private Logger log = LoggerFactory.getLogger(PropertiesHelper.class);
     private PathHelper pathHelper;
     private PropertiesLoader propertiesLoader;
 

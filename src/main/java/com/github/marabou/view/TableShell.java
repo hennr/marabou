@@ -30,7 +30,8 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.github.marabou.helper.I18nHelper._;
 
@@ -38,7 +39,7 @@ public class TableShell extends BaseGuiClass {
 
 	final Table table;
 	final static HashMap<String, Integer> columnsOrder = new HashMap<>();
-	final static Logger log = Logger.getLogger(TableShell.class.getName());
+	final static Logger log = LoggerFactory.getLogger(TableShell.class);
     FileAttributeSidePanel fileAttributeSidePanel;
 
 	/**
@@ -122,9 +123,9 @@ public class TableShell extends BaseGuiClass {
 					Desktop.getDesktop().open(new File(path));
 				} catch (IOException e) {
 					ErrorWindow.appendError(_("Error while opening file: ") + path);
-					log.warning("Couldn't open file because of an IOException: " + path);
+					log.warn("Couldn't open file because of an IOException: " + path);
 				} catch (UnsupportedOperationException e) {
-					log.warning("awt couldn't detect the platform, so no media player can be determined.");
+					log.warn("awt couldn't detect the platform, so no media player can be determined.");
 				}
 			}
 		});

@@ -2,14 +2,14 @@ package com.github.marabou.view;
 
 import org.eclipse.swt.widgets.DirectoryDialog;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.github.marabou.helper.I18nHelper._;
 
 public class OpenDirectoryDialog extends BaseGuiClass {
 
-    private Logger log = Logger.getLogger(OpenDirectoryDialog.class.getName());
+    private Logger log = LoggerFactory.getLogger(OpenDirectoryDialog.class);
 
     public String getDirectoryToOpen(String openPath) {
 
@@ -18,7 +18,7 @@ public class OpenDirectoryDialog extends BaseGuiClass {
 
         directoryDialog.setFilterPath(openPath);
         String dirToOpen = directoryDialog.open();
-        log.log(Level.INFO,"Directory to open: {0}",dirToOpen);
+        log.info("Directory to open: {}", dirToOpen);
 
         return dirToOpen;
     }

@@ -1,9 +1,14 @@
 package com.github.marabou.events;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class SaveSelectedFilesEvent {
 
+    Logger log = LoggerFactory.getLogger(SaveSelectedFilesEvent.class);
+
     public SaveSelectedFilesEvent() {
-        System.out.println("Saving files is not implemented yet");
+        log.warn("Saving files is not implemented yet");
     }
 
 }

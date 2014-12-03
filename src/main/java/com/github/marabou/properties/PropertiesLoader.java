@@ -5,14 +5,14 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.*;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 //TODO: write a cool test
 public class PropertiesLoader {
 
     private final PathHelper pathHelper;
-    private Logger log = Logger.getLogger(PropertiesLoader.class.getName());
+    private Logger log = LoggerFactory.getLogger(PropertiesLoader.class);
 
     public PropertiesLoader(PathHelper pathHelper) {
         this.pathHelper = pathHelper;
@@ -33,7 +33,7 @@ public class PropertiesLoader {
             createUserPropertiesDirectoryIfNonExistent();
             writeUserProperties(userProperties);
         } catch (IOException e) {
-            log.log(Level.SEVERE, "Couldn't save config file.", e);
+            log.error("Couldn't save config file.", e);
         }
     }
 

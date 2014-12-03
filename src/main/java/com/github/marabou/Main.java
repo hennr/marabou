@@ -41,29 +41,8 @@ public class Main {
         PropertiesHelper propertiesHelper = new PropertiesHelper(pathHelper, propertiesLoader);
         UserProperties userProperties = propertiesHelper.getUserProperties();
         ApplicationProperties applicationProperties = propertiesHelper.getApplicationProperties();
-
-        setupLogging(args);
         setupMainWindow(applicationProperties, userProperties);
 	}
-
-    private static void setupLogging(String[] args) {
-        if (startedInDebugMode(args)) {
-            System.out.println("Starting marabou in debug mode.");
-            LoggingHelper.initLoggingDebug();
-        } else {
-            LoggingHelper.initLogging();
-        }
-    }
-
-    private static boolean startedInDebugMode(String[] args) {
-
-        for (String arg : args) {
-            if (arg.equalsIgnoreCase("--debug")) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     private static void setupMainWindow(ApplicationProperties applicationProperties, UserProperties userProperties) {
         new BaseGuiClass();

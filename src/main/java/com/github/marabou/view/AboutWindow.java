@@ -34,13 +34,14 @@ import org.eclipse.swt.widgets.Label;
 
 import java.awt.*;
 import java.net.URI;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.github.marabou.helper.I18nHelper._;
 
 public class AboutWindow {
 
-    final static Logger log = Logger.getLogger(PropertiesHelper.class.getName());
+    final static Logger log = LoggerFactory.getLogger(PropertiesHelper.class);
     private final String projectVersion;
 
     public AboutWindow(String projectVersion) {
@@ -111,7 +112,7 @@ public class AboutWindow {
 					Desktop.getDesktop().browse(new URI(url));
 				} catch (Exception e) {
 					// no browsing today :(
-					log.warning("Couldn't open browser.\n" + e.getMessage());
+					log.warn("Couldn't open browser.\n" + e.getMessage());
 				}
 			}
 		});
