@@ -74,9 +74,9 @@ public class Model {
             // year
             year = id31Tag.getYear();
             // genre
-            int g = id31Tag.getGenre();
+            int genreId = id31Tag.getGenre();
             try {
-                genre = AudioFileHelper.getGenre(g);
+                genre = AudioFileHelper.getGenreById(genreId);
             } catch (UnknownGenreException e) {
                 genre = "";
             }
@@ -102,9 +102,9 @@ public class Model {
             // year
             year = id32Tag.getYear();
             // genre
-            int g = id32Tag.getGenre();
+            int genreId = id32Tag.getGenre();
             try {
-                genre = AudioFileHelper.getGenre(g);
+                genre = AudioFileHelper.getGenreById(genreId);
             } catch (UnknownGenreException e) {
                 genre = "";
             }

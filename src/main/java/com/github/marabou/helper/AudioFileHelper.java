@@ -1,29 +1,5 @@
-/*
-	Marabou Audio Tagger - A cross platform audio tagger using SWT
-	
-	Copyright (C) 2009-2010  Jan-Hendrik Peters, Markus Herpich
-	
-	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-	      
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-	
-	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.github.marabou.helper;
 
-/**
- * Some helper functions for audio files
- * @author Jan-Hendrik Peters
- *
- */
 public class AudioFileHelper {
 
 	// "official list" used by winamp
@@ -177,13 +153,8 @@ public class AudioFileHelper {
 		"Jpop",
 		"Synthpop"
 	};
-	
-	/**
-	 * 
-	 * @param id The ID saved in a music file at the genre field
-	 * @return the genre as a String if it exists 
-	 */
-	public static String getGenre(final int id) throws UnknownGenreException {
+
+	public static String getGenreById(final int id) throws UnknownGenreException {
 		if (id < 0) {
 			throw new UnknownGenreException();
 		} else if (id < genres.length) {
@@ -192,24 +163,8 @@ public class AudioFileHelper {
 			throw new UnknownGenreException();
 		}
 	}
-	
+
 	/**
-	 * 
-	 * @param genre the genre you want an id for
-	 * @return the id for the specified genre
-	 * @throws UnknownGenreException if genre is not specified
-	 */
-	public static String getIdForGenre(String genre) throws UnknownGenreException {
-		for (int i = 0; i < genres.length; i++) {
-			if (genres[i].equals("genre")) {
-				return Integer.toString(i);
-			}
-		}
-		// if given genre is not in the list, throw Exception
-		throw new UnknownGenreException();
-	}
-	
-	/** 
 	 * converts seconds to the following format: min:secs
 	 * @return min:secs as a string
 	 */
@@ -225,7 +180,6 @@ public class AudioFileHelper {
             } else {
                 return "0:" + secs;
             }
-            // mins != 0
         } else {
             String seconds = String.valueOf(secs - (60 * mins));
             if (seconds.length() < 2) {

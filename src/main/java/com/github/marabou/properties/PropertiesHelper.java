@@ -86,8 +86,6 @@ public class PropertiesHelper {
         return  new UserProperties(propertiesLoader.loadProperties(userPropertiesStream), this);
     }
 
-    // helper methods
-
     public void persistUserProperties(Properties userProperties) {
         propertiesLoader.persistUserProperties(userProperties);
     }
