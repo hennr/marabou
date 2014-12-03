@@ -78,14 +78,12 @@ public class PropertiesHelper {
         }
         Properties properties = propertiesLoader.loadProperties(userPropertiesStream);
 
-        UserProperties userProperties = new UserProperties(properties, this);
-        return userProperties;
+        return new UserProperties(properties, this);
     }
 
     UserProperties loadDefaultUserProperties() {
         InputStream userPropertiesStream = getClass().getClassLoader().getResourceAsStream(pathHelper.getUserPropertiesFileName());
-        UserProperties userProperties = new UserProperties(propertiesLoader.loadProperties(userPropertiesStream), this);
-        return userProperties;
+        return  new UserProperties(propertiesLoader.loadProperties(userPropertiesStream), this);
     }
 
     // helper methods
