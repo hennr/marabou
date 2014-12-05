@@ -2,7 +2,7 @@ package com.github.marabou;
 
 import com.github.marabou.audio.AudioFileFilter;
 import com.github.marabou.controller.MainMenuController;
-import com.github.marabou.model.HSQLDBClient;
+import com.github.marabou.controller.TableController;
 import com.github.marabou.model.Model;
 import com.github.marabou.view.*;
 import com.github.marabou.helper.*;
@@ -32,16 +32,16 @@ public class Main {
 
         AudioFileFilter audioFileFilter = new AudioFileFilter();
         AudioFileService audioFileService = new AudioFileService(audioFileFilter);
-        FileAttributeSidePanel fileAttributeSidePanel = new FileAttributeSidePanel();
-        HSQLDBClient hsqldbClient = new HSQLDBClient();
         EventBus bus = new EventBus();
-        Model model = new Model(bus, hsqldbClient, fileAttributeSidePanel);
-        bus.register(model);
+        Model model = new Model(bus);
         MainMenuController mainMenuController = new MainMenuController(bus, model, audioFileFilter, userProperties, audioFileService, aboutWindow);
         MainMenu mainMenu = new MainMenu(mainMenuController);
         mainMenu.init();
 
-        MainWindow mainWindow = new MainWindow(bus, mainMenu, imageLoader, userProperties, model);
+        MainWindow mainWindow = new MainWindow(bus, mainMenu, imageLoader, userProperties);
+        TableShell tableShell = new TableShell(mainWindow.getTableComposite());
+        new TableController(tableShell, bus);
+
         mainWindow.init();
     }
 }

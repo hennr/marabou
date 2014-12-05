@@ -1,7 +1,6 @@
 package com.github.marabou.view;
 
 import com.github.marabou.events.SaveSelectedFilesEvent;
-import com.github.marabou.model.Model;
 import com.github.marabou.helper.AvailableImage;
 import com.github.marabou.helper.ImageLoader;
 import com.github.marabou.properties.UserProperties;
@@ -18,8 +17,8 @@ import static com.github.marabou.helper.I18nHelper._;
 public class MainWindow extends BaseGuiClass {
 
     Composite composite;
+    Composite tableComposite;
     SashForm sashForm;
-    Model controller;
     ImageLoader imageLoader;
     private UserProperties userProperties;
     private EventBus bus;
@@ -28,10 +27,9 @@ public class MainWindow extends BaseGuiClass {
 		 * the main window holds elements such as the menu, the table,
 		 *  and the tabs on the left
 		 */
-		public MainWindow(EventBus bus, MainMenu mainMenu, ImageLoader imageLoader, UserProperties userProperties, Model model) {
+	public MainWindow(EventBus bus, MainMenu mainMenu, ImageLoader imageLoader, UserProperties userProperties) {
             this.bus = bus;
             this.imageLoader = imageLoader;
-            this.controller = model;
             this.userProperties = userProperties;
 
             createWidgetsAndLayout(mainMenu);
@@ -82,14 +80,13 @@ public class MainWindow extends BaseGuiClass {
         fileAttributeSidePanel.init(sashForm);
 
 		/* Right side */
-        Composite rightComp = new Composite(sashForm, SWT.NONE);
-        rightComp.setLayout(new FillLayout());
+        tableComposite = new Composite(sashForm, SWT.NONE);
+        tableComposite.setLayout(new FillLayout());
 
-        // Table
-        TableShell table = new TableShell(rightComp);
-        // link table shell with controller
-        controller.connectTableShell(table);
+        setFormRatioAndPack();
+    }
 
+    private void setFormRatioAndPack() {
         // Now we have the composites, and can set a ratio between them
         int[] sashWeights = getStoredSashRation();
         sashForm.setWeights(sashWeights);
@@ -104,7 +101,6 @@ public class MainWindow extends BaseGuiClass {
     }
 
     public void init() {
-
 		if (!userProperties.rememberWindowSize()) {
             shell.setMaximized(true);
             shell.open();
@@ -128,5 +124,9 @@ public class MainWindow extends BaseGuiClass {
 
     private void saveUserSpecificSettingsOnExit() {
         shell.addDisposeListener(new PersistPropertiesListener(this, userProperties, shell));
+    }
+
+    public Composite getTableComposite() {
+        return tableComposite;
     }
 }

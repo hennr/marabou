@@ -37,7 +37,7 @@ public class MainWindowTest {
         MainMenu mainMenu = mock(MainMenu.class);
         UserProperties userProperties = mock(UserProperties.class);
         ImageLoader imageLoader = mock(ImageLoader.class);
-        MainWindow mainWindow = new MainWindow(bus, mainMenu, imageLoader, userProperties, model)  {
+        MainWindow mainWindow = new MainWindow(bus, mainMenu, imageLoader, userProperties)  {
             @Override
             protected void createWidgetsAndLayout(MainMenu mainMenu) {
             }
@@ -67,7 +67,7 @@ public class MainWindowTest {
         when(userProperties.getWindowSizeY()).thenReturn(667);
         when(userProperties.getTagBarWeight()).thenReturn(1);
         when(userProperties.getTableWeight()).thenReturn(1);
-        MainWindow mainWindow = new MainWindow(bus, mainMenu, imageLoader, userProperties, model)  {
+        MainWindow mainWindow = new MainWindow(bus, mainMenu, imageLoader, userProperties)  {
             @Override
             protected void createWidgetsAndLayout(MainMenu mainMenu) {
             }
