@@ -157,10 +157,10 @@ public class Model {
      * converts seconds to the following format: min:secs
      * @return min:secs as a string
      */
-    private String calculateTrackLength(int secs) throws IllegalArgumentException {
+    private String calculateTrackLength(int secs) {
 
         if (secs < 0) {
-            throw new IllegalArgumentException();
+            return Integer.toString(secs);
         }
 
         int mins = secs / 60;
