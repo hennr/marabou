@@ -2,31 +2,31 @@ package com.github.marabou.view;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import java.util.HashMap;
-
 import static com.github.marabou.helper.I18nHelper._;
 
 public class FileAttributeSidePanel {
-	
-	// empty Combo object array that will be accessed when adding entries
-	static Combo[] combos = new Combo[9];
-	private final static String[] labels = {"Artist", "Title", "Album", "Track", "Year",
-			"Genre", "Comments", "Disc Number", "Composer"};
+
+	private final static String[] labels = {
+			"Artist",
+			"Title",
+			"Album",
+			"Track",
+			"Year",
+			"Genre",
+			"Comments",
+			"Disc Number",
+			"Composer"
+	};
+	static Combo[] combos = new Combo[labels.length];
 
     /**
 	 * creates a new composite holding a 2 column grid layout with labels and drop-downs
-	 *  
-	 * @param sashForm
-	 *            the object which should hold the returned composite object
-	 * @return a composite object with a 2 column GridLayout
 	 */
 	public Composite init(SashForm sashForm) {
 		
@@ -41,16 +41,6 @@ public class FileAttributeSidePanel {
 			// create all drop-downs; these will be shown in the right side of the grid
 			combos[i] = new Combo(composite, SWT.DROP_DOWN);
 			combos[i].setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			combos[i].addFocusListener(new FocusListener() {
-				
-				@Override
-				public void focusLost(FocusEvent arg0) {
-					// TODO update DB and Table
-				}
-				
-				@Override
-				public void focusGained(FocusEvent arg0) { }
-            });
 		}
 		return composite;
 	}
@@ -107,7 +97,7 @@ public class FileAttributeSidePanel {
 	 * checks if the given string is either empty or 
 	 * already in the given Combo
 	 */
-	private static boolean addEntry(String newEntry, Combo c) {
+	private boolean addEntry(String newEntry, Combo c) {
 		// don't add empty strings
 		if (newEntry.equals("")) {
 			return false;
@@ -122,14 +112,4 @@ public class FileAttributeSidePanel {
 		return true;
 	}
 	
-	/**
-	 * returns a HashMap with all sections (like genre, etc) and attributes of selected file
-	 */
-	public HashMap<String,String> getTags() {
-		HashMap<String,String> tags = new HashMap<>();
-		for (int i=0; i < combos.length; ++i) {
-			tags.put(labels[i], combos[i].getText());
-		}
-		return tags;
-	}
 }
