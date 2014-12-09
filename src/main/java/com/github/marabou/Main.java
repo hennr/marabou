@@ -12,6 +12,9 @@ import com.github.marabou.properties.PropertiesLoader;
 import com.github.marabou.properties.UserProperties;
 import com.github.marabou.service.AudioFileService;
 import com.google.common.eventbus.EventBus;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.widgets.Composite;
 
 public class Main {
 
@@ -26,7 +29,7 @@ public class Main {
 	}
 
     private static void setupMainWindow(ApplicationProperties applicationProperties, UserProperties userProperties) {
-        new BaseGuiClass();
+        BaseGuiClass baseGuiClass = new BaseGuiClass();
         ImageLoader imageLoader = new ImageLoader();
         AboutWindow aboutWindow = new AboutWindow(applicationProperties.getVersion());
 
@@ -38,9 +41,14 @@ public class Main {
         MainMenu mainMenu = new MainMenu(mainMenuController);
         mainMenu.init();
 
-        MainWindow mainWindow = new MainWindow(bus, mainMenu, imageLoader, userProperties);
+        SidePanel sidePanel = new SidePanel(bus);
+
+        Composite MainWindowComposite = new Composite(baseGuiClass.shell, SWT.NONE);
+        SashForm MainWindowSashForm = new SashForm(MainWindowComposite, SWT.HORIZONTAL);
+
+        MainWindow mainWindow = new MainWindow(bus, mainMenu, imageLoader, userProperties, sidePanel, MainWindowComposite, MainWindowSashForm);
         TableShell tableShell = new TableShell(mainWindow.getTableComposite());
-        new TableController(tableShell, bus);
+        new TableController(bus, model, tableShell);
 
         mainWindow.init();
     }

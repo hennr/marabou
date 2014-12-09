@@ -20,12 +20,7 @@ public class Model {
         this.bus = bus;
     }
 
-    /**
-     * Insert audio file into DB.
-     *
-     * @throws InvalidDataException if file is not a supported file type or if it's corrupt
-     */
-    public void insertFile(final File audioFile) throws InvalidDataException, IOException, UnsupportedTagException {
+    public void addFile(final File audioFile) throws InvalidDataException, IOException, UnsupportedTagException {
         ID3v1 id31Tag = null;
         ID3v2 id32Tag = null;
         boolean id31 = false;
@@ -144,12 +139,10 @@ public class Model {
                 .withDuration(duration);
         
         storeFile(newFile);
-
         bus.post(new NewFileEvent(newFile));
     }
 
     private void storeFile(AudioFile newFile) {
-        files = new HashMap<>();
         files.put(newFile.getId(), newFile);
     }
 
@@ -180,4 +173,7 @@ public class Model {
         }
     }
 
+    public AudioFile getAudioFileByFilePath(String filePath) {
+        return files.get(filePath);
+    }
 }

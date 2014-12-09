@@ -49,7 +49,7 @@ public class MainMenuController {
             return;
         }
         try {
-            model.insertFile(file);
+            model.addFile(file);
         } catch (InvalidDataException | IOException | UnsupportedTagException e) {
             ErrorWindow.appendError("Couldn't open file: " + file);
         }

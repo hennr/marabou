@@ -1,8 +1,6 @@
 package com.github.marabou.view;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.*;
@@ -10,7 +8,7 @@ import org.eclipse.swt.widgets.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,75 +17,13 @@ import static com.github.marabou.helper.I18nHelper._;
 public class TableShell extends BaseGuiClass {
 
 	final Table table;
-	final static HashMap<String, Integer> columnsOrder = new HashMap<>();
+	public static final int TABLE_COLUMN_FILE_PATH = 14;
 	final static Logger log = LoggerFactory.getLogger(TableShell.class);
-    FileAttributeSidePanel fileAttributeSidePanel;
 
-	/**
-	 * Creates a new table object.
-	 * @param composite the composite to hold the table
-	 */
 	public TableShell(Composite composite) {
-
 		this.table = new Table(composite, SWT.MULTI);
 		this.getTable().setLinesVisible(true);
 		this.getTable().setHeaderVisible(true);
-        fileAttributeSidePanel = new FileAttributeSidePanel();
-
-		// fill a HashMap with the name and the index of the columns
-		columnsOrder.put("ARTIST", 0);
-		columnsOrder.put("TITLE", 1);
-		columnsOrder.put("ALBUM", 2);
-		columnsOrder.put("DURATION", 3);
-		columnsOrder.put("TRACKNUMBER", 4);
-		columnsOrder.put("BITRATE", 5);
-		columnsOrder.put("SAMPLERATE", 6);
-		columnsOrder.put("CHANNELS", 7);
-		columnsOrder.put("YEAR", 8);
-		columnsOrder.put("GENRE", 9);
-		columnsOrder.put("COMMENTS", 10);
-		columnsOrder.put("DISC_NUMBER", 11);
-		columnsOrder.put("COMPOSER", 12);
-		columnsOrder.put("FILETYPE", 13);
-		columnsOrder.put("PATH", 14);
-
-		// get indices of table columns
-		final int ARTIST = getColumnIndex("ARTIST");
-        final int TITLE = getColumnIndex("TITLE");
-        final int ALBUM = getColumnIndex("ALBUM");
-        final int TRACKNUMBER = getColumnIndex("TRACKNUMBER");
-        final int YEAR = getColumnIndex("YEAR");
-        final int GENRE = getColumnIndex("GENRE");
-        final int COMMENTS = getColumnIndex("COMMENTS");
-        final int DISC_NUMBER = getColumnIndex("DISC_NUMBER");
-        final int COMPOSER = getColumnIndex("COMPOSER");
-        final int PATH = getColumnIndex("PATH");
-
-		table.addSelectionListener(new SelectionListener() {
-			/**
-			 * adds the chosen entry to the drop dows in the tagTab
-			 */
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-
-                fileAttributeSidePanel.addTags(
-                        table.getItem(getTable().getSelectionIndex()).getText(ARTIST),
-                        table.getItem(getTable().getSelectionIndex()).getText(TITLE),
-                        table.getItem(getTable().getSelectionIndex()).getText(ALBUM),
-                        table.getItem(getTable().getSelectionIndex()).getText(TRACKNUMBER),
-                        table.getItem(getTable().getSelectionIndex()).getText(YEAR),
-                        table.getItem(getTable().getSelectionIndex()).getText(GENRE),
-                        table.getItem(getTable().getSelectionIndex()).getText(COMMENTS),
-                        table.getItem(getTable().getSelectionIndex()).getText(DISC_NUMBER),
-                        table.getItem(getTable().getSelectionIndex()).getText(COMPOSER));
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-                // no need to handle this
-            }
-        });
-
 		this.getTable().addListener(SWT.MouseDoubleClick, new Listener() {
 			// handles a double click on a table item
 			@Override
@@ -97,7 +33,7 @@ public class TableShell extends BaseGuiClass {
                 if (index == -1) {
                     return;
                 }
-                String path = getTable().getItem(index).getText(PATH);
+                String path = getTable().getItem(index).getText(TABLE_COLUMN_FILE_PATH);
 
 				try {
 					log.info("Trying to open file with default media player: " + path);
@@ -214,11 +150,6 @@ public class TableShell extends BaseGuiClass {
 				}
 			}
 		});
-	}
-
-
-	public int getColumnIndex(String key) {
-		return(columnsOrder.get(key));
 	}
 
 	public void setKeyboardFocus() {
