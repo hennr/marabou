@@ -2,6 +2,7 @@ package com.github.marabou;
 
 import com.github.marabou.audio.AudioFileFilter;
 import com.github.marabou.controller.MainMenuController;
+import com.github.marabou.controller.SidePanelController;
 import com.github.marabou.controller.TableController;
 import com.github.marabou.model.Model;
 import com.github.marabou.view.*;
@@ -12,6 +13,10 @@ import com.github.marabou.properties.PropertiesLoader;
 import com.github.marabou.properties.UserProperties;
 import com.github.marabou.service.AudioFileService;
 import com.google.common.eventbus.EventBus;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Table;
 
 public class Main {
 
@@ -26,7 +31,7 @@ public class Main {
 	}
 
     private static void setupMainWindow(ApplicationProperties applicationProperties, UserProperties userProperties) {
-        new BaseGuiClass();
+        BaseGuiClass baseGuiClass = new BaseGuiClass();
         ImageLoader imageLoader = new ImageLoader();
         AboutWindow aboutWindow = new AboutWindow(applicationProperties.getVersion());
 
@@ -38,9 +43,17 @@ public class Main {
         MainMenu mainMenu = new MainMenu(mainMenuController);
         mainMenu.init();
 
-        MainWindow mainWindow = new MainWindow(bus, mainMenu, imageLoader, userProperties);
-        TableShell tableShell = new TableShell(mainWindow.getTableComposite());
-        new TableController(tableShell, bus);
+
+        Composite MainWindowComposite = new Composite(baseGuiClass.shell, SWT.NONE);
+        SashForm mainWindowSashForm = new SashForm(MainWindowComposite, SWT.HORIZONTAL);
+
+        SidePanel sidePanel = new SidePanel(mainWindowSashForm);
+        new SidePanelController(bus, sidePanel);
+
+
+        MainWindow mainWindow = new MainWindow(bus, mainMenu, imageLoader, userProperties, MainWindowComposite, mainWindowSashForm);
+        Table table = new Table(mainWindow.getTableComposite(), SWT.MULTI);
+        new TableController(bus, table, model);
 
         mainWindow.init();
     }

@@ -32,7 +32,7 @@ public class MainMenuControllerTest {
         controllerUnderTest.openFile(file);
 
         // then
-        verify(modelMock).insertFile(file);
+        verify(modelMock).addFile(file);
     }
 
     @Test
@@ -52,8 +52,8 @@ public class MainMenuControllerTest {
         controllerUnderTest.openFiles(files);
 
         // then
-        verify(modelMock).insertFile(files.get(0));
-        verify(modelMock).insertFile(files.get(1));
+        verify(modelMock).addFile(files.get(0));
+        verify(modelMock).addFile(files.get(1));
     }
 
     @Test

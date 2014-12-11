@@ -16,32 +16,27 @@ import static com.github.marabou.helper.I18nHelper._;
 
 public class MainWindow extends BaseGuiClass {
 
-    Composite composite;
-    Composite tableComposite;
-    SashForm sashForm;
-    ImageLoader imageLoader;
-    private UserProperties userProperties;
-    private EventBus bus;
+    protected Composite tableComposite;
+    protected Composite composite;
+    protected SashForm sashForm;
+    protected ImageLoader imageLoader;
+    protected UserProperties userProperties;
+    protected EventBus bus;
 
-    /**
-		 * the main window holds elements such as the menu, the table,
-		 *  and the tabs on the left
-		 */
-	public MainWindow(EventBus bus, MainMenu mainMenu, ImageLoader imageLoader, UserProperties userProperties) {
-            this.bus = bus;
-            this.imageLoader = imageLoader;
-            this.userProperties = userProperties;
+    public MainWindow(EventBus bus, MainMenu mainMenu, ImageLoader imageLoader, UserProperties userProperties, Composite composite,  SashForm sashForm) {
+        this.bus = bus;
+        this.imageLoader = imageLoader;
+        this.userProperties = userProperties;
+        this.composite = composite;
+        this.sashForm = sashForm;
 
-            createWidgetsAndLayout(mainMenu);
-	}
+        createWidgetsAndLayout(mainMenu);
+    }
 
     protected void createWidgetsAndLayout(MainMenu mainMenu) {
         shell.setLayout(new FillLayout(SWT.VERTICAL));
         shell.setImage(imageLoader.getImage(AvailableImage.LOGO_SMALL));
         shell.setText(_("Marabou - Audio tagger"));
-
-
-        composite = new Composite(shell, SWT.NONE);
 
         //Create a menu, place it in the shell and fill the menu
         shell.setMenuBar(mainMenu.getMenu());
@@ -65,19 +60,10 @@ public class MainWindow extends BaseGuiClass {
             public void handleEvent(Event event) {
                 bus.post(new SaveSelectedFilesEvent());
             }
-    });
+        });
         toolbar.pack();
 
-        //Create a sashForm which will hold composites
-        sashForm = new SashForm(composite, SWT.HORIZONTAL);
         sashForm.setLayoutData(gd);
-
-        //Create the composites that will hold the table
-        //on the right side and the tabs on the left
-
-	    /* Left side */
-        FileAttributeSidePanel fileAttributeSidePanel = new FileAttributeSidePanel();
-        fileAttributeSidePanel.init(sashForm);
 
 		/* Right side */
         tableComposite = new Composite(sashForm, SWT.NONE);
@@ -101,25 +87,25 @@ public class MainWindow extends BaseGuiClass {
     }
 
     public void init() {
-		if (!userProperties.rememberWindowSize()) {
+        if (!userProperties.rememberWindowSize()) {
             shell.setMaximized(true);
             shell.open();
         }
-        int x =userProperties.getWindowSizeX();
-        int y =userProperties.getWindowSizeY();
+        int x = userProperties.getWindowSizeX();
+        int y = userProperties.getWindowSizeY();
         if (x < 0 || y < 0) {
             shell.setMaximized(true);
         } else {
             shell.setSize(x, y);
         }
-		shell.open();
-		
+        shell.open();
+
         saveUserSpecificSettingsOnExit();
 
         while (!shell.isDisposed()) {
-			if (!shell.getDisplay().readAndDispatch())
-				shell.getDisplay().sleep();
-		}
+            if (!shell.getDisplay().readAndDispatch())
+                shell.getDisplay().sleep();
+        }
     }
 
     private void saveUserSpecificSettingsOnExit() {

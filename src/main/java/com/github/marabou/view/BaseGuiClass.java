@@ -5,7 +5,7 @@ import org.eclipse.swt.widgets.Shell;
 
 public class BaseGuiClass {
 
-    protected static Shell shell;
+    public static Shell shell;
     protected static Display display;
 
     public BaseGuiClass() {
