@@ -14,4 +14,4 @@ Marabou is still under development, there is no stable release out yet, sorry.
 
 If you want to give the snapshot a try, clone the project and run:
 
-mvn clean package && java -jar target/marabou-0.1-SNAPSHOT-jar-with-dependencies.jar
+mvn package && java -jar target/marabou-0.1-SNAPSHOT-jar-with-dependencies.jar
