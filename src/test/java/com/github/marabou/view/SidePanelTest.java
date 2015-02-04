@@ -20,10 +20,12 @@ public class SidePanelTest {
 
         // given
         EventBus eventBus = new EventBus();
-        SashForm sashFormMock = new SashForm(new Shell(), 0);
-        SidePanel sidePanelSpy = spy(new SidePanel(eventBus, sashFormMock));
+        SashForm sashForm = new SashForm(new Shell(), 0);
+        SidePanel sidePanelSpy = spy(new SidePanel(eventBus, sashForm));
+        // need to register the spy proxy instance too, as  the SidePanel constructor registers "this" so the spy would never get called...
+        eventBus.register(sidePanelSpy);
 
-        AudioFile audioFile = new AudioFile("666");
+        AudioFile audioFile = new AudioFile("invalid dummy audio file");
         Set<AudioFile> audioFileSet = Sets.newHashSet(audioFile);
         SidePanelUpdatableEvent sidePanelUpdatableEvent = new SidePanelUpdatableEvent(audioFileSet);
 
