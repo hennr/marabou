@@ -22,6 +22,7 @@ public class SidePanelTest {
         EventBus eventBus = new EventBus();
         SashForm sashFormMock = new SashForm(new Shell(), 0);
         SidePanel sidePanelSpy = spy(new SidePanel(eventBus, sashFormMock));
+        eventBus.register(sidePanelSpy);
 
         AudioFile audioFile = new AudioFile("666");
         Set<AudioFile> audioFileSet = Sets.newHashSet(audioFile);
