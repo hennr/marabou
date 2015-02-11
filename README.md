@@ -1,4 +1,5 @@
 [![Build Status](https://secure.travis-ci.org/hennr/marabou.png?branch=master)](http://travis-ci.org/hennr/marabou)
+[![Coverage Status](https://coveralls.io/repos/hennr/marabou/badge.svg)](https://coveralls.io/r/hennr/marabou)
 
 [ ![Codeship Status for hennr/marabou](https://codeship.com/projects/0571c1f0-58a5-0132-9e3b-069770f0649f/status)](https://codeship.com/projects/50136)
 
