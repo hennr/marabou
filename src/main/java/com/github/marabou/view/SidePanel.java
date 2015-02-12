@@ -1,9 +1,6 @@
 package com.github.marabou.view;
 
-import com.github.marabou.events.SidePanelUpdatableEvent;
 import com.github.marabou.model.AudioFile;
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.GridData;
@@ -12,28 +9,38 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 import static com.github.marabou.helper.I18nHelper._;
 
 public class SidePanel {
 
-    private final static String[] labels = {
-            "Artist",
-            "Title",
-            "Album",
-            "Track",
-            "Year",
-            "Genre",
-            "Comments",
-            "Disc Number",
-            "Composer"};
+    Map<ComboAndLabelNames, Combo> comboBoxes = new HashMap<>();
 
-    protected Combo[] combos = new Combo[labels.length];
+    protected enum ComboAndLabelNames {
 
+        Artist(_("Artist")),
+        Title(_("Title")),
+        Album(_("Album")),
+        Track(_("Track")),
+        Year(_("Year")),
+        Genre(_("Genre")),
+        Comments(_("Comments")),
+        Disc_Number(_("Disc Number")),
+        Composer(_("Composer"));
+        
+        final String labelName;
 
-    public SidePanel(EventBus bus, SashForm parent) {
-        bus.register(this);
+        private ComboAndLabelNames(String labelName) {
+            this.labelName = labelName;
+        }
+    }
+    
+    public SidePanel(SashForm parent) {
         Composite composite = setupLayout(parent);
-        setupComboBoxes(composite);
+        createComboBoxesAndLabels(composite);
     }
 
     private Composite setupLayout(SashForm parent) {
@@ -44,20 +51,20 @@ public class SidePanel {
         return composite;
     }
 
-    private void setupComboBoxes(Composite composite) {
+    private void createComboBoxesAndLabels(Composite composite) {
 
-        for (int i = 0; i < labels.length; i++) {
+        for (ComboAndLabelNames comboName : ComboAndLabelNames.values()) {
             Label label = new Label(composite, SWT.None);
-            label.setText(_(labels[i]));
-            // create all drop-downs; these will be shown in the right side of the grid
-            combos[i] = new Combo(composite, SWT.DROP_DOWN);
-            combos[i].setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+            label.setText(comboName.labelName);
+
+            Combo combo = new Combo(composite, SWT.DROP_DOWN);
+            combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+            comboBoxes.put(comboName, combo);
         }
     }
 
-    @Subscribe
-    public void updateLists(SidePanelUpdatableEvent event) {
-        for (AudioFile audioFile : event.audioFiles) {
+    public void updateLists(Set<AudioFile> audioFiles) {
+        for (AudioFile audioFile : audioFiles) {
             addNewDataSet(
                     audioFile.getArtist(),
                     audioFile.getTitle(),
@@ -83,32 +90,32 @@ public class SidePanel {
             String disc_no,
             String composer) {
 
-        combos[0].setText(artist);
-        combos[0].add(artist);
+        comboBoxes.get(ComboAndLabelNames.Artist).setText(artist);
+        comboBoxes.get(ComboAndLabelNames.Artist).add(artist);
 
-        combos[1].setText(title);
-        combos[1].add(title);
+        comboBoxes.get(ComboAndLabelNames.Title).setText(title);
+        comboBoxes.get(ComboAndLabelNames.Title).add(title);
 
-        combos[2].setText(album);
-        combos[2].add(album);
+        comboBoxes.get(ComboAndLabelNames.Album).setText(album);
+        comboBoxes.get(ComboAndLabelNames.Album).add(album);
 
-        combos[3].setText(track);
-        combos[3].add(track);
+        comboBoxes.get(ComboAndLabelNames.Track).setText(track);
+        comboBoxes.get(ComboAndLabelNames.Track).add(track);
 
-        combos[4].setText(year);
-        combos[4].add(year);
+        comboBoxes.get(ComboAndLabelNames.Year).setText(year);
+        comboBoxes.get(ComboAndLabelNames.Year).add(year);
 
-        combos[5].setText(genre);
-        combos[5].add(genre);
+        comboBoxes.get(ComboAndLabelNames.Genre).setText(genre);
+        comboBoxes.get(ComboAndLabelNames.Genre).add(genre);
 
-        combos[6].setText(comments);
-        combos[6].add(comments);
+        comboBoxes.get(ComboAndLabelNames.Comments).setText(comments);
+        comboBoxes.get(ComboAndLabelNames.Comments).add(comments);
 
-        combos[7].setText(disc_no);
-        combos[7].add(disc_no);
+        comboBoxes.get(ComboAndLabelNames.Disc_Number).setText(disc_no);
+        comboBoxes.get(ComboAndLabelNames.Disc_Number).add(disc_no);
 
-        combos[8].setText(composer);
-        combos[8].add(composer);
+        comboBoxes.get(ComboAndLabelNames.Composer).setText(composer);
+        comboBoxes.get(ComboAndLabelNames.Composer).add(composer);
     }
 
 }

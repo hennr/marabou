@@ -1,8 +1,8 @@
 package com.github.marabou.controller;
 
 import com.github.marabou.events.FilesSelectedEvent;
-import com.github.marabou.events.SidePanelUpdatableEvent;
 import com.github.marabou.model.AudioFile;
+import com.github.marabou.view.SidePanel;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
@@ -10,18 +10,16 @@ import java.util.Set;
 
 public class SidePanelController {
 
+    private SidePanel sidePanel;
 
-    private EventBus bus;
-    private Set<AudioFile> audioFiles;
-
-    public SidePanelController(EventBus bus) {
-        this.bus = bus;
+    public SidePanelController(EventBus bus, SidePanel sidePanel) {
         bus.register(this);
+        this.sidePanel = sidePanel;
     }
 
     @Subscribe
     public void updateSidePanelModel(FilesSelectedEvent event) {
-        audioFiles = event.selectedAudioFiles;
-        bus.post(new SidePanelUpdatableEvent(audioFiles));
+        Set<AudioFile> audioFiles = event.selectedAudioFiles;
+        sidePanel.updateLists(audioFiles);
     }
 }
