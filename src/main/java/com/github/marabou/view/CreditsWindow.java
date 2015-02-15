@@ -14,10 +14,6 @@ import static com.github.marabou.helper.I18nHelper._;
 
 public class CreditsWindow {
 
-	/**
-	 * shows the devs, translators and libs that marabou uses
-	 * all text comes from the translation files
-	 */
 	public static void showCredits() {
 		final Display display = Display.getCurrent();
 
@@ -61,7 +57,7 @@ public class CreditsWindow {
 		dependenciesTab.setControl(depsComp);
 
 		Link developers = new Link(devsComp, SWT.None);
-		developers.setText(_("\n\n\n\n Jan-Hendrik Peters  <a>hennr@hennr.name</a>"));
+		developers.setText(_("\n\n Jan-Hendrik Peters  <a>hennr@hennr.name</a>"));
 		developers.pack();
 		// listener to open mail client for the E-Mail-address clicked
 		developers.addListener(SWT.Selection, new Listener() {
@@ -77,22 +73,19 @@ public class CreditsWindow {
 			}});
 
 		Link translators = new Link(transComp, SWT.None);
-		translators.setText(_("\n\n\n English:\n Jan-Hendrik Peters  <a>hennr@hennr.name</a>"));
+		translators.setText(_("\n English:\n Jan-Hendrik Peters  <a>hennr@hennr.name</a>"));
 		translators.pack();
 
-		Link depencies = new Link(depsComp, SWT.None);
-		depencies.setText(_(
-				"Marabou devs want to thank the following projects and persons:\n\n" +
-				"SWT for the gui; " + "EPL; " + "<a>http://www.eclipse.org/swt/</a>\n" +
-				"Michael Patricios for mp3agic as our backend libraby; " + "GPL 3; " + "<a>https://github.com/mpatric/mp3agic/</a>\n" +
-				"junit for our unit tests; " + "CPL; " + "<a>http://junit.sourceforge.net/</a>\n" +
-				"gettext-commons for internationalization; " + "Apache licence; " + "<a>http://code.google.com/p/gettext-commons/</a>\n" +
-				"Tango Icon Library; " + "Public Domain; " + "<a>http://tango.freedesktop.org/Tango_Icon_Library</a>\n" +
-				"HSQLDB; " + "BSD based licence; " + "<a>http://hsqldb.org/</a>\n" +
-				"maven as a great build tool and dependency resolver; " + "Apache licence; " + "<a>http://maven.apache.org/</a>\n")+
-				"Dries Bargheer for the logo; " + "CC-BY-SA" + "\n"
-				);
-		depencies.pack();
+		Link dependencies = new Link(depsComp, SWT.None);
+		dependencies.setText(_(
+                        "\nThanks to the following projects and persons:\n\n" +
+                                "SWT; " + "EPL; " + "<a>http://www.eclipse.org/swt/</a>\n" +
+                                "Michael Patricios for mp3agic; " + "GPL 3; " + "<a>https://github.com/mpatric/mp3agic/</a>\n" +
+                                "Tango Icon Library; " + "Public Domain; " + "<a>http://tango.freedesktop.org/Tango_Icon_Library</a>\n" +
+                                "maven; " + "Apache licence; " + "<a>http://maven.apache.org/</a>\n") +
+                        "Dries Bargheer for the logo; " + "CC-BY-SA" + "\n"
+        );
+		dependencies.pack();
 
 		Button close = new Button(shell, SWT.NONE);
 		close.setText(_("&Close"));
