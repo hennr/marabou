@@ -19,7 +19,7 @@ public class AudioFileFilterTest {
 
         when(validFile.getName()).thenReturn("foo.mp3");
         when(validFile.canRead()).thenReturn(true);
-        when(validFile.isDirectory()).thenReturn(false);
+        when(validFile.isFile()).thenReturn(true);
         AudioFileFilter filter = new AudioFileFilter();
 
         // when
@@ -35,7 +35,7 @@ public class AudioFileFilterTest {
         File unsupportedFile = mock(File.class);
         when(unsupportedFile.getName()).thenReturn("foo.ogg");
         when(unsupportedFile.canRead()).thenReturn(true);
-        when(unsupportedFile.isDirectory()).thenReturn(false);
+        when(unsupportedFile.isFile()).thenReturn(true);
 
         // then
         assertFalse(audioFileFilter.accept(unsupportedFile));
