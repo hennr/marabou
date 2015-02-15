@@ -1,13 +1,14 @@
 package com.github.marabou.service;
 
 import com.github.marabou.audio.AudioFileFilter;
+
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -29,7 +30,7 @@ public class AudioFileServiceTest {
         List<File> result = service.findFiles(dirToScan);
 
         // then
-        assertThat(result).hasSize(0);
+        assertEquals(0, result.size());
     }
 
     @Test
@@ -52,7 +53,8 @@ public class AudioFileServiceTest {
         List<File> result = service.findFiles(dirToScan);
 
         // then
-        assertThat(result).hasSize(1).contains(mockedMp3File);
+        assertEquals(1, result.size());
+        result.contains(mockedMp3File);
     }
 
     @Test
@@ -77,7 +79,8 @@ public class AudioFileServiceTest {
 
         // then
         verify(audioFileFilterMock).accept(any(File.class));
-        assertThat(result).hasSize(1).contains(mockedMp3File);
+        assertEquals(1, result.size());
+        result.contains(mockedMp3File);
     }
 
     // TODO

@@ -1,9 +1,9 @@
 package com.github.marabou.properties;
 
 import com.github.marabou.helper.PathHelper;
-import org.junit.Test;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class ApplicationPropertiesTest {
 
@@ -14,7 +14,7 @@ public class ApplicationPropertiesTest {
         ApplicationProperties appProperties = new PropertiesHelper(new PathHelper(), new PropertiesLoader(new PathHelper())).getApplicationProperties();
 
         // expect
-        assertThat(appProperties.getVersion()).isNotEqualTo("${project.version}");
+        assertNotEquals("${project.version}", appProperties.getVersion());
     }
 
 }

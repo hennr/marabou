@@ -1,8 +1,9 @@
 package com.github.marabou.helper;
 
 import com.github.marabou.properties.PropertiesLoader;
-import org.fest.assertions.api.Assertions;
+
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
 import java.util.Properties;
@@ -19,6 +20,6 @@ public class PropertiesLoaderTest {
         Properties properties = propertiesLoader.loadProperties(new ByteArrayInputStream(propertiesContent.getBytes()));
 
         // then
-        Assertions.assertThat(properties.getProperty("foo").equals("bar"));
+        assertEquals("bar", properties.getProperty("foo"));
     }
 }
