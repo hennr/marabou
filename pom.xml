@@ -30,26 +30,6 @@
 	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <developers>
-	<developer>
-	    <name>Jan-Hendrik "hennr" Peters</name>
-	    <email>hennr@hennr.name</email>
-	    <url>http://hennr.name</url>
-	    <roles>
-		<role>developer</role>
-	    </roles>
-	    <timezone>Europe/Berlin</timezone>
-	</developer>
-	<developer>
-	    <name>Markus Herpich</name>
-	    <email>herpich@cs.tu-berlin.de</email>
-	    <roles>
-		<role>developer</role>
-	    </roles>
-	    <timezone>Europe/Berlin</timezone>
-	</developer>
-    </developers>
-
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
