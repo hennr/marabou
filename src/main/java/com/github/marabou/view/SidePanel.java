@@ -64,6 +64,9 @@ public class SidePanel {
     }
 
     public void updateLists(Set<AudioFile> audioFiles) {
+
+        cleanComboBoxes();
+
         for (AudioFile audioFile : audioFiles) {
             addNewDataSet(
                     audioFile.getArtist(),
@@ -77,6 +80,14 @@ public class SidePanel {
                     audioFile.getComposer()
             );
         }
+    }
+
+    private void cleanComboBoxes() {
+
+        for (Combo combo : comboBoxes.values()) {
+            combo.removeAll();
+        }
+
     }
 
     private void addNewDataSet(
