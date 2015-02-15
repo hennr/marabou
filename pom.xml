@@ -17,17 +17,17 @@
     </licenses>
 
     <issueManagement>
-	<system>github</system>
-	<url>https://github.com/hennr/marabou/issues</url>
+        <system>github</system>
+        <url>https://github.com/hennr/marabou/issues</url>
     </issueManagement>
 
     <scm>
-	<connection>scm:git://github.com/hennr/marabou.git</connection>
-	<url>https://github.com/hennr/marabou</url>
+        <connection>scm:git://github.com/hennr/marabou.git</connection>
+        <url>https://github.com/hennr/marabou</url>
     </scm>
     
     <properties>
-	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
@@ -63,7 +63,7 @@
         <dependency>
             <groupId>com.mpatric</groupId>
             <artifactId>mp3agic</artifactId>
-            <version>0.8.2</version>
+            <version>0.8.3</version>
         </dependency>
 
         <dependency>
