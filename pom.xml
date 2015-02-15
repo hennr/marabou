@@ -270,7 +270,7 @@
     </profiles>
 	
     <repositories>
-	<!-- unoffical swt repo; co-maintained by hennr -->
+	<!-- unofficial swt repo; co-maintained by hennr -->
 	<repository>
 	    <id>swt-repo</id>
 	    <url>https://swt-repo.googlecode.com/svn/repo/</url>
