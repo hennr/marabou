@@ -9,9 +9,7 @@ public class BaseGuiClass {
     protected static Display display;
 
     public BaseGuiClass() {
-        if (display == null) {
-            display = new Display();
-        }
+        display = Display.getCurrent();
         if (shell == null) {
             shell = new Shell(display);
         }
