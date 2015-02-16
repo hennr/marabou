@@ -44,8 +44,8 @@ public class AudioFileServiceTest {
         when(mockedMp3File.getName()).thenReturn("foo.mp3");
         when(mockedMp3File.canRead()).thenReturn(true);
         when(mockedMp3File.exists()).thenReturn(true);
+        when(mockedMp3File.isFile()).thenReturn(true);
         when(mockedMp3File.getCanonicalPath()).thenReturn("foo.mp3");
-        when(mockedMp3File.getAbsolutePath()).thenReturn("foo.mp3");
         File[] files = new File[] {mockedMp3File};
         when(dirToScan.listFiles()).thenReturn(files);
 
