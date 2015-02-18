@@ -1,4 +1,3 @@
-add GPL header in all source files (see maven license plugins)
 auto updater, see rssowl: http://www.rssowl.org
 File Drag&Drop Support
 Add support for "open with" context menu of e.g. file managers
