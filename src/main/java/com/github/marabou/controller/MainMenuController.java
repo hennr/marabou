@@ -69,7 +69,7 @@ public class MainMenuController {
         }
 
         if (dirToOpen != null) {
-            List<File> files = audioFileService.findFiles(new File(dirToOpen));
+            List<File> files = audioFileService.findAcceptableFilesRecursively(new File(dirToOpen));
             openFiles(files);
         }
     }
