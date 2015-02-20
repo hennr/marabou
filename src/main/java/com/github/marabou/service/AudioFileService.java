@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2012 - 2014 Jan-Hendrik Peters
+ * Copyright (C) 2012 - 2015 Jan-Hendrik Peters
  *
  * This file is part of marabou.
  *
