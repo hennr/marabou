@@ -88,7 +88,7 @@ public class Model {
             // comments
             comment = id31Tag.getComment();
             // disc number
-            discNo = "Not supported yet";
+            discNo = "Not supported in idv31";
             // composer
             composer = "Not supported in idv31";
         }
@@ -115,7 +115,7 @@ public class Model {
             // comments
             comment = id32Tag.getComment();
             // disc number
-            discNo = "Not supported yet";
+            discNo = id32Tag.getPartOfSet();
             // composer
             composer = id32Tag.getComposer();
         }
