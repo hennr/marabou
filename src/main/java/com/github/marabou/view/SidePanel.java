@@ -47,7 +47,7 @@ public class SidePanel {
         Year(_("Year")),
         Genre(_("Genre")),
         Comments(_("Comments")),
-        Disc_Number(_("Disc Number")),
+        Disc_number(_("Disc number")),
         Composer(_("Composer"));
         
         final String labelName;
@@ -141,8 +141,8 @@ public class SidePanel {
         comboBoxes.get(ComboAndLabelNames.Comments).setText(comments);
         comboBoxes.get(ComboAndLabelNames.Comments).add(comments);
 
-        comboBoxes.get(ComboAndLabelNames.Disc_Number).setText(disc_no);
-        comboBoxes.get(ComboAndLabelNames.Disc_Number).add(disc_no);
+        comboBoxes.get(ComboAndLabelNames.Disc_number).setText(disc_no);
+        comboBoxes.get(ComboAndLabelNames.Disc_number).add(disc_no);
 
         comboBoxes.get(ComboAndLabelNames.Composer).setText(composer);
         comboBoxes.get(ComboAndLabelNames.Composer).add(composer);

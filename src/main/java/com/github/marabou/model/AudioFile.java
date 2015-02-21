@@ -26,7 +26,7 @@ public class AudioFile {
     String album;
     String duration;
     String track;
-    String bitrate;
+    String bitRate;
     String samplerate;
     String channels;
     String year;
@@ -90,12 +90,12 @@ public class AudioFile {
         return this;
     }
 
-    public String getBitrate() {
-        return bitrate;
+    public String getBitRate() {
+        return bitRate;
     }
 
-    public AudioFile withBitrate(String bitrate) {
-        this.bitrate = bitrate;
+    public AudioFile withBitRate(String bitRate) {
+        this.bitRate = bitRate;
         return this;
     }
 

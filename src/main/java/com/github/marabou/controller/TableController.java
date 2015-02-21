@@ -101,7 +101,7 @@ public class TableController {
         // sample rate
         TableColumn sampleRate = new TableColumn(table, SWT.LEFT);
         sampleRate.setWidth(60);
-        sampleRate.setText(_("Sample rate"));
+        sampleRate.setText(_("Samplerate"));
         sampleRate.setMoveable(true);
 
         // channels
@@ -131,7 +131,7 @@ public class TableController {
         // disc number
         TableColumn diskNumber = new TableColumn(table, SWT.LEFT);
         diskNumber.setWidth(60);
-        diskNumber.setText(_("Disk Number"));
+        diskNumber.setText(_("Disk number"));
         diskNumber.setMoveable(true);
 
         // composer
@@ -214,7 +214,7 @@ public class TableController {
                 audioFile.getAlbum(),
                 audioFile.getDuration(),
                 audioFile.getTrack(),
-                audioFile.getBitrate(),
+                audioFile.getBitRate(),
                 audioFile.getSamplerate(),
                 audioFile.getChannels(),
                 audioFile.getYear(),

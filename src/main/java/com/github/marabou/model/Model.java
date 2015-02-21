@@ -150,7 +150,7 @@ public class Model {
                 .withComments(comment)
                 .withDiscNumber(discNo)
                 .withComposer(composer)
-                .withBitrate(bitRate)
+                .withBitRate(bitRate)
                 .withSamplerate(sampleRate)
                 .withChannels(channels)
                 .withEncoding(encoding)

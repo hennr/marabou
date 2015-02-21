@@ -48,7 +48,7 @@ public class SidePanelTest {
         assertEquals(audioFile.getYear(), sidePanel.comboBoxes.get(ComboAndLabelNames.Year).getText());
         assertEquals(audioFile.getGenre(), sidePanel.comboBoxes.get(ComboAndLabelNames.Genre).getText());
         assertEquals(audioFile.getComments(), sidePanel.comboBoxes.get(ComboAndLabelNames.Comments).getText());
-        assertEquals(audioFile.getDiscNumber(), sidePanel.comboBoxes.get(ComboAndLabelNames.Disc_Number).getText());
+        assertEquals(audioFile.getDiscNumber(), sidePanel.comboBoxes.get(ComboAndLabelNames.Disc_number).getText());
         assertEquals(audioFile.getComposer(), sidePanel.comboBoxes.get(ComboAndLabelNames.Composer).getText());
     }
 
@@ -78,7 +78,7 @@ public class SidePanelTest {
         assertEquals(secondAudioFile.getYear(), sidePanel.comboBoxes.get(ComboAndLabelNames.Year).getText());
         assertEquals(secondAudioFile.getGenre(), sidePanel.comboBoxes.get(ComboAndLabelNames.Genre).getText());
         assertEquals(secondAudioFile.getComments(), sidePanel.comboBoxes.get(ComboAndLabelNames.Comments).getText());
-        assertEquals(secondAudioFile.getDiscNumber(), sidePanel.comboBoxes.get(ComboAndLabelNames.Disc_Number).getText());
+        assertEquals(secondAudioFile.getDiscNumber(), sidePanel.comboBoxes.get(ComboAndLabelNames.Disc_number).getText());
         assertEquals(secondAudioFile.getComposer(), sidePanel.comboBoxes.get(ComboAndLabelNames.Composer).getText());
     }
 
