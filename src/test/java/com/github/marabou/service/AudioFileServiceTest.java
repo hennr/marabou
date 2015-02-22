@@ -123,6 +123,60 @@ public class AudioFileServiceTest {
         assertEquals(1, result.size());
     }
 
+    @Test
+    public void detectsAllFilesInRecursiveFolderStructure() throws IOException {
+
+        // given
+        File mockedMp3File = aValidMp3File();
+
+        AudioFileFilter audioFileFilter = new AudioFileFilter();
+        AudioFileService service = new AudioFileService(audioFileFilter);
+
+        File slashFoo = mock(File.class);
+        when(slashFoo.isDirectory()).thenReturn(true);
+        when(slashFoo.getName()).thenReturn("/foo");
+        when(slashFoo.getCanonicalPath()).thenReturn("/foo");
+
+        File slashFooSlashXSlashY = mock(File.class);
+        when(slashFooSlashXSlashY.isDirectory()).thenReturn(true);
+        when(slashFooSlashXSlashY.listFiles()).thenReturn(new File[] {mockedMp3File});
+        when(slashFooSlashXSlashY.getCanonicalPath()).thenReturn("/foo/x/y");
+
+        File slashFooSlashX = mock(File.class);
+        when(slashFooSlashX.isDirectory()).thenReturn(true);
+        when(slashFooSlashX.listFiles()).thenReturn(new File[] {slashFooSlashXSlashY, mockedMp3File});
+        when(slashFooSlashX.getCanonicalPath()).thenReturn("/foo/x");
+
+        when(slashFoo.listFiles()).thenReturn(new File[] {slashFooSlashX, slashFooSlashXSlashY, mockedMp3File});
+
+        // when
+        List<File> result = service.findAcceptableFilesRecursively(slashFoo);
+
+        // then
+        assertEquals(3, result.size());
+    }
+
+    @Test
+    public void doesNotDetectBadlyNamedFolderAsFile() throws IOException {
+
+        // given
+        AudioFileFilter audioFileFilter = spy(new AudioFileFilter());
+        AudioFileService service = new AudioFileService(audioFileFilter);
+        File validFile = aValidMp3File();
+
+        File badlyNamedFolder = mock(File.class);
+        when(badlyNamedFolder.isDirectory()).thenReturn(true);
+        when(badlyNamedFolder.getName()).thenReturn("bar.mp3");
+        when(badlyNamedFolder.getCanonicalPath()).thenReturn("bar.mp3");
+        when(badlyNamedFolder.listFiles()).thenReturn(new File[] {validFile});
+
+        // when
+        List<File> results = service.findAcceptableFilesRecursively(badlyNamedFolder);
+
+        // then
+      assertEquals(1, results.size());
+    }
+
     private File aValidMp3File() throws IOException {
         File mockedMp3File = mock(File.class);
         when(mockedMp3File.getName()).thenReturn("foo.mp3");
@@ -133,7 +187,4 @@ public class AudioFileServiceTest {
         return mockedMp3File;
     }
 
-    // TODO
-    // test mit orndername = foo.mp3
-    // test dateien werden in rekursiven strukturen gefunden
 }
