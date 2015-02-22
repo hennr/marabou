@@ -1,7 +1,9 @@
 /**
+ * Marabou - Audio Tagger
+ *
  * Copyright (C) 2012 - 2015 Jan-Hendrik Peters
  *
- * This file is part of marabou.
+ * https://github.com/hennr/marabou
  *
  * Marabou is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as

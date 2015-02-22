@@ -1,7 +1,9 @@
 /**
+ * Marabou - Audio Tagger
+ *
  * Copyright (C) 2012 - 2015 Jan-Hendrik Peters
  *
- * This file is part of marabou.
+ * https://github.com/hennr/marabou
  *
  * Marabou is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -136,12 +138,12 @@ public class AboutWindow {
 		});
 		credits.pack();
 
-		Button licence = new Button(comp2, SWT.None);
+		final Button licence = new Button(comp2, SWT.None);
 		licence.setText(_("&Licence"));
 		licence.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				LicenceWindow.showLicence();
+				new LicenceWindow().showLicence();
 			}
 		});
 		licence.pack();

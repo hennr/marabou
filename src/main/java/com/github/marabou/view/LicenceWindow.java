@@ -1,7 +1,9 @@
 /**
+ * Marabou - Audio Tagger
+ *
  * Copyright (C) 2012 - 2015 Jan-Hendrik Peters
  *
- * This file is part of marabou.
+ * https://github.com/hennr/marabou
  *
  * Marabou is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -21,17 +23,25 @@ package com.github.marabou.view;
 
 import com.github.marabou.helper.AvailableImage;
 import com.github.marabou.helper.ImageLoader;
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
 import org.eclipse.swt.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.layout.RowLayout;
+
+import java.io.IOException;
+import java.net.URL;
 
 import static com.github.marabou.helper.I18nHelper._;
 
 public class LicenceWindow extends BaseGuiClass {
 
-	public static void showLicence() {
+    private Shell shell = new Shell(display);
+
+	public void showLicence() {
+
 		shell.setText(_("Licence"));
-		shell.setImage(new ImageLoader().getImage(AvailableImage.LOGO_BIG));
+		shell.setImage(new ImageLoader().getImage(AvailableImage.LOGO_SMALL));
 		
 		RowLayout rowLayout = new RowLayout(1);
 		rowLayout.center = true;
@@ -54,24 +64,16 @@ public class LicenceWindow extends BaseGuiClass {
 		// label
 		Label label = new Label(shell, SWT.NONE);
 		label.setAlignment(SWT.CENTER);
-		label.setText(_(
-		"Marabou Audio Tagger\n\n" +
-		"A cross platform audio tagger using SWT\n\n" + 	
-		"Copyright (C) 2009-2012  Jan-Hendrik Peters, Markus Herpich\n\n\n" + 
-		
-		"This program is free software: you can redistribute it and/or modify\n" + 
-		"it under the terms of the GNU General Public License as published by\n" + 
-		"the Free Software Foundation, either version 3 of the License, or\n" + 
-		"(at your option) any later version.\n\n" +
-		
-		"This program is distributed in the hope that it will be useful,\n" + 
-		"but WITHOUT ANY WARRANTY; without even the implied warranty of\n" + 
-		"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n" + 
-		"GNU General Public License for more details.\n\n" +
-		
-		"You should have received a copy of the GNU General Public License\n" + 
-		"along with this program.  If not, see <http://www.gnu.org/licenses/>.")
-		);
+
+        URL url = Resources.getResource("licence.txt");
+        String licenceText;
+        try {
+            licenceText = Resources.toString(url, Charsets.UTF_8);
+        } catch (IOException e) {
+            licenceText = "error reading licence file";
+        }
+
+        label.setText(licenceText);
 		label.pack();
 		
 		// close button

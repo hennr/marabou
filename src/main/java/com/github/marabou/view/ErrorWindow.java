@@ -1,7 +1,9 @@
 /**
+ * Marabou - Audio Tagger
+ *
  * Copyright (C) 2012 - 2015 Jan-Hendrik Peters
  *
- * This file is part of marabou.
+ * https://github.com/hennr/marabou
  *
  * Marabou is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -31,13 +33,6 @@ import org.eclipse.swt.layout.FillLayout;
 
 import static com.github.marabou.helper.I18nHelper._;
 
-/**
- * window to show error messages
- * 
- * You need to create one object of this to init it. If user closes the error
- * window the append method will create a new instance of this class.
- * 
- */
 public class ErrorWindow {
 	private Shell shell;
 	private List errorText;
@@ -69,10 +64,6 @@ public class ErrorWindow {
 		}
 	}
 	
-	/**
-	 * 
-	 * @return the only allowed instance of this class
-	 */
 	private static ErrorWindow getInstance() {
 		if (instance == null) {
 			instance = new ErrorWindow();
@@ -81,7 +72,7 @@ public class ErrorWindow {
 	}
 
 	/**
-	 * Appends given error message to the error window
+	 * Appends given error message to the error window.
 	 * If no instance exists already, this method will create one for you
 	 * 
 	 * @param errorMsg the Message the user shall see
