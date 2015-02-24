@@ -29,10 +29,6 @@ import com.github.marabou.helper.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
 
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-
 /**
  * This class creates and fills (if init is invoked) a menu object which will be
  * used as SWT.BAR menu in the main window.
