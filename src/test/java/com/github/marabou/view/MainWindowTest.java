@@ -30,7 +30,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static junit.framework.TestCase.assertFalse;
@@ -40,11 +39,6 @@ import static org.mockito.Mockito.*;
 
 public class MainWindowTest {
 
-    @BeforeClass
-    public static void setupBaseGuiClass() {
-        new BaseGuiClass();
-    }
-
     @Test
     public void persistsUserSettingsOnClose() {
 
@@ -53,7 +47,7 @@ public class MainWindowTest {
         EventBus bus = new EventBus();
         when(shell.getDisplay()).thenReturn(mock(Display.class));
         when(shell.isDisposed()).thenReturn(true);
-        aBaseGuiClassWith(shell);
+        BaseGuiClass.shell = shell;
 
         MainMenu mainMenu = mock(MainMenu.class);
         UserProperties userProperties = mock(UserProperties.class);
@@ -81,7 +75,7 @@ public class MainWindowTest {
         EventBus bus = new EventBus();
         when(spyShell.getDisplay()).thenReturn(mock(Display.class));
         when(spyShell.isDisposed()).thenReturn(true);
-        aBaseGuiClassWith(spyShell);
+        BaseGuiClass.shell = spyShell;
         MainMenu mainMenu = mock(MainMenu.class);
         ImageLoader imageLoader = mock(ImageLoader.class);
         UserProperties userProperties = mock(UserProperties.class);
@@ -104,10 +98,5 @@ public class MainWindowTest {
         assertEquals(666, spyShell.getSize().x);
         assertEquals(667, spyShell.getSize().y);
         assertFalse(spyShell.getMaximized());
-    }
-
-    private void aBaseGuiClassWith(Shell shell) {
-        BaseGuiClass baseGuiClass = new BaseGuiClass();
-        baseGuiClass.shell = shell;
     }
 }

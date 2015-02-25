@@ -52,7 +52,6 @@ public class Main {
 	}
 
     private static void setupMainWindow(ApplicationProperties applicationProperties, UserProperties userProperties) {
-        new BaseGuiClass();
         ImageLoader imageLoader = new ImageLoader();
         AboutWindow aboutWindow = new AboutWindow(applicationProperties.getVersion());
 

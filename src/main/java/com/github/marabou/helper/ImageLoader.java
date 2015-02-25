@@ -21,14 +21,14 @@
  */
 package com.github.marabou.helper;
 
-import com.github.marabou.view.BaseGuiClass;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
 
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ImageLoader extends BaseGuiClass {
+public class ImageLoader {
 
     private final Object IMAGE_PATH = "graphics/";
     Map<AvailableImage, String> filePathMapping = new HashMap<>();
@@ -51,7 +51,7 @@ public class ImageLoader extends BaseGuiClass {
 
         InputStream imageStream  = ImageLoader.class.getClassLoader().getResourceAsStream(getResourcePath(availableImage));
 
-        return new Image(display, imageStream);
+        return new Image(Display.getCurrent(), imageStream);
     }
 
     private String getResourcePath(AvailableImage availableImage) {

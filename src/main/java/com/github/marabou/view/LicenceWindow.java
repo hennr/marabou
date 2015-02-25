@@ -34,8 +34,9 @@ import java.net.URL;
 
 import static com.github.marabou.helper.I18nHelper._;
 
-public class LicenceWindow extends BaseGuiClass {
+public class LicenceWindow {
 
+    Display display = Display.getCurrent();
     private Shell shell = new Shell(display);
 
 	public void showLicence() {
