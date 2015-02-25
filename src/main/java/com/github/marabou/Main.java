@@ -52,7 +52,7 @@ public class Main {
 	}
 
     private static void setupMainWindow(ApplicationProperties applicationProperties, UserProperties userProperties) {
-        BaseGuiClass baseGuiClass = new BaseGuiClass();
+        new BaseGuiClass();
         ImageLoader imageLoader = new ImageLoader();
         AboutWindow aboutWindow = new AboutWindow(applicationProperties.getVersion());
 
@@ -65,7 +65,7 @@ public class Main {
         mainMenu.init();
 
 
-        Composite MainWindowComposite = new Composite(baseGuiClass.shell, SWT.NONE);
+        Composite MainWindowComposite = new Composite(BaseGuiClass.shell, SWT.NONE);
         SashForm mainWindowSashForm = new SashForm(MainWindowComposite, SWT.HORIZONTAL);
 
         SidePanel sidePanel = new SidePanel(mainWindowSashForm);
