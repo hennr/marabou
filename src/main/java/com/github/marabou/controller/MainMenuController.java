@@ -30,13 +30,10 @@ import com.github.marabou.view.OpenDirectoryDialog;
 import com.github.marabou.view.OpenFileDialog;
 import com.github.marabou.properties.UserProperties;
 import com.github.marabou.service.AudioFileService;
-import com.mpatric.mp3agic.InvalidDataException;
-import com.mpatric.mp3agic.UnsupportedTagException;
 import com.google.common.eventbus.EventBus;
 import org.eclipse.swt.widgets.Shell;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 public class MainMenuController {
@@ -71,7 +68,7 @@ public class MainMenuController {
         }
         try {
             model.addFile(file);
-        } catch (InvalidDataException | IOException | UnsupportedTagException e) {
+        } catch (RuntimeException e) {
             ErrorWindow.appendError("Couldn't open file: " + file);
         }
     }

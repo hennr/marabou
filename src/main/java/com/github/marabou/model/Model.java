@@ -41,13 +41,20 @@ public class Model {
         this.bus = bus;
     }
 
-    public void addFile(final File audioFile) throws InvalidDataException, IOException, UnsupportedTagException {
+    public void addFile(final File audioFile) {
+
         ID3v1 id31Tag = null;
         ID3v2 id32Tag = null;
         boolean id31 = false;
         boolean id32 = false;
 
-        Mp3File mp3File = new Mp3File(audioFile.getAbsolutePath());
+        Mp3File mp3File;
+        try {
+            mp3File = getMp3File(audioFile);
+        } catch (IOException | UnsupportedTagException | InvalidDataException e) {
+            throw new RuntimeException("Couldn't open given file");
+        }
+
         if (mp3File.hasId3v1Tag()) {
             id31 = true;
             id31Tag = mp3File.getId3v1Tag();
@@ -124,7 +131,6 @@ public class Model {
 
         // values not tag version specific
 
-        // duration
         String duration;
         try {
             duration = calculateTrackLength((int) mp3File.getLengthInSeconds());
@@ -140,7 +146,12 @@ public class Model {
         // encoding
         String encoding = "mp3";
         // full path to file
-        String fullPath = audioFile.getAbsolutePath();
+        String fullPath;
+        try {
+            fullPath = audioFile.getCanonicalPath();
+        } catch (IOException e) {
+            throw new RuntimeException("Could not add given file.");
+        }
 
         AudioFile newFile = new AudioFile(fullPath)
                 .withArtist(artist)
@@ -161,6 +172,10 @@ public class Model {
         
         storeFile(newFile);
         bus.post(new NewFileEvent(newFile));
+    }
+
+    protected Mp3File getMp3File(File audioFile) throws IOException, UnsupportedTagException, InvalidDataException {
+        return new Mp3File(audioFile.getCanonicalPath());
     }
 
     private void storeFile(AudioFile newFile) {
