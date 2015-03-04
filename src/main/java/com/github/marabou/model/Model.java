@@ -74,19 +74,28 @@ public class Model {
         String discNo = "";
         String composer = "";
 
-        // if the file got an id31 tag
         if (id31) {
-            // artist
-            artist = id31Tag.getArtist();
-            // title
-            title = id31Tag.getTitle();
-            // album
-            album = id31Tag.getAlbum();
-            // track number
-            trackNumber = id31Tag.getTrack();
-            // year
-            year = id31Tag.getYear();
-            // genre
+
+            if (id31Tag.getArtist() != null ) {
+                artist = id31Tag.getArtist();
+            }
+
+            if (id31Tag.getTitle() != null) {
+                title = id31Tag.getTitle();
+            }
+
+            if (id31Tag.getAlbum() != null) {
+                album = id31Tag.getAlbum();
+            }
+
+            if (id31Tag.getTrack() != null) {
+                trackNumber = id31Tag.getTrack();
+            }
+
+            if (id31Tag.getYear() != null) {
+                year = id31Tag.getYear();
+            }
+
             int genreId = id31Tag.getGenre();
             try {
                 genre = Genres.getGenreById(genreId);
@@ -94,39 +103,55 @@ public class Model {
                 genre = "";
             }
 
-            // comments
-            comment = id31Tag.getComment();
-            // disc number
+            if (id31Tag.getComment() != null) {
+                comment = id31Tag.getComment();
+            }
+
             discNo = "Not supported in idv31";
-            // composer
+
             composer = "Not supported in idv31";
         }
 
-        // if the file got an id32 tag
         if (id32) {
-            // artist
-            artist = id32Tag.getArtist();
-            // title
-            title = id32Tag.getTitle();
-            // album
-            album = id32Tag.getAlbum();
-            // track number
-            trackNumber = id32Tag.getTrack();
-            // year
-            year = id32Tag.getYear();
-            // genre
+
+            if(id32Tag.getArtist() != null) {
+                artist = id32Tag.getArtist();
+            }
+
+            if (id32Tag.getTitle() != null) {
+                title = id32Tag.getTitle();
+            }
+
+            if (id32Tag.getAlbum() != null) {
+                album = id32Tag.getAlbum();
+            }
+
+            if (id32Tag.getTrack() != null) {
+                trackNumber = id32Tag.getTrack();
+            }
+
+            if (id32Tag.getYear() != null) {
+                year = id32Tag.getYear();
+            }
+
             int genreId = id32Tag.getGenre();
             try {
                 genre = Genres.getGenreById(genreId);
             } catch (UnknownGenreException e) {
                 genre = "";
             }
-            // comments
-            comment = id32Tag.getComment();
-            // disc number
-            discNo = id32Tag.getPartOfSet();
-            // composer
-            composer = id32Tag.getComposer();
+
+            if (id32Tag.getComment() != null) {
+                comment = id32Tag.getComment();
+            }
+
+            if (id32Tag.getPartOfSet() != null) {
+                discNo = id32Tag.getPartOfSet();
+            }
+
+            if (id32Tag.getComposer() != null) {
+                composer = id32Tag.getComposer();
+            }
         }
 
         // values not tag version specific
