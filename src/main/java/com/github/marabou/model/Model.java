@@ -156,29 +156,24 @@ public class Model {
 
         // values not tag version specific
 
-        String duration;
-        try {
-            duration = calculateTrackLength((int) mp3File.getLengthInSeconds());
-        } catch (IllegalArgumentException e) {
-            duration = "0";
-        }
-        // bit rate
+        String duration = calculateTrackLength(mp3File.getLengthInSeconds());
+
         String bitRate = Integer.toString(mp3File.getBitrate());
-        // sample rate
+
         String sampleRate = Integer.toString(mp3File.getSampleRate());
-        // channels
+
         String channels = mp3File.getChannelMode();
-        // encoding
+
         String encoding = "mp3";
-        // full path to file
-        String fullPath;
+
+        String fullFilePath;
         try {
-            fullPath = audioFile.getCanonicalPath();
+            fullFilePath = audioFile.getCanonicalPath();
         } catch (IOException e) {
             throw new RuntimeException("Could not add given file.");
         }
 
-        AudioFile newFile = new AudioFile(fullPath)
+        AudioFile newFile = new AudioFile(fullFilePath)
                 .withArtist(artist)
                 .withTitle(title)
                 .withAlbum(album)
@@ -192,7 +187,7 @@ public class Model {
                 .withSamplerate(sampleRate)
                 .withChannels(channels)
                 .withEncoding(encoding)
-                .withFilePath(fullPath)
+                .withFilePath(fullFilePath)
                 .withDuration(duration);
         
         storeFile(newFile);
@@ -211,26 +206,26 @@ public class Model {
      * converts seconds to the following format: min:secs
      * @return min:secs as a string
      */
-    private String calculateTrackLength(int secs) {
+    protected String calculateTrackLength(long secs) {
 
         if (secs < 0) {
-            return Integer.toString(secs);
+            return "0:00";
         }
 
-        int mins = secs / 60;
+        long minutes = secs / 60;
 
-        if (mins == 0) {
+        if (minutes == 0) {
             if (secs < 10) {
                 return "0:0" + secs;
             } else {
                 return "0:" + secs;
             }
         } else {
-            String seconds = String.valueOf(secs - (60 * mins));
+            String seconds = String.valueOf(secs - (60 * minutes));
             if (seconds.length() < 2) {
                 seconds = "0" + seconds;
             }
-            return mins + ":" + seconds;
+            return minutes + ":" + seconds;
         }
     }
 

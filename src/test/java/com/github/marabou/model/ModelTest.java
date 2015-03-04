@@ -134,4 +134,18 @@ public class ModelTest {
         // then
         assertNotNull(result);
     }
+
+    @Test
+    public void calculatesTrackLengthAsExpected() {
+
+        // given
+        Model model = new Model(new EventBus());
+
+        // expect
+        assertEquals("0:00", model.calculateTrackLength(-1l));
+        assertEquals("0:00", model.calculateTrackLength(0l));
+        assertEquals("1:00", model.calculateTrackLength(60l));
+        assertEquals("1:01", model.calculateTrackLength(61l));
+        assertEquals("10:00", model.calculateTrackLength(600l));
+    }
 }
