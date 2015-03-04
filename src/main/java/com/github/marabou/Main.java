@@ -34,14 +34,21 @@ import com.github.marabou.properties.PropertiesLoader;
 import com.github.marabou.properties.UserProperties;
 import com.github.marabou.service.AudioFileService;
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.SubscriberExceptionContext;
+import com.google.common.eventbus.SubscriberExceptionHandler;
+import com.sun.org.apache.xerces.internal.jaxp.validation.WrappedSAXException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Main {
 
-	public static void main(String[] args) {
+    static Logger log = LoggerFactory.getLogger("Main.class");
+
+    public static void main(String[] args) {
 
         PathHelper pathHelper = new PathHelper();
         PropertiesLoader propertiesLoader = new PropertiesLoader(pathHelper);
@@ -57,7 +64,14 @@ public class Main {
 
         AudioFileFilter audioFileFilter = new AudioFileFilter();
         AudioFileService audioFileService = new AudioFileService(audioFileFilter);
-        EventBus bus = new EventBus();
+        SubscriberExceptionHandler eventBusExceptionHandler = new SubscriberExceptionHandler() {
+            @Override
+            public void handleException(Throwable exception, SubscriberExceptionContext context) {
+                log.error("A terrible thing happened in marabou." +
+                        "If you read this please copy the whole text and report a bug at the project web site.", exception);
+            }
+        };
+        EventBus bus = new EventBus(eventBusExceptionHandler);
         Model model = new Model(bus);
         MainMenuController mainMenuController = new MainMenuController(bus, model, audioFileFilter, userProperties, audioFileService, aboutWindow);
         MainMenu mainMenu = new MainMenu(mainMenuController);
