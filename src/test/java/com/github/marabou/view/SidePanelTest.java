@@ -49,7 +49,7 @@ public class SidePanelTest {
         assertEquals(audioFile.getTrack(), sidePanel.comboBoxes.get(ComboAndLabelNames.Track).getText());
         assertEquals(audioFile.getYear(), sidePanel.comboBoxes.get(ComboAndLabelNames.Year).getText());
         assertEquals(audioFile.getGenre(), sidePanel.comboBoxes.get(ComboAndLabelNames.Genre).getText());
-        assertEquals(audioFile.getComments(), sidePanel.comboBoxes.get(ComboAndLabelNames.Comments).getText());
+        assertEquals(audioFile.getComment(), sidePanel.comboBoxes.get(ComboAndLabelNames.Comments).getText());
         assertEquals(audioFile.getDiscNumber(), sidePanel.comboBoxes.get(ComboAndLabelNames.Disc_number).getText());
         assertEquals(audioFile.getComposer(), sidePanel.comboBoxes.get(ComboAndLabelNames.Composer).getText());
     }
@@ -79,7 +79,7 @@ public class SidePanelTest {
         assertEquals(secondAudioFile.getTrack(), sidePanel.comboBoxes.get(ComboAndLabelNames.Track).getText());
         assertEquals(secondAudioFile.getYear(), sidePanel.comboBoxes.get(ComboAndLabelNames.Year).getText());
         assertEquals(secondAudioFile.getGenre(), sidePanel.comboBoxes.get(ComboAndLabelNames.Genre).getText());
-        assertEquals(secondAudioFile.getComments(), sidePanel.comboBoxes.get(ComboAndLabelNames.Comments).getText());
+        assertEquals(secondAudioFile.getComment(), sidePanel.comboBoxes.get(ComboAndLabelNames.Comments).getText());
         assertEquals(secondAudioFile.getDiscNumber(), sidePanel.comboBoxes.get(ComboAndLabelNames.Disc_number).getText());
         assertEquals(secondAudioFile.getComposer(), sidePanel.comboBoxes.get(ComboAndLabelNames.Composer).getText());
     }
@@ -97,7 +97,7 @@ public class SidePanelTest {
                     .withTrack("1")
                     .withYear("1986")
                     .withGenre("Thrash Metal")
-                    .withComments("Slayer rules")
+                    .withComment("Slayer rules")
                     .withDiscNumber("1")
                     .withComposer("Jeff Hanneman");
     }
@@ -110,7 +110,7 @@ public class SidePanelTest {
                 .withTrack("1")
                 .withYear("2000")
                 .withGenre("Pop")
-                .withComments("Oh man")
+                .withComment("Oh man")
                 .withDiscNumber("1")
                 .withComposer("Who cares?");
     }

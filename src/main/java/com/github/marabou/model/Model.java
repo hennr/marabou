@@ -41,28 +41,120 @@ public class Model {
         this.bus = bus;
     }
 
-    public void addFile(final File audioFile) {
-
-        ID3v1 id31Tag = null;
-        ID3v2 id32Tag = null;
-        boolean id31 = false;
-        boolean id32 = false;
+    public void addFile(final File inputFile) {
 
         Mp3File mp3File;
         try {
-            mp3File = getMp3File(audioFile);
+            mp3File = getMp3File(inputFile);
         } catch (IOException | UnsupportedTagException | InvalidDataException e) {
             throw new RuntimeException("Couldn't open given file");
         }
 
-        if (mp3File.hasId3v1Tag()) {
-            id31 = true;
-            id31Tag = mp3File.getId3v1Tag();
+        String fullFilePath;
+        try {
+            fullFilePath = inputFile.getCanonicalPath();
+        } catch (IOException e) {
+            throw new RuntimeException("Could not add given file.");
         }
+
+        AudioFile audioFile = new AudioFile(fullFilePath).withFilePath(fullFilePath);
+
+        audioFile = getId3VersionAgnosticValues(audioFile, mp3File);
+
         if (mp3File.hasId3v2Tag()) {
-            id32 = true;
-            id32Tag = mp3File.getId3v2Tag();
+            audioFile = getId3v2Tags(mp3File, audioFile);
+        } else if (mp3File.hasId3v1Tag()) {
+            audioFile = getId3v1Tags(mp3File, audioFile);
         }
+
+        storeFile(audioFile);
+        bus.post(new NewFileEvent(audioFile));
+    }
+
+    protected Mp3File getMp3File(File audioFile) throws IOException, UnsupportedTagException, InvalidDataException {
+        return new Mp3File(audioFile.getCanonicalPath());
+    }
+
+    protected AudioFile getId3VersionAgnosticValues(AudioFile audioFile, Mp3File mp3File) {
+
+        // FIXME possible NPE
+        String duration = calculateTrackLength(mp3File.getLengthInSeconds());
+        // FIXME possible NPE
+        String bitRate = Integer.toString(mp3File.getBitrate());
+        // FIXME possible NPE
+        String sampleRate = Integer.toString(mp3File.getSampleRate());
+        // FIXME possible NPE
+        String channels = mp3File.getChannelMode();
+
+        audioFile
+                .withDuration(duration)
+                .withBitRate(bitRate)
+                .withSamplerate(sampleRate)
+                .withChannels(channels)
+                .withEncoding("mp3");
+
+        return audioFile;
+    }
+
+    public AudioFile getId3v1Tags(Mp3File mp3File, AudioFile audioFile) {
+
+        String artist = "";
+        String title = "";
+        String album = "";
+        String trackNumber = "";
+        String year = "";
+        String genre = "";
+        String comment = "";
+
+        ID3v1 id31Tag = mp3File.getId3v1Tag();
+
+        if (id31Tag.getArtist() != null ) {
+            artist = id31Tag.getArtist();
+        }
+
+        if (id31Tag.getTitle() != null) {
+            title = id31Tag.getTitle();
+        }
+
+        if (id31Tag.getAlbum() != null) {
+            album = id31Tag.getAlbum();
+        }
+
+        if (id31Tag.getTrack() != null) {
+            trackNumber = id31Tag.getTrack();
+        }
+
+        if (id31Tag.getYear() != null) {
+            year = id31Tag.getYear();
+        }
+
+        int genreId = id31Tag.getGenre();
+        try {
+            genre = Genres.getGenreById(genreId);
+        } catch (UnknownGenreException e) {
+            // leave empty if id is unknown
+        }
+
+        if (id31Tag.getComment() != null) {
+            comment = id31Tag.getComment();
+        }
+
+        audioFile
+                .withArtist(artist)
+                .withTitle(title)
+                .withAlbum(album)
+                .withTrack(trackNumber)
+                .withYear(year)
+                .withGenre(genre)
+                .withComment(comment)
+                .withDiscNumber("Not supported in idv31")
+                .withComposer("Not supported in idv31");
+
+        return audioFile;
+
+    }
+
+    private AudioFile getId3v2Tags(Mp3File mp3File, AudioFile audioFile) {
 
         String artist = "";
         String title = "";
@@ -74,128 +166,60 @@ public class Model {
         String discNo = "";
         String composer = "";
 
-        if (id31) {
+        ID3v2 id32Tag = mp3File.getId3v2Tag();
 
-            if (id31Tag.getArtist() != null ) {
-                artist = id31Tag.getArtist();
-            }
 
-            if (id31Tag.getTitle() != null) {
-                title = id31Tag.getTitle();
-            }
-
-            if (id31Tag.getAlbum() != null) {
-                album = id31Tag.getAlbum();
-            }
-
-            if (id31Tag.getTrack() != null) {
-                trackNumber = id31Tag.getTrack();
-            }
-
-            if (id31Tag.getYear() != null) {
-                year = id31Tag.getYear();
-            }
-
-            int genreId = id31Tag.getGenre();
-            try {
-                genre = Genres.getGenreById(genreId);
-            } catch (UnknownGenreException e) {
-                genre = "";
-            }
-
-            if (id31Tag.getComment() != null) {
-                comment = id31Tag.getComment();
-            }
-
-            discNo = "Not supported in idv31";
-
-            composer = "Not supported in idv31";
+        if (id32Tag.getArtist() != null) {
+            artist = id32Tag.getArtist();
         }
 
-        if (id32) {
-
-            if(id32Tag.getArtist() != null) {
-                artist = id32Tag.getArtist();
-            }
-
-            if (id32Tag.getTitle() != null) {
-                title = id32Tag.getTitle();
-            }
-
-            if (id32Tag.getAlbum() != null) {
-                album = id32Tag.getAlbum();
-            }
-
-            if (id32Tag.getTrack() != null) {
-                trackNumber = id32Tag.getTrack();
-            }
-
-            if (id32Tag.getYear() != null) {
-                year = id32Tag.getYear();
-            }
-
-            int genreId = id32Tag.getGenre();
-            try {
-                genre = Genres.getGenreById(genreId);
-            } catch (UnknownGenreException e) {
-                genre = "";
-            }
-
-            if (id32Tag.getComment() != null) {
-                comment = id32Tag.getComment();
-            }
-
-            if (id32Tag.getPartOfSet() != null) {
-                discNo = id32Tag.getPartOfSet();
-            }
-
-            if (id32Tag.getComposer() != null) {
-                composer = id32Tag.getComposer();
-            }
+        if (id32Tag.getTitle() != null) {
+            title = id32Tag.getTitle();
         }
 
-        // values not tag version specific
+        if (id32Tag.getAlbum() != null) {
+            album = id32Tag.getAlbum();
+        }
 
-        String duration = calculateTrackLength(mp3File.getLengthInSeconds());
+        if (id32Tag.getTrack() != null) {
+            trackNumber = id32Tag.getTrack();
+        }
 
-        String bitRate = Integer.toString(mp3File.getBitrate());
+        if (id32Tag.getYear() != null) {
+            year = id32Tag.getYear();
+        }
 
-        String sampleRate = Integer.toString(mp3File.getSampleRate());
-
-        String channels = mp3File.getChannelMode();
-
-        String encoding = "mp3";
-
-        String fullFilePath;
+        int genreId = id32Tag.getGenre();
         try {
-            fullFilePath = audioFile.getCanonicalPath();
-        } catch (IOException e) {
-            throw new RuntimeException("Could not add given file.");
+            genre = Genres.getGenreById(genreId);
+        } catch (UnknownGenreException e) {
+            // leave empty if id is unknown
         }
 
-        AudioFile newFile = new AudioFile(fullFilePath)
+        if (id32Tag.getComment() != null) {
+            comment = id32Tag.getComment();
+        }
+
+        if (id32Tag.getPartOfSet() != null) {
+            discNo = id32Tag.getPartOfSet();
+        }
+
+        if (id32Tag.getComposer() != null) {
+            composer = id32Tag.getComposer();
+        }
+
+        audioFile
                 .withArtist(artist)
                 .withTitle(title)
                 .withAlbum(album)
                 .withTrack(trackNumber)
                 .withYear(year)
                 .withGenre(genre)
-                .withComments(comment)
+                .withComment(comment)
                 .withDiscNumber(discNo)
-                .withComposer(composer)
-                .withBitRate(bitRate)
-                .withSamplerate(sampleRate)
-                .withChannels(channels)
-                .withEncoding(encoding)
-                .withFilePath(fullFilePath)
-                .withDuration(duration);
-        
-        storeFile(newFile);
-        bus.post(new NewFileEvent(newFile));
-    }
+                .withComposer(composer);
 
-    protected Mp3File getMp3File(File audioFile) throws IOException, UnsupportedTagException, InvalidDataException {
-        return new Mp3File(audioFile.getCanonicalPath());
+        return audioFile;
     }
 
     private void storeFile(AudioFile newFile) {

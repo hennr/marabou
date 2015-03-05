@@ -33,7 +33,7 @@ public class AudioFile {
     String channels;
     String year;
     String genre;
-    String comments;
+    String comment;
     String discNumber;
     String composer;
     String encoding;
@@ -137,12 +137,12 @@ public class AudioFile {
         return this;
     }
 
-    public String getComments() {
-        return comments;
+    public String getComment() {
+        return comment;
     }
 
-    public AudioFile withComments(String comments) {
-        this.comments = comments;
+    public AudioFile withComment(String comment) {
+        this.comment = comment;
         return this;
     }
 

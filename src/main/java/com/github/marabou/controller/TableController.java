@@ -221,7 +221,7 @@ public class TableController {
                 audioFile.getChannels(),
                 audioFile.getYear(),
                 audioFile.getGenre(),
-                audioFile.getComments(),
+                audioFile.getComment(),
                 audioFile.getDiscNumber(),
                 audioFile.getComposer(),
                 audioFile.getEncoding(),

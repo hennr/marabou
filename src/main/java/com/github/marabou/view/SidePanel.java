@@ -96,7 +96,7 @@ public class SidePanel {
                     audioFile.getTrack(),
                     audioFile.getYear(),
                     audioFile.getGenre(),
-                    audioFile.getComments(),
+                    audioFile.getComment(),
                     audioFile.getDiscNumber(),
                     audioFile.getComposer()
             );
