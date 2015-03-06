@@ -77,14 +77,13 @@ public class Model {
 
     protected AudioFile getId3VersionAgnosticValues(AudioFile audioFile, Mp3File mp3File) {
 
-        // FIXME possible NPE
         String duration = calculateTrackLength(mp3File.getLengthInSeconds());
-        // FIXME possible NPE
         String bitRate = Integer.toString(mp3File.getBitrate());
-        // FIXME possible NPE
         String sampleRate = Integer.toString(mp3File.getSampleRate());
-        // FIXME possible NPE
-        String channels = mp3File.getChannelMode();
+        String channels = "";
+        if (mp3File.getChannelMode() != null) {
+            channels = mp3File.getChannelMode();
+        }
 
         audioFile
                 .withDuration(duration)

@@ -58,10 +58,18 @@ public class ModelTest {
 
         // when
         model.addFile(fileMock);
-        model.getAudioFileByFilePath("foo");
 
         // then
         verify(id3v2TagMock).getAlbum();
+        verify(id3v2TagMock).getTrack();
+        verify(id3v2TagMock).getArtist();
+        verify(id3v2TagMock).getTitle();
+        verify(id3v2TagMock).getYear();
+        verify(id3v2TagMock).getGenre();
+        verify(id3v2TagMock).getComment();
+        verify(id3v2TagMock).getPartOfSet();
+        verify(id3v2TagMock).getComposer();
+
         verifyZeroInteractions(id3v1TagMock);
     }
 
@@ -90,10 +98,16 @@ public class ModelTest {
 
         // when
         model.addFile(fileMock);
-        model.getAudioFileByFilePath("foo");
 
         // then
         verify(id3v1TagMock).getAlbum();
+        verify(id3v1TagMock).getTrack();
+        verify(id3v1TagMock).getArtist();
+        verify(id3v1TagMock).getTitle();
+        verify(id3v1TagMock).getYear();
+        verify(id3v1TagMock).getGenre();
+        verify(id3v1TagMock).getComment();
+
         verifyZeroInteractions(id3v2TagMock);
     }
 
@@ -171,6 +185,7 @@ public class ModelTest {
         assertEquals("", audioFile.getTrack());
         assertEquals("", audioFile.getYear());
         assertEquals("", audioFile.getComment());
+        assertEquals("", audioFile.getChannels());
     }
 
     @Test
