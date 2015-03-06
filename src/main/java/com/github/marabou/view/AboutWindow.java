@@ -23,7 +23,6 @@ package com.github.marabou.view;
 
 import com.github.marabou.helper.AvailableImage;
 import com.github.marabou.helper.ImageLoader;
-import com.github.marabou.properties.PropertiesHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormLayout;
@@ -36,14 +35,11 @@ import org.eclipse.swt.widgets.Label;
 
 import java.awt.*;
 import java.net.URI;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static com.github.marabou.helper.I18nHelper._;
 
 public class AboutWindow {
 
-    final static Logger log = LoggerFactory.getLogger(PropertiesHelper.class);
     private final String projectVersion;
 
     public AboutWindow(String projectVersion) {
@@ -102,11 +98,6 @@ public class AboutWindow {
 		linkButton.setText(url);
 		linkButton.pack();
 		linkButton.addListener(SWT.Selection, new Listener() {
-			// FIXME SWT has a bug detecting default browsers etc.
-			// a bug report has been filed back in 2007...
-			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=209947
-			// System.out.println(Program.findProgram("html"));
-			// Program.launch("http://marabou.launchpad.net")
 			@Override
 			public void handleEvent(Event event) {
 				
@@ -114,7 +105,6 @@ public class AboutWindow {
 					Desktop.getDesktop().browse(new URI(url));
 				} catch (Exception e) {
 					// no browsing today :(
-					log.warn("Couldn't open browser.\n" + e.getMessage());
 				}
 			}
 		});

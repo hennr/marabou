@@ -29,7 +29,6 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//TODO: write a cool test
 public class PropertiesLoader {
 
     private final PathHelper pathHelper;
