@@ -22,22 +22,22 @@
 package com.github.marabou.model;
 
 public class AudioFile {
-    String id;
-    String artist;
-    String title;
-    String album;
-    String duration;
-    String track;
-    String bitRate;
-    String samplerate;
-    String channels;
-    String year;
-    String genre;
-    String comment;
-    String discNumber;
-    String composer;
-    String encoding;
-    String filePath;
+    String id ="";
+    String artist ="";
+    String title ="";
+    String album ="";
+    String duration ="";
+    String track ="";
+    String bitRate ="";
+    String samplerate ="";
+    String channels ="";
+    String year ="";
+    String genre ="";
+    String comment ="";
+    String discNumber ="";
+    String composer ="";
+    String encoding ="";
+    String filePath ="";
 
     public AudioFile(String id) {
         this.id = id;

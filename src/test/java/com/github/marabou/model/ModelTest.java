@@ -112,6 +112,46 @@ public class ModelTest {
     }
 
     @Test
+    public void createsCorrectAudioFileIfNoTagsAreFound() throws IOException {
+
+        // given
+        File fileMock = mock(File.class);
+        when(fileMock.getCanonicalPath()).thenReturn("foo");
+
+        final Mp3File mp3FileMock = mock(Mp3File.class);
+
+        when(mp3FileMock.hasId3v1Tag()).thenReturn(false);
+        when(mp3FileMock.hasId3v2Tag()).thenReturn(false);
+
+        Model model = new Model(new EventBus()) {
+            protected Mp3File getMp3File(File audioFile) {
+                return mp3FileMock;
+            }
+        };
+
+        // when
+        model.addFile(fileMock);
+        AudioFile audioFile = model.getAudioFileByFilePath("foo");
+
+        // then
+        assertEquals("foo", audioFile.getFilePath());
+        assertEquals("", audioFile.getAlbum());
+        assertEquals("", audioFile.getArtist());
+        assertEquals("0", audioFile.getBitRate());
+        assertEquals("", audioFile.getChannels());
+        assertEquals("", audioFile.getComment());
+        assertEquals("", audioFile.getComposer());
+        assertEquals("", audioFile.getDiscNumber());
+        assertEquals("0:00", audioFile.getDuration());
+        assertEquals("", audioFile.getGenre());
+        assertEquals("0", audioFile.getSamplerate());
+        assertEquals("", audioFile.getTitle());
+        assertEquals("", audioFile.getTrack());
+        assertEquals("", audioFile.getYear());
+        assertEquals("mp3", audioFile.getEncoding());
+    }
+
+    @Test
     public void addFileCanHandleNastyReturnsInId3v1Tags() throws IOException {
 
         // given

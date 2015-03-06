@@ -97,126 +97,86 @@ public class Model {
 
     public AudioFile getId3v1Tags(Mp3File mp3File, AudioFile audioFile) {
 
-        String artist = "";
-        String title = "";
-        String album = "";
-        String trackNumber = "";
-        String year = "";
-        String genre = "";
-        String comment = "";
-
         ID3v1 id31Tag = mp3File.getId3v1Tag();
 
         if (id31Tag.getArtist() != null ) {
-            artist = id31Tag.getArtist();
+            audioFile.withArtist(id31Tag.getArtist());
         }
 
         if (id31Tag.getTitle() != null) {
-            title = id31Tag.getTitle();
+            audioFile.withTitle(id31Tag.getTitle());
         }
 
         if (id31Tag.getAlbum() != null) {
-            album = id31Tag.getAlbum();
+            audioFile.withAlbum(id31Tag.getAlbum());
         }
 
         if (id31Tag.getTrack() != null) {
-            trackNumber = id31Tag.getTrack();
+            audioFile.withTrack(id31Tag.getTrack());
         }
 
         if (id31Tag.getYear() != null) {
-            year = id31Tag.getYear();
+            audioFile.withYear(id31Tag.getYear());
         }
 
         int genreId = id31Tag.getGenre();
         try {
-            genre = Genres.getGenreById(genreId);
+            String genre = Genres.getGenreById(genreId);
+            audioFile.withGenre(genre);
         } catch (UnknownGenreException e) {
             // leave empty if id is unknown
         }
 
         if (id31Tag.getComment() != null) {
-            comment = id31Tag.getComment();
+            audioFile.withComment(id31Tag.getComment());
         }
 
-        audioFile
-                .withArtist(artist)
-                .withTitle(title)
-                .withAlbum(album)
-                .withTrack(trackNumber)
-                .withYear(year)
-                .withGenre(genre)
-                .withComment(comment)
-                .withDiscNumber("Not supported in idv31")
-                .withComposer("Not supported in idv31");
-
         return audioFile;
-
     }
 
     private AudioFile getId3v2Tags(Mp3File mp3File, AudioFile audioFile) {
 
-        String artist = "";
-        String title = "";
-        String album = "";
-        String trackNumber = "";
-        String year = "";
-        String genre = "";
-        String comment = "";
-        String discNo = "";
-        String composer = "";
-
         ID3v2 id32Tag = mp3File.getId3v2Tag();
 
-
         if (id32Tag.getArtist() != null) {
-            artist = id32Tag.getArtist();
+            audioFile.withArtist(id32Tag.getArtist());
         }
 
         if (id32Tag.getTitle() != null) {
-            title = id32Tag.getTitle();
+            audioFile.withTitle(id32Tag.getTitle());
         }
 
         if (id32Tag.getAlbum() != null) {
-            album = id32Tag.getAlbum();
+            audioFile.withAlbum(id32Tag.getAlbum());
         }
 
         if (id32Tag.getTrack() != null) {
-            trackNumber = id32Tag.getTrack();
+            audioFile.withTrack(id32Tag.getTrack());
         }
 
         if (id32Tag.getYear() != null) {
-            year = id32Tag.getYear();
+            audioFile.withYear(id32Tag.getYear());
         }
 
         int genreId = id32Tag.getGenre();
         try {
-            genre = Genres.getGenreById(genreId);
+            String genre = Genres.getGenreById(genreId);
+            audioFile.withGenre(genre);
         } catch (UnknownGenreException e) {
             // leave empty if id is unknown
         }
 
         if (id32Tag.getComment() != null) {
-            comment = id32Tag.getComment();
+            audioFile.withComment(id32Tag.getComment());
         }
 
         if (id32Tag.getPartOfSet() != null) {
-            discNo = id32Tag.getPartOfSet();
+            audioFile.withDiscNumber(id32Tag.getPartOfSet());
         }
 
         if (id32Tag.getComposer() != null) {
-            composer = id32Tag.getComposer();
+            audioFile.withComposer(id32Tag.getComposer());
         }
-
-        audioFile
-                .withArtist(artist)
-                .withTitle(title)
-                .withAlbum(album)
-                .withTrack(trackNumber)
-                .withYear(year)
-                .withGenre(genre)
-                .withComment(comment)
-                .withDiscNumber(discNo)
-                .withComposer(composer);
 
         return audioFile;
     }
