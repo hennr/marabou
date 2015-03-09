@@ -23,12 +23,19 @@ package com.github.marabou.view;
 
 import com.github.marabou.model.AudioFile;
 import com.github.marabou.view.SidePanel.ComboAndLabelNames;
+import com.google.common.base.Strings;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 public class SidePanelTest {
 
@@ -38,20 +45,47 @@ public class SidePanelTest {
         // given
         SidePanel sidePanel = aSidePanelWithSwtMocked();
         AudioFile audioFile = aValidCompleteAudioFile();
+        AudioFile anotherAudioFile = anotherValidCompleteAudioFile();
 
         // when
-        sidePanel.updateLists(Sets.newHashSet(audioFile));
+        sidePanel.updateLists(Sets.newHashSet(audioFile, anotherAudioFile));
 
         // then
-        assertEquals(audioFile.getArtist(), sidePanel.comboBoxes.get(ComboAndLabelNames.Artist).getText());
-        assertEquals(audioFile.getTitle(), sidePanel.comboBoxes.get(ComboAndLabelNames.Title).getText());
-        assertEquals(audioFile.getAlbum(), sidePanel.comboBoxes.get(ComboAndLabelNames.Album).getText());
-        assertEquals(audioFile.getTrack(), sidePanel.comboBoxes.get(ComboAndLabelNames.Track).getText());
-        assertEquals(audioFile.getYear(), sidePanel.comboBoxes.get(ComboAndLabelNames.Year).getText());
-        assertEquals(audioFile.getGenre(), sidePanel.comboBoxes.get(ComboAndLabelNames.Genre).getText());
-        assertEquals(audioFile.getComment(), sidePanel.comboBoxes.get(ComboAndLabelNames.Comments).getText());
-        assertEquals(audioFile.getDiscNumber(), sidePanel.comboBoxes.get(ComboAndLabelNames.Disc_number).getText());
-        assertEquals(audioFile.getComposer(), sidePanel.comboBoxes.get(ComboAndLabelNames.Composer).getText());
+        assertEquals(2, sidePanel.comboBoxes.get(ComboAndLabelNames.Artist).getItemCount());
+        assertTrue(Arrays.asList(sidePanel.comboBoxes.get(ComboAndLabelNames.Artist).getItems()).contains(audioFile.getArtist()));
+        assertTrue(Arrays.asList(sidePanel.comboBoxes.get(ComboAndLabelNames.Artist).getItems()).contains(anotherAudioFile.getArtist()));
+
+        assertEquals(2, sidePanel.comboBoxes.get(ComboAndLabelNames.Title).getItemCount());
+        assertTrue(Arrays.asList(sidePanel.comboBoxes.get(ComboAndLabelNames.Title).getItems()).contains(audioFile.getTitle()));
+        assertTrue(Arrays.asList(sidePanel.comboBoxes.get(ComboAndLabelNames.Title).getItems()).contains(anotherAudioFile.getTitle()));
+
+        assertEquals(2, sidePanel.comboBoxes.get(ComboAndLabelNames.Album).getItemCount());
+        assertTrue(Arrays.asList(sidePanel.comboBoxes.get(ComboAndLabelNames.Album).getItems()).contains(audioFile.getAlbum()));
+        assertTrue(Arrays.asList(sidePanel.comboBoxes.get(ComboAndLabelNames.Album).getItems()).contains(anotherAudioFile.getAlbum()));
+
+        assertEquals(2, sidePanel.comboBoxes.get(ComboAndLabelNames.Track).getItemCount());
+        assertTrue(Arrays.asList(sidePanel.comboBoxes.get(ComboAndLabelNames.Track).getItems()).contains(audioFile.getTrack()));
+        assertTrue(Arrays.asList(sidePanel.comboBoxes.get(ComboAndLabelNames.Track).getItems()).contains(anotherAudioFile.getTrack()));
+
+        assertEquals(2, sidePanel.comboBoxes.get(ComboAndLabelNames.Year).getItemCount());
+        assertTrue(Arrays.asList(sidePanel.comboBoxes.get(ComboAndLabelNames.Year).getItems()).contains(audioFile.getYear()));
+        assertTrue(Arrays.asList(sidePanel.comboBoxes.get(ComboAndLabelNames.Year).getItems()).contains(anotherAudioFile.getYear()));
+
+        assertEquals(2, sidePanel.comboBoxes.get(ComboAndLabelNames.Genre).getItemCount());
+        assertTrue(Arrays.asList(sidePanel.comboBoxes.get(ComboAndLabelNames.Genre).getItems()).contains(audioFile.getGenre()));
+        assertTrue(Arrays.asList(sidePanel.comboBoxes.get(ComboAndLabelNames.Genre).getItems()).contains(anotherAudioFile.getGenre()));
+
+        assertEquals(2, sidePanel.comboBoxes.get(ComboAndLabelNames.Comments).getItemCount());
+        assertTrue(Arrays.asList(sidePanel.comboBoxes.get(ComboAndLabelNames.Comments).getItems()).contains(audioFile.getComment()));
+        assertTrue(Arrays.asList(sidePanel.comboBoxes.get(ComboAndLabelNames.Comments).getItems()).contains(anotherAudioFile.getComment()));
+
+        assertEquals(2, sidePanel.comboBoxes.get(ComboAndLabelNames.Disc_number).getItemCount());
+        assertTrue(Arrays.asList(sidePanel.comboBoxes.get(ComboAndLabelNames.Disc_number).getItems()).contains(audioFile.getDiscNumber()));
+        assertTrue(Arrays.asList(sidePanel.comboBoxes.get(ComboAndLabelNames.Disc_number).getItems()).contains(anotherAudioFile.getDiscNumber()));
+
+        assertEquals(2, sidePanel.comboBoxes.get(ComboAndLabelNames.Composer).getItemCount());
+        assertTrue(Arrays.asList(sidePanel.comboBoxes.get(ComboAndLabelNames.Composer).getItems()).contains(audioFile.getComposer()));
+        assertTrue(Arrays.asList(sidePanel.comboBoxes.get(ComboAndLabelNames.Composer).getItems()).contains(anotherAudioFile.getComposer()));
     }
 
     @Test
