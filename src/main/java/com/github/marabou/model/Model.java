@@ -43,46 +43,49 @@ public class Model {
 
     public void addFile(final File inputFile) {
 
-        Mp3File mp3File;
-        try {
-            mp3File = getMp3File(inputFile);
-        } catch (IOException | UnsupportedTagException | InvalidDataException e) {
-            throw new RuntimeException("Couldn't open given file");
-        }
+        AudioFile audioFile = createAudioFile(inputFile);
+        storeFile(audioFile);
+        bus.post(new NewFileEvent(audioFile));
+    }
 
+    private String getCanonicalFilePath(File inputFile) {
         String fullFilePath;
         try {
             fullFilePath = inputFile.getCanonicalPath();
         } catch (IOException e) {
             throw new RuntimeException("Could not add given file.");
         }
+        return fullFilePath;
+    }
+
+    protected Mp3File getMp3File(File audioFile) {
+        try {
+            return new Mp3File(audioFile.getCanonicalPath());
+        } catch (IOException | UnsupportedTagException | InvalidDataException e) {
+            throw new RuntimeException("Couldn't open given file");
+        }
+    }
+
+    protected AudioFile createAudioFile(File inputFile) {
+
+        Mp3File mp3File = getMp3File(inputFile);
+        String fullFilePath = getCanonicalFilePath(inputFile);
 
         AudioFile audioFile = new AudioFile(fullFilePath).withFilePath(fullFilePath);
 
-        audioFile = getId3VersionAgnosticValues(audioFile, mp3File);
-
-        if (mp3File.hasId3v2Tag()) {
-            audioFile = getId3v2Tags(mp3File, audioFile);
-        } else if (mp3File.hasId3v1Tag()) {
-            audioFile = getId3v1Tags(mp3File, audioFile);
-        }
-
-        storeFile(audioFile);
-        bus.post(new NewFileEvent(audioFile));
-    }
-
-    protected Mp3File getMp3File(File audioFile) throws IOException, UnsupportedTagException, InvalidDataException {
-        return new Mp3File(audioFile.getCanonicalPath());
-    }
-
-    protected AudioFile getId3VersionAgnosticValues(AudioFile audioFile, Mp3File mp3File) {
-
+        // id3 version agnostic values
         String duration = calculateTrackLength(mp3File.getLengthInSeconds());
         String bitRate = Integer.toString(mp3File.getBitrate());
         String sampleRate = Integer.toString(mp3File.getSampleRate());
         String channels = "";
         if (mp3File.getChannelMode() != null) {
             channels = mp3File.getChannelMode();
+        }
+
+        if (mp3File.hasId3v2Tag()) {
+            audioFile = getId3v2Tags(mp3File, audioFile);
+        } else if (mp3File.hasId3v1Tag()) {
+            audioFile = getId3v1Tags(mp3File, audioFile);
         }
 
         audioFile
