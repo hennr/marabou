@@ -34,5 +34,4 @@ public class ApplicationProperties {
     public String getVersion() {
         return properties.getProperty("version", "UNKNOWN");
     }
-
 }

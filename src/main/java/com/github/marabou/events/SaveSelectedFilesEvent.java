@@ -31,5 +31,4 @@ public class SaveSelectedFilesEvent {
     public SaveSelectedFilesEvent() {
         log.warn("Saving files is not implemented yet");
     }
-
 }

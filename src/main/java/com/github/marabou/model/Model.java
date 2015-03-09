@@ -82,18 +82,18 @@ public class Model {
             channels = mp3File.getChannelMode();
         }
 
-        if (mp3File.hasId3v2Tag()) {
-            audioFile = getId3v2Tags(mp3File, audioFile);
-        } else if (mp3File.hasId3v1Tag()) {
-            audioFile = getId3v1Tags(mp3File, audioFile);
-        }
-
         audioFile
                 .withDuration(duration)
                 .withBitRate(bitRate)
                 .withSamplerate(sampleRate)
                 .withChannels(channels)
                 .withEncoding("mp3");
+
+        if (mp3File.hasId3v2Tag()) {
+            audioFile = getId3v2Tags(mp3File, audioFile);
+        } else if (mp3File.hasId3v1Tag()) {
+            audioFile = getId3v1Tags(mp3File, audioFile);
+        }
 
         return audioFile;
     }

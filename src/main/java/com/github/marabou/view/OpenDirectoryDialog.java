@@ -43,5 +43,4 @@ public class OpenDirectoryDialog extends BaseGuiClass {
 
         return dirToOpen;
     }
-
 }

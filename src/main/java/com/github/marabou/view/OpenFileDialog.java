@@ -80,5 +80,4 @@ public class OpenFileDialog extends BaseGuiClass {
     public String getLastPath() {
         return lastPath;
     }
-
 }

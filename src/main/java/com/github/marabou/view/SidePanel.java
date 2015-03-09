@@ -149,5 +149,4 @@ public class SidePanel {
         comboBoxes.get(ComboAndLabelNames.Composer).setText(composer);
         comboBoxes.get(ComboAndLabelNames.Composer).add(composer);
     }
-
 }

@@ -36,7 +36,6 @@ import com.github.marabou.service.AudioFileService;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.SubscriberExceptionContext;
 import com.google.common.eventbus.SubscriberExceptionHandler;
-import com.sun.org.apache.xerces.internal.jaxp.validation.WrappedSAXException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;

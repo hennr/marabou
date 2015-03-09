@@ -75,5 +75,4 @@ public class PropertiesLoader {
     private BufferedWriter createWriter(String filePath) throws IOException {
         return new BufferedWriter(new FileWriter(filePath));
     }
-
 }
