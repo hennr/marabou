@@ -25,4 +25,4 @@ Licence
 =======
 
 Marabou is published under the terms of the GNU General Public License Version 3.
-See the [COPYING](COPYING) file.
+See the [COPYING](COPYING)
