@@ -35,7 +35,7 @@ import java.util.Map;
 public class Model {
 
     private final EventBus bus;
-    private Map<String, AudioFile> files = new HashMap<>();
+    private Map<String, AudioFile> audioFiles = new HashMap<>();
 
     public Model(EventBus bus) {
         this.bus = bus;
@@ -69,9 +69,9 @@ public class Model {
     protected AudioFile createAudioFile(File inputFile) {
 
         Mp3File mp3File = getMp3File(inputFile);
-        String fullFilePath = getCanonicalFilePath(inputFile);
+        String canonicalFilePath = getCanonicalFilePath(inputFile);
 
-        AudioFile audioFile = new AudioFile(fullFilePath).withFilePath(fullFilePath);
+        AudioFile audioFile = new AudioFile(canonicalFilePath);
 
         // id3 version agnostic values
         String duration = calculateTrackLength(mp3File.getLengthInSeconds());
@@ -185,7 +185,7 @@ public class Model {
     }
 
     private void storeFile(AudioFile newFile) {
-        files.put(newFile.getId(), newFile);
+        audioFiles.put(newFile.getFilePath(), newFile);
     }
 
     /**
@@ -216,6 +216,6 @@ public class Model {
     }
 
     public AudioFile getAudioFileByFilePath(String filePath) {
-        return files.get(filePath);
+        return audioFiles.get(filePath);
     }
 }

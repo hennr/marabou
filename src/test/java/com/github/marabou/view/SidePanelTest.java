@@ -23,18 +23,14 @@ package com.github.marabou.view;
 
 import com.github.marabou.model.AudioFile;
 import com.github.marabou.view.SidePanel.ComboAndLabelNames;
-import com.google.common.base.Strings;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 public class SidePanelTest {
@@ -124,7 +120,7 @@ public class SidePanelTest {
     }
 
     private AudioFile aValidCompleteAudioFile() {
-        return new AudioFile("666")
+        return new AudioFile("filePath")
                     .withArtist("Slayer")
                     .withTitle("Angel of death")
                     .withAlbum("Reign in Blood")
@@ -137,7 +133,7 @@ public class SidePanelTest {
     }
 
     private AudioFile anotherValidCompleteAudioFile() {
-        return new AudioFile("0")
+        return new AudioFile("filePath")
                 .withArtist("Britney Spears")
                 .withTitle("Oops! … I Did It Again")
                 .withAlbum("Oops! … I Did It Again")

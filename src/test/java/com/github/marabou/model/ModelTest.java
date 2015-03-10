@@ -300,7 +300,6 @@ public class ModelTest {
         assertEquals("1:01", audioFile.getDuration());
         assertEquals("foo", audioFile.getFilePath());
         assertEquals("Death Metal", audioFile.getGenre());
-        assertEquals("foo", audioFile.getId());
         assertEquals("44000", audioFile.getSamplerate());
         assertEquals("title", audioFile.getTitle());
         assertEquals("year", audioFile.getYear());

@@ -22,7 +22,6 @@
 package com.github.marabou.model;
 
 public class AudioFile {
-    String id ="";
     String artist ="";
     String title ="";
     String album ="";
@@ -39,12 +38,11 @@ public class AudioFile {
     String encoding ="";
     String filePath ="";
 
-    public AudioFile(String id) {
-        this.id = id;
-    }
-
-    public String getId() {
-        return id;
+    /**
+     * The given file path is the ID for this audio file.
+     */
+    public AudioFile(String canonicalFilePath) {
+        this.filePath = canonicalFilePath;
     }
 
     public String getArtist() {
@@ -175,10 +173,5 @@ public class AudioFile {
 
     public String getFilePath() {
         return filePath;
-    }
-
-    public AudioFile withFilePath(String filePath) {
-        this.filePath = filePath;
-        return this;
     }
 }
