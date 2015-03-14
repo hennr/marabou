@@ -30,9 +30,9 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+
+import static com.github.marabou.view.SidePanel.ComboAndLabelNames.*;
 
 import static com.github.marabou.helper.I18nHelper._;
 
@@ -88,18 +88,98 @@ public class SidePanel {
 
         cleanComboBoxes();
 
+        Set<String> artists = new TreeSet<>();
+        Set<String> titles = new TreeSet<>();
+        Set<String> albums = new TreeSet<>();
+        Set<String> tracks = new TreeSet<>();
+        Set<String> years = new TreeSet<>();
+        Set<String> genres = new TreeSet<>();
+        Set<String> comments = new TreeSet<>();
+        Set<String> discNumbers = new TreeSet<>();
+        Set<String> composers = new TreeSet<>();
+
         for (AudioFile audioFile : audioFiles) {
-            addNewDataSet(
-                    audioFile.getArtist(),
-                    audioFile.getTitle(),
-                    audioFile.getAlbum(),
-                    audioFile.getTrack(),
-                    audioFile.getYear(),
-                    audioFile.getGenre(),
-                    audioFile.getComment(),
-                    audioFile.getDiscNumber(),
-                    audioFile.getComposer()
-            );
+
+            if (!audioFile.getArtist().isEmpty()) {
+                artists.add(audioFile.getArtist());
+            }
+
+            if (!audioFile.getTitle().isEmpty()) {
+                titles.add(audioFile.getTitle());
+            }
+
+            if (!audioFile.getAlbum().isEmpty()) {
+                albums.add(audioFile.getAlbum());
+            }
+
+            if (!audioFile.getTrack().isEmpty()) {
+                tracks.add(audioFile.getTrack());
+            }
+
+            if (!audioFile.getYear().isEmpty()) {
+                years.add(audioFile.getYear());
+            }
+
+            if (!audioFile.getGenre().isEmpty()) {
+                genres.add(audioFile.getGenre());
+            }
+
+            if (!audioFile.getComment().isEmpty()) {
+                comments.add(audioFile.getComment());
+            }
+
+            if (!audioFile.getDiscNumber().isEmpty()) {
+                discNumbers.add(audioFile.getDiscNumber());
+            }
+
+            if (!audioFile.getComposer().isEmpty()) {
+                composers.add(audioFile.getComposer());
+            }
+        }
+
+        for (String artist : artists) {
+            comboBoxes.get(Artist).setText(artist);
+            comboBoxes.get(Artist).add(artist);
+        }
+
+        for (String title : titles) {
+            comboBoxes.get(Title).setText(title);
+            comboBoxes.get(Title).add(title);
+        }
+
+        for (String album :albums) {
+            comboBoxes.get(Album).setText(album);
+            comboBoxes.get(Album).add(album);
+        }
+
+        for (String track : tracks) {
+            comboBoxes.get(Track).setText(track);
+            comboBoxes.get(Track).add(track);
+        }
+
+        for (String year : years) {
+            comboBoxes.get(Year).setText(year);
+            comboBoxes.get(Year).add(year);
+        }
+
+        for (String genre : genres) {
+            comboBoxes.get(Genre).setText(genre);
+            comboBoxes.get(Genre).add(genre);
+        }
+
+        for (String comment : comments) {
+            comboBoxes.get(Comments).setText(comment);
+            comboBoxes.get(Comments).add(comment);
+        }
+
+        for (String discNumber : discNumbers) {
+            comboBoxes.get(Disc_number).setText(discNumber);
+            comboBoxes.get(Disc_number).add(discNumber);
+        }
+
+        for (String composer : composers) {
+            comboBoxes.get(Composer).setText(composer);
+            comboBoxes.get(Composer).add(composer);
         }
     }
 
@@ -108,45 +188,5 @@ public class SidePanel {
         for (Combo combo : comboBoxes.values()) {
             combo.removeAll();
         }
-
-    }
-
-    private void addNewDataSet(
-            String artist,
-            String title,
-            String album,
-            String track,
-            String year,
-            String genre,
-            String comments,
-            String disc_no,
-            String composer) {
-
-        comboBoxes.get(ComboAndLabelNames.Artist).setText(artist);
-        comboBoxes.get(ComboAndLabelNames.Artist).add(artist);
-
-        comboBoxes.get(ComboAndLabelNames.Title).setText(title);
-        comboBoxes.get(ComboAndLabelNames.Title).add(title);
-
-        comboBoxes.get(ComboAndLabelNames.Album).setText(album);
-        comboBoxes.get(ComboAndLabelNames.Album).add(album);
-
-        comboBoxes.get(ComboAndLabelNames.Track).setText(track);
-        comboBoxes.get(ComboAndLabelNames.Track).add(track);
-
-        comboBoxes.get(ComboAndLabelNames.Year).setText(year);
-        comboBoxes.get(ComboAndLabelNames.Year).add(year);
-
-        comboBoxes.get(ComboAndLabelNames.Genre).setText(genre);
-        comboBoxes.get(ComboAndLabelNames.Genre).add(genre);
-
-        comboBoxes.get(ComboAndLabelNames.Comments).setText(comments);
-        comboBoxes.get(ComboAndLabelNames.Comments).add(comments);
-
-        comboBoxes.get(ComboAndLabelNames.Disc_number).setText(disc_no);
-        comboBoxes.get(ComboAndLabelNames.Disc_number).add(disc_no);
-
-        comboBoxes.get(ComboAndLabelNames.Composer).setText(composer);
-        comboBoxes.get(ComboAndLabelNames.Composer).add(composer);
     }
 }
