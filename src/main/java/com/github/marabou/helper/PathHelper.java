@@ -53,7 +53,7 @@ public class PathHelper {
 		// MacOS
 		} else if (System.getProperty("os.name").toLowerCase().contains("mac")) {
 			isMacOS = true;
-			userHome = System.getProperty("user.home") + "/";
+			userHome = System.getProperty("user.home") + File.separator;
 		}
 	}
 
@@ -67,8 +67,7 @@ public class PathHelper {
 		if (isUnix) {
 			return userHome + ".marabou/";
 		} else if (isWindows){
-			// TODO windows
-			return "";
+			return System.getProperty("user.home") + File.separator + "marabou" + File.separator;
 		} else if (isMacOS) {
 			// TODO macos
 			return "";
