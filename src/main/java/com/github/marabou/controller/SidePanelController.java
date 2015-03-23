@@ -41,6 +41,6 @@ public class SidePanelController {
     @Subscribe
     public void updateSidePanelModel(FilesSelectedEvent event) {
         Set<AudioFile> audioFiles = event.selectedAudioFiles;
-        sidePanel.updateLists(audioFiles);
+        sidePanel.updateComboBoxes(audioFiles);
     }
 }

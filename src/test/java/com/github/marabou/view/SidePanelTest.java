@@ -51,7 +51,7 @@ public class SidePanelTest {
         AudioFile yetAnotherAudioFile = anotherValidCompleteAudioFile().withTrack(trackNumber).withDiscNumber(discNumber);
 
         // when
-        sidePanel.updateLists(Sets.newHashSet(audioFile, anotherAudioFile, yetAnotherAudioFile));
+        sidePanel.updateComboBoxes(Sets.newHashSet(audioFile, anotherAudioFile, yetAnotherAudioFile));
 
         // then
         assertEquals(2, sidePanel.comboBoxes.get(Artist).getItemCount());
@@ -99,7 +99,7 @@ public class SidePanelTest {
         AudioFile emptyAudioFile = anEmptyValidAudioFile();
 
         // when
-        sidePanel.updateLists(Sets.newHashSet(validAudioFile, emptyAudioFile));
+        sidePanel.updateComboBoxes(Sets.newHashSet(validAudioFile, emptyAudioFile));
 
         // then
         for (ComboAndLabelNames name : values()) {
@@ -126,10 +126,10 @@ public class SidePanelTest {
 
         // when
         AudioFile audioFile = aValidCompleteAudioFile();
-        sidePanel.updateLists(Sets.newHashSet(audioFile));
+        sidePanel.updateComboBoxes(Sets.newHashSet(audioFile));
 
         AudioFile secondAudioFile = anotherValidCompleteAudioFile();
-        sidePanel.updateLists(Sets.newHashSet(secondAudioFile));
+        sidePanel.updateComboBoxes(Sets.newHashSet(secondAudioFile));
 
         // then
         for (ComboAndLabelNames name : values()) {
