@@ -21,6 +21,7 @@
  */
 package com.github.marabou.audio;
 
+import com.github.marabou.audio.loader.AudioFileFilter;
 import org.junit.Test;
 
 import java.io.File;
