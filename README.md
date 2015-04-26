@@ -27,5 +27,4 @@ If you want to help out and know how to set up UI tests for marabou with maven a
 
 Licence
 =======
-Marabou is published under the terms of the GNU General Public License Version 3.
-See the [COPYING](COPYING)
+Marabou is published under the terms of the GNU General Public License Version 3. See [COPYING](COPYING)
