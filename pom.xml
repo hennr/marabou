@@ -75,7 +75,7 @@
             <version>18.0</version>
         </dependency>
 
-        <!-- SWT from https://code.google.com/p/swt-repo/ -->
+        <!-- SWT from https://github.com/maven-eclipse/repo -->
         <dependency>
             <groupId>org.eclipse.swt</groupId>
             <artifactId>${swt.artifactId}</artifactId>
@@ -289,7 +289,7 @@
         <!-- unofficial swt repo; co-maintained by hennr -->
         <repository>
             <id>swt-repo</id>
-            <url>https://swt-repo.googlecode.com/svn/repo/</url>
+		<url>https://raw.githubusercontent.com/maven-eclipse/repo/master/</url>
         </repository>
     </repositories>
 
