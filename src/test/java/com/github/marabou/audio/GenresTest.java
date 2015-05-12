@@ -35,6 +35,16 @@ public class GenresTest {
         assertEquals("Psybient", Genres.getGenreById(191));
     }
 
+    @Test
+    public void getsCorrectIndexForString() throws UnknownGenreException {
+        assertEquals(0, Genres.getIndexForName("Blues"));
+    }
+
+    @Test(expected = UnknownGenreException.class)
+    public void throwsUnknownGenreExceptionOnUnknownGenre() throws UnknownGenreException {
+        Genres.getIndexForName("Bleus");
+    }
+
     @Test(expected = UnknownGenreException.class)
     public void shouldThrowExceptionForNegativeIds() throws UnknownGenreException {
         Genres.getGenreById(-1);

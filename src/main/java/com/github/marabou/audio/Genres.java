@@ -23,6 +23,8 @@ package com.github.marabou.audio;
 
 import com.github.marabou.helper.UnknownGenreException;
 
+import static java.util.Arrays.asList;
+
 public class Genres {
 
 	// genre list used by winamp
@@ -229,4 +231,16 @@ public class Genres {
 			throw new UnknownGenreException();
 		}
 	}
+
+    public static int getIndexForName(final String name) throws UnknownGenreException {
+
+        int index;
+        index = asList(genres).indexOf(name);
+
+        if (index >= 0) {
+            return index;
+        } else {
+            throw new UnknownGenreException();
+        }
+    }
 }
