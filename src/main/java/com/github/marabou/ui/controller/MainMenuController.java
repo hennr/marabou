@@ -52,10 +52,7 @@ public class MainMenuController {
     }
 
     protected void openFiles(List<File> files) {
-
-        for (File file : files) {
-            openFile(file);
-        }
+        files.forEach(this::openFile);
     }
 
     protected void openFile(File file) {
@@ -90,9 +87,7 @@ public class MainMenuController {
             userProperties.setLastPath(openFileDialog.getLastPath());
         }
 
-            for (File file: filesToOpen) {
-                openFile(file);
-            }
+        filesToOpen.forEach(this::openFile);
     }
 
     public void handleShowAboutWindow() {
