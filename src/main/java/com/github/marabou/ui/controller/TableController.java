@@ -195,7 +195,6 @@ public class TableController {
             public void widgetSelected(SelectionEvent e) {
 
                 Set<TableItem> selectedItems = Sets.newHashSet();
-//                TableItem[] selectedItems = table.getSelection();
                 for (int index : table.getSelectionIndices()) {
                     selectedItems.add(table.getItem(index));
                 }
