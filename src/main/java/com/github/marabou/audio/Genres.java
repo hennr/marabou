@@ -171,7 +171,7 @@ public class Genres {
 		"Black Metal",
 		"Crossover",
 		"Contemporary Christian",
-		"Christian Rock ",
+		"Christian Rock",
 		"Merengue",
 		"Salsa",
 		"Trash Metal",
