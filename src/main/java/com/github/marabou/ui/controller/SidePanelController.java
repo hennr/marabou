@@ -23,7 +23,7 @@ package com.github.marabou.ui.controller;
 
 import com.github.marabou.audio.store.AudioFilePropertyChangeEvent;
 import com.github.marabou.ui.events.FilesSelectedEvent;
-import com.github.marabou.ui.events.ComboPropertyChangeEvent;
+import com.github.marabou.ui.events.ComboPropertyChange;
 import com.github.marabou.audio.AudioFile;
 import com.github.marabou.ui.view.SidePanel;
 import com.google.common.eventbus.EventBus;
@@ -45,11 +45,12 @@ public class SidePanelController {
 
     @Subscribe
     public void updateSidePanelModel(FilesSelectedEvent event) {
+        // TODO post AudioFilePropertyChangeEvent here and remove addOnModifyListener() in SidePanel class as well as the method onPropertyChange() below
         Set<AudioFile> audioFiles = event.selectedAudioFiles;
         sidePanel.updateComboBoxes(audioFiles);
     }
 
-    public void onPropertyChange(ComboPropertyChangeEvent propertyChange) {
+    public void onPropertyChange(ComboPropertyChange propertyChange) {
         bus.post(new AudioFilePropertyChangeEvent(propertyChange.getProperty(), propertyChange.getNewValue()));
     }
 }

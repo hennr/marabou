@@ -52,6 +52,7 @@ public class AudioFileStore {
     AudioFileFactory audioFileFactory;
     private Map<String, AudioFile> audioFiles = new HashMap<>();
     private Set<AudioFile> currentlySelectedFiles = new HashSet<>();
+    private AudioFile audioFile = new AudioFile("");
 
     public AudioFileStore(EventBus bus, AudioFileFactory audioFileFactory) {
         this.bus = bus;
@@ -92,41 +93,54 @@ public class AudioFileStore {
         currentlySelectedFiles = event.selectedAudioFiles;
     }
 
-//    @Subscribe
-//    public void onPropertyUpdate(AudioFilePropertyChangeEvent update) {
-//      filesWithPendingChanges.addAll(
-//        updateAudioFiles(currentlySelectedFiles, update.getAudioFileProperty(), update.getNewValue())
-//      );
-//      bus.post(new AudioFilesUpdatedEvent());
-//    }
+    @Subscribe
+    public void onAudioFilePropertyUpdate(AudioFilePropertyChangeEvent update) {
+        AudioFileProperty property = update.getAudioFileProperty();
+        String newValue = update.getNewValue();
+
+        switch (property) {
+            case Album:
+                audioFile =  audioFile.withAlbum(newValue);
+                break;
+            case Artist:
+                audioFile =  audioFile.withArtist(newValue);
+                break;
+            case Comments:
+                audioFile =  audioFile.withComment(newValue);
+                break;
+            case Composer:
+                audioFile =  audioFile.withComposer(newValue);
+                break;
+            case Disc_number:
+                audioFile =  audioFile.withDiscNumber(newValue);
+                break;
+            case Genre:
+                audioFile =  audioFile.withGenre(newValue);
+                break;
+            case Title:
+                audioFile =  audioFile.withTitle(newValue);
+                break;
+            case Track:
+                audioFile =  audioFile.withTrack(newValue);
+                break;
+            case Year:
+                audioFile =  audioFile.withYear(newValue);
+                break;
+            default:
+                throw new RuntimeException("Found an untreated audio file property: " + property +  " Please file a bug report at the project website.");
+        }
+    }
 
     @Subscribe
     public void onSaveSelectedFiles(SaveSelectedFilesEvent saveSelectedFilesEvent) {
         for (AudioFile audioFile : currentlySelectedFiles) {
-            // TODO hier müssen die sidePanelEntries ausgelesen und gespeichert werden
             Mp3File mp3File = audioFileFactory.createMp3File(new File(audioFile.getFilePath()));
-            mp3File.setId3v2Tag(createTagForAudioFile(audioFile));
+            mp3File.setId3v2Tag(createTagForAudioFile());
             saveMp3File(mp3File);
         }
-//      savePendingChanges();
+        // FIXME add saved files to the AudioFilesSavedEvent() to get them updated in the view?
       bus.post(new AudioFilesSavedEvent());
     }
-
-//    private Set<AudioFile> updateAudioFiles(Set<AudioFile> affectedFiles, AudioFileProperty audioFileProperty, String newValue) {
-//      for (AudioFile audioFile : affectedFiles) {
-//        updateAudioFile(audioFile, audioFileProperty, newValue);
-//      }
-//
-//      return affectedFiles;
-//    }
-
-//    private void savePendingChanges() {
-//      for (AudioFile audioFileWithChanges : filesWithPendingChanges) {
-//        Mp3File mp3File = audioFileFactory.createMp3File(new File(audioFileWithChanges.getFilePath()));
-//        mp3File.setId3v2Tag(createTagForAudioFile(audioFileWithChanges));
-//        saveMp3File(mp3File);
-//      }
-//    }
 
     private void saveMp3File(Mp3File mp3File) {
       try {
@@ -143,32 +157,7 @@ public class AudioFileStore {
       return new File(System.getProperty("java.io.tmpdir") + File.separatorChar + UUID.randomUUID().toString());
     }
 
-    private AudioFile updateAudioFile(AudioFile audioFile, AudioFileProperty property, String newValue) {
-      switch (property) {
-        case Album:
-          return audioFile.withAlbum(newValue);
-        case Artist:
-          return audioFile.withArtist(newValue);
-        case Comments:
-          return audioFile.withComment(newValue);
-        case Composer:
-          return audioFile.withComposer(newValue);
-        case Disc_number:
-          return audioFile.withDiscNumber(newValue);
-        case Genre:
-          return audioFile.withGenre(newValue);
-        case Title:
-          return audioFile.withTitle(newValue);
-        case Track:
-          return audioFile.withTrack(newValue);
-        case Year:
-          return audioFile.withYear(newValue);
-        default:
-          return audioFile;
-      }
-    }
-
-    private ID3v2 createTagForAudioFile(AudioFile audioFile) {
+    private ID3v2 createTagForAudioFile() {
       ID3v24Tag id3Tag = new ID3v24Tag();
       id3Tag.setAlbum(audioFile.getAlbum());
       id3Tag.setArtist(audioFile.getArtist());
@@ -177,11 +166,12 @@ public class AudioFileStore {
       id3Tag.setPartOfSet(audioFile.getDiscNumber());
       try {
           id3Tag.setGenre(Genres.getIndexForName(audioFile.getGenre()));
-      } catch (UnknownGenreException e) { }
+      } catch (UnknownGenreException e) {
+          id3Tag.setGenreDescription(audioFile.getGenre());
+      }
         id3Tag.setTitle(audioFile.getTitle());
       id3Tag.setTrack(audioFile.getTrack());
       id3Tag.setYear(audioFile.getYear());
       return id3Tag;
     }
-
 }

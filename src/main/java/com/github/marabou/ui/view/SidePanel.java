@@ -22,7 +22,7 @@
 package com.github.marabou.ui.view;
 
 import com.github.marabou.ui.controller.SidePanelController;
-import com.github.marabou.ui.events.ComboPropertyChangeEvent;
+import com.github.marabou.ui.events.ComboPropertyChange;
 import com.github.marabou.audio.AudioFile;
 import com.github.marabou.audio.AudioFileProperty;
 import org.eclipse.swt.SWT;
@@ -75,18 +75,18 @@ public class SidePanel {
             combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
             comboBoxes.put(property, combo);
 
-            combo.addModifyListener(updateOnModifyListener());
+            combo.addModifyListener(addOnModifyListener());
         }
     }
 
-    private ModifyListener updateOnModifyListener() {
+    private ModifyListener addOnModifyListener() {
         return new ModifyListener() {
             @Override
             public void modifyText(ModifyEvent e) {
                 Combo combo = (Combo) e.getSource();
                 AudioFileProperty property = (AudioFileProperty) combo.getData();
 
-                controller.onPropertyChange(new ComboPropertyChangeEvent(property, combo.getText()));
+                controller.onPropertyChange(new ComboPropertyChange(property, combo.getText()));
             }
         };
     }

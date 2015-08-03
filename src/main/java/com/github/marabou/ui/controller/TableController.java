@@ -22,7 +22,6 @@
 package com.github.marabou.ui.controller;
 
 import com.github.marabou.audio.store.AudioFilesSavedEvent;
-import com.github.marabou.audio.store.AudioFilesUpdatedEvent;
 import com.github.marabou.ui.events.ErrorEvent;
 import com.github.marabou.ui.events.FilesSelectedEvent;
 import com.github.marabou.audio.store.AudioFileAddedEvent;

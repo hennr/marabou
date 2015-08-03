@@ -23,11 +23,11 @@ package com.github.marabou.ui.events;
 
 import com.github.marabou.audio.AudioFileProperty;
 
-public class ComboPropertyChangeEvent {
+public class ComboPropertyChange {
     AudioFileProperty property;
     String newValue;
 
-    public ComboPropertyChangeEvent(AudioFileProperty property, String newValue) {
+    public ComboPropertyChange(AudioFileProperty property, String newValue) {
         this.property = property;
         this.newValue = newValue;
     }
