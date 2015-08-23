@@ -21,7 +21,7 @@
  */
 package com.github.marabou.ui.controller;
 
-import com.github.marabou.audio.store.AudioFilesSavedEvent;
+import com.github.marabou.audio.store.AudioFileSavedEvent;
 import com.github.marabou.ui.events.ErrorEvent;
 import com.github.marabou.ui.events.FilesSelectedEvent;
 import com.github.marabou.audio.store.AudioFileAddedEvent;
@@ -62,7 +62,7 @@ public class TableController {
 
         setupTableColumns();
         addDoubleClickListener();
-        addSelectionListener();
+        addItemsSelectedListenerAndPostThatEventToTheEventBus();
     }
 
     private void setupTableColumns() {
@@ -189,7 +189,7 @@ public class TableController {
         table.setFocus();
     }
 
-    private void addSelectionListener() {
+    private void addItemsSelectedListenerAndPostThatEventToTheEventBus() {
         table.addSelectionListener(new SelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -220,14 +220,26 @@ public class TableController {
     }
 
     @Subscribe
-    public void onAudioFilesUpdated(AudioFilesSavedEvent audioFilesUpdated) {
-      updateTableItems();
+    public void onAudioFilesUpdated(AudioFileSavedEvent audioFileSavedEvent) {
+        removeTableItem(audioFileSavedEvent.oldFilePath);
+
+        AudioFile audioFile = audioFileStore.getAudioFileByFilePath(audioFileSavedEvent.newFilePath);
+        updateTableItem(createNewTableItem(audioFile));
     }
 
-    private void updateTableItems() {
-      for (TableItem tableItem : table.getSelection()) {
-        updateTableItem(tableItem);
-      }
+    private void removeTableItem(String filePath) {
+        TableItem[] items = table.getItems();
+
+        // FIXME performance
+        for (TableItem item : items) {
+            Object audioFile = item.getData();
+            if (audioFile instanceof AudioFile) {
+                AudioFile file = (AudioFile) audioFile;
+                if (file.getFilePath().equals(filePath)) {
+                    table.remove(table.indexOf(item));
+                }
+            }
+        }
     }
 
     private void updateTableItem(TableItem tableItem) {

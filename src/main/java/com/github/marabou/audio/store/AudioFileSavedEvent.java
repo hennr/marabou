@@ -21,5 +21,13 @@
  */
 package com.github.marabou.audio.store;
 
-public class AudioFilesSavedEvent {
+public class AudioFileSavedEvent {
+
+    public String oldFilePath;
+    public String newFilePath;
+
+    public AudioFileSavedEvent(String oldFilePath, String newFilePath) {
+        this.oldFilePath = oldFilePath;
+        this.newFilePath = newFilePath;
+    }
 }

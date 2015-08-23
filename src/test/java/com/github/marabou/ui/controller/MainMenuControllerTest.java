@@ -29,11 +29,14 @@ import com.github.marabou.ui.events.SaveSelectedFilesEvent;
 import com.github.marabou.ui.view.AboutWindow;
 import com.google.common.eventbus.EventBus;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 public class MainMenuControllerTest {
@@ -45,37 +48,63 @@ public class MainMenuControllerTest {
         // given
         MainMenuController controllerUnderTest = givenAMainMenuControllerWithMocks();
 
-        AudioFileStore audioFileStoreMock = mock(AudioFileStore.class);
-        controllerUnderTest.audioFileStore = audioFileStoreMock;
+        controllerUnderTest.audioFileStore = mock(AudioFileStore.class);
 
         File file = aValidMockedFile();
 
         // when
         controllerUnderTest.openFile(file);
 
+        ArgumentCaptor<OpenFileEvent> argument = ArgumentCaptor.forClass(OpenFileEvent.class);
+        verify(bus).post(argument.capture());
+
         // then
-        verify(bus).post(new OpenFileEvent(file));
+        assertEquals(file, argument.getValue().getFile());
     }
 
     @Test
-    public void testOpenFiles() throws Exception {
+    public void openingAFileProvokesAnOpenFileEvent() throws Exception {
 
         // given
         MainMenuController controllerUnderTest = givenAMainMenuControllerWithMocks();
 
-        AudioFileStore audioFileStoreMock = mock(AudioFileStore.class);
-        controllerUnderTest.audioFileStore = audioFileStoreMock;
+        controllerUnderTest.audioFileStore = mock(AudioFileStore.class);
 
-        List<File> files = new ArrayList<>(3);
+        List<File> files = new ArrayList<>(1);
+        File file = aValidMockedFile();
+        files.add(file);
+
+        // when
+        controllerUnderTest.openFiles(files);
+
+        ArgumentCaptor<OpenFileEvent> argumentCaptor = ArgumentCaptor.forClass(OpenFileEvent.class);
+        verify(bus).post(argumentCaptor.capture());
+
+        // then
+        assertEquals(file, argumentCaptor.getValue().getFile());
+    }
+
+
+    @Test
+    public void opensMultipleFiles() throws Exception {
+
+        // given
+        MainMenuController controllerUnderTest = givenAMainMenuControllerWithMocks();
+
+        controllerUnderTest.audioFileStore = mock(AudioFileStore.class);
+
+        List<File> files = new ArrayList<>(2);
         files.add(aValidMockedFile());
         files.add(aValidMockedFile());
 
         // when
         controllerUnderTest.openFiles(files);
 
+        ArgumentCaptor argumentCaptor = ArgumentCaptor.forClass(OpenFileEvent.class);
+        verify(bus, times(2)).post(argumentCaptor.capture());
+
         // then
-        verify(bus).post(new OpenFileEvent(files.get(0)));
-        verify(bus).post(new OpenFileEvent(files.get(1)));
+        assertTrue(argumentCaptor.getValue() instanceof OpenFileEvent);
     }
 
     @Test

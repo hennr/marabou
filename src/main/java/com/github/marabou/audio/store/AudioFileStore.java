@@ -50,8 +50,8 @@ public class AudioFileStore {
 
     private final EventBus bus;
     AudioFileFactory audioFileFactory;
-    private Map<String, AudioFile> audioFiles = new HashMap<>();
-    private Set<AudioFile> currentlySelectedFiles = new HashSet<>();
+    protected Map<String, AudioFile> audioFiles = new HashMap<>();
+    protected Set<AudioFile> currentlySelectedFiles = new HashSet<>();
     private AudioFile audioFile = new AudioFile("");
 
     public AudioFileStore(EventBus bus, AudioFileFactory audioFileFactory) {
@@ -63,7 +63,7 @@ public class AudioFileStore {
     protected void addFile(final File inputFile) {
         try {
           AudioFile audioFile = audioFileFactory.createAudioFile(inputFile);
-          storeFile(audioFile);
+          storeAudioFile(audioFile);
           bus.post(new AudioFileAddedEvent(audioFile));
         } catch (Exception e) {
           log.error("error during file add", e);
@@ -71,8 +71,12 @@ public class AudioFileStore {
         }
     }
 
-    private void storeFile(AudioFile newFile) {
+    private void storeAudioFile(AudioFile newFile) {
         audioFiles.put(newFile.getFilePath(), newFile);
+    }
+
+    protected void removeAudioFile(String filePath) {
+        audioFiles.remove(filePath);
     }
 
     public AudioFile getAudioFileByFilePath(String filePath) {
@@ -136,21 +140,31 @@ public class AudioFileStore {
         for (AudioFile audioFile : currentlySelectedFiles) {
             Mp3File mp3File = audioFileFactory.createMp3File(new File(audioFile.getFilePath()));
             mp3File.setId3v2Tag(createTagForAudioFile());
-            saveMp3File(mp3File);
+
+            try {
+                String newFilePath = saveMp3File(mp3File);
+                removeAudioFile(mp3File.getFilename());
+                storeAudioFile(audioFileFactory.createAudioFile(mp3File));
+
+                AudioFileSavedEvent savedEvent = new AudioFileSavedEvent(audioFile.getFilePath(), newFilePath);
+                bus.post(savedEvent);
+            } catch (RuntimeException e) {
+                bus.post(new ErrorEvent("Error saving file: " + mp3File.getFilename()));
+            }
         }
-        // FIXME add saved files to the AudioFilesSavedEvent() to get them updated in the view?
-      bus.post(new AudioFilesSavedEvent());
     }
 
-    private void saveMp3File(Mp3File mp3File) {
+    protected String saveMp3File(Mp3File mp3File) {
       try {
-        File tempFile = getTempFile();
+          File tempFile = getTempFile();
         mp3File.save(tempFile.getAbsolutePath());
+
         Files.copy(tempFile, new File(mp3File.getFilename()));
         tempFile.delete();
       } catch (IOException | NotSupportedException saveException) {
         throw new RuntimeException(saveException);
       }
+        return mp3File.getFilename();
     }
 
     private File getTempFile() {

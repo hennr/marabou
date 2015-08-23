@@ -22,6 +22,8 @@
 package com.github.marabou.audio;
 
 import com.github.marabou.helper.UnknownGenreException;
+import com.github.marabou.ui.events.ErrorEvent;
+import com.google.common.eventbus.EventBus;
 import com.mpatric.mp3agic.*;
 
 import java.io.File;
@@ -29,31 +31,25 @@ import java.io.IOException;
 
 public class AudioFileFactory {
 
+  private final EventBus bus;
+
+  public AudioFileFactory(EventBus bus) {
+    this.bus = bus;
+  }
+
   public AudioFile createAudioFile(File inputFile) {
+
     Mp3File mp3File = createMp3File(inputFile);
     String canonicalFilePath = getCanonicalFilePath(inputFile);
 
     AudioFile audioFile = new AudioFile(canonicalFilePath);
 
-    // id3 version agnostic values
-    String duration = calculateTrackLength(mp3File.getLengthInSeconds());
-    String bitRate = Integer.toString(mp3File.getBitrate());
-    String sampleRate = Integer.toString(mp3File.getSampleRate());
-    String channels = "";
-    if (mp3File.getChannelMode() != null) {
-      channels = mp3File.getChannelMode();
-    }
-
-    audioFile
-      .withDuration(duration)
-      .withBitRate(bitRate)
-      .withSamplerate(sampleRate)
-      .withChannels(channels)
-      .withEncoding("mp3");
+    audioFile = withId3VersionAgnosticValues(mp3File, audioFile);
 
     if (mp3File.hasId3v2Tag()) {
-      return withPropertiesFromID3V2(mp3File.getId3v2Tag(),
-        withPropertiesFromID3V1(mp3File.getId3v2Tag(), audioFile));
+      audioFile = withPropertiesFromID3V1(mp3File.getId3v2Tag(), audioFile);
+      return withPropertiesFromID3V2(mp3File.getId3v2Tag(), audioFile);
+
     } else if (mp3File.hasId3v1Tag()) {
       return withPropertiesFromID3V1(mp3File.getId3v1Tag(), audioFile);
     }
@@ -87,7 +83,29 @@ public class AudioFileFactory {
     }
   }
 
-  public AudioFile withPropertiesFromID3V1(ID3v1 id31Tag, AudioFile audioFile) {
+  private AudioFile withId3VersionAgnosticValues(Mp3File mp3File, AudioFile audioFile) {
+
+    String duration = calculateTrackLength(mp3File.getLengthInSeconds());
+    String bitRate = Integer.toString(mp3File.getBitrate());
+    String sampleRate = Integer.toString(mp3File.getSampleRate());
+    String channels = "";
+    if (mp3File.getChannelMode() != null) {
+      channels = mp3File.getChannelMode();
+    }
+
+    audioFile
+            .withDuration(duration)
+            .withBitRate(bitRate)
+            .withSamplerate(sampleRate)
+            .withChannels(channels)
+            .withEncoding("mp3");
+
+    return audioFile;
+  }
+
+
+    private AudioFile withPropertiesFromID3V1(ID3v1 id31Tag, AudioFile audioFile) {
+
     if (id31Tag.getArtist() != null ) {
       audioFile.withArtist(id31Tag.getArtist());
     }
@@ -113,7 +131,8 @@ public class AudioFileFactory {
       String genre = Genres.getGenreById(genreId);
       audioFile.withGenre(genre);
     } catch (UnknownGenreException e) {
-      // leave empty if id is unknown
+      if (id31Tag.getGenreDescription() != null)
+      audioFile.withGenre(id31Tag.getGenreDescription());
     }
 
     if (id31Tag.getComment() != null) {
@@ -124,6 +143,7 @@ public class AudioFileFactory {
   }
 
   private AudioFile withPropertiesFromID3V2(ID3v2 id32Tag, AudioFile audioFile) {
+
     if (id32Tag.getPartOfSet() != null) {
       audioFile.withDiscNumber(id32Tag.getPartOfSet());
     }
@@ -136,6 +156,7 @@ public class AudioFileFactory {
   }
 
   private String getCanonicalFilePath(File inputFile) {
+
     String fullFilePath;
     try {
       fullFilePath = inputFile.getCanonicalPath();
@@ -149,8 +170,27 @@ public class AudioFileFactory {
     try {
       return new Mp3File(audioFile.getCanonicalPath());
     } catch (IOException | UnsupportedTagException | InvalidDataException e) {
-      throw new RuntimeException("Couldn't open given file: " + audioFile.getAbsolutePath());
+      String errorMessage = "Couldn't open given file: " + audioFile.getAbsolutePath();
+      bus.post(new ErrorEvent(errorMessage));
+      throw new RuntimeException(errorMessage);
     }
   }
 
+  public AudioFile createAudioFile(Mp3File mp3File) {
+
+    AudioFile audioFile = new AudioFile(mp3File.getFilename());
+
+    audioFile = withId3VersionAgnosticValues(mp3File, audioFile);
+
+    if (mp3File.hasId3v2Tag()) {
+      audioFile = withPropertiesFromID3V1(mp3File.getId3v2Tag(), audioFile);
+      return withPropertiesFromID3V2(mp3File.getId3v2Tag(), audioFile);
+    }
+
+    if (mp3File.hasId3v1Tag()) {
+      return withPropertiesFromID3V1(mp3File.getId3v1Tag(), audioFile);
+    }
+
+    return audioFile;
+  }
 }

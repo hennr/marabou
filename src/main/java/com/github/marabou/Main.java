@@ -72,7 +72,7 @@ public class Main {
             }
         };
         EventBus bus = new EventBus(eventBusExceptionHandler);
-        AudioFileFactory audioFileFactory = new AudioFileFactory();
+        AudioFileFactory audioFileFactory = new AudioFileFactory(bus);
         AudioFileStore audioFileStore = new AudioFileStore(bus, audioFileFactory);
         MainMenuController mainMenuController = new MainMenuController(bus, audioFileStore, userProperties, audioFileLoader, aboutWindow);
         MainMenu mainMenu = new MainMenu(mainMenuController);

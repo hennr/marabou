@@ -1,30 +1,28 @@
 /**
  * Marabou - Audio Tagger
- * <p>
+ *
  * Copyright (C) 2012 - 2015 Jan-Hendrik Peters
- * <p>
+ *
  * https://github.com/hennr/marabou
- * <p>
+ *
  * Marabou is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * <p>
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * <p>
+ *
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 package com.github.marabou.audio;
 
-import com.mpatric.mp3agic.ID3v1Tag;
-import com.mpatric.mp3agic.ID3v2;
-import com.mpatric.mp3agic.ID3v24Tag;
-import com.mpatric.mp3agic.Mp3File;
+import com.google.common.eventbus.EventBus;
+import com.mpatric.mp3agic.*;
 import org.junit.Test;
 
 import java.io.File;
@@ -34,11 +32,12 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class AudioFileFactoryTest {
+
     @Test
     public void calculatesTrackLengthAsExpected() {
 
         // given
-        AudioFileFactory audioFileFactory = new AudioFileFactory();
+        AudioFileFactory audioFileFactory = new AudioFileFactory(new EventBus());
 
         // expect
         assertEquals("0:00", audioFileFactory.calculateTrackLength(-1l));
@@ -68,7 +67,7 @@ public class AudioFileFactoryTest {
         when(mp3FileMock.hasId3v2Tag()).thenReturn(true);
         when(mp3FileMock.getId3v2Tag()).thenReturn(id3v2TagMock);
 
-        AudioFileFactory audioFileFactory = new AudioFileFactory() {
+        AudioFileFactory audioFileFactory = new AudioFileFactory(new EventBus()) {
             @Override
             public Mp3File createMp3File(File audioFile) {
                 return mp3FileMock;
@@ -109,7 +108,7 @@ public class AudioFileFactoryTest {
         when(mp3FileMock.hasId3v2Tag()).thenReturn(false);
         when(mp3FileMock.getId3v2Tag()).thenReturn(id3v2TagMock);
 
-        AudioFileFactory audioFileFactory = new AudioFileFactory() {
+        AudioFileFactory audioFileFactory = new AudioFileFactory(new EventBus()) {
             @Override
             public Mp3File createMp3File(File audioFile) {
                 return mp3FileMock;
@@ -167,7 +166,7 @@ public class AudioFileFactoryTest {
     }
 
     private AudioFileFactory audioFileFactoryWithMp3FileMock(final Mp3File mp3FileMock) {
-        return new AudioFileFactory() {
+        return new AudioFileFactory(new EventBus()) {
             @Override
             public Mp3File createMp3File(File audioFile) {
                 return mp3FileMock;
@@ -176,7 +175,7 @@ public class AudioFileFactoryTest {
     }
 
     @Test
-    public void addFileCanHandleNastyReturnsInId3v1Tags() throws IOException {
+    public void createAudioFileCanHandleNastyReturnsInId3v1Tags() throws IOException {
 
         // given
         File fileMock = mock(File.class);
@@ -209,7 +208,7 @@ public class AudioFileFactoryTest {
     }
 
     @Test
-    public void addFileCanHandleNastyReturnsInId3v2Tags() throws IOException {
+    public void createAudioFileCanHandleNastyReturnsInId3v2Tags() throws IOException {
 
         // given
         File fileMock = mock(File.class);
@@ -243,29 +242,29 @@ public class AudioFileFactoryTest {
     }
 
     @Test
-    public void transfersAllMp3FileFieldsIntoAudioFile() throws IOException {
+    public void transfersAllMp3FileFieldsIntoAudioFile() throws IOException, InvalidDataException, UnsupportedTagException {
         // given
-        ID3v24Tag id3v24TagMock = mock(ID3v24Tag.class);
-        when(id3v24TagMock.getAlbum()).thenReturn("album");
-        when(id3v24TagMock.getTrack()).thenReturn("track");
-        when(id3v24TagMock.getArtist()).thenReturn("artist");
-        when(id3v24TagMock.getComment()).thenReturn("comment");
-        when(id3v24TagMock.getComposer()).thenReturn("composer");
-        when(id3v24TagMock.getPartOfSet()).thenReturn("disc number");
-        when(id3v24TagMock.getGenre()).thenReturn(22);
-        when(id3v24TagMock.getTitle()).thenReturn("title");
-        when(id3v24TagMock.getYear()).thenReturn("year");
+        ID3v24Tag id3v24Tag = new ID3v24Tag();
+        id3v24Tag.setAlbum("album");
+        id3v24Tag.setTrack("track");
+        id3v24Tag.setArtist("artist");
+        id3v24Tag.setComment("comment");
+        id3v24Tag.setComposer("composer");
+        id3v24Tag.setPartOfSet("disc number");
+        id3v24Tag.setGenre(22);
+        id3v24Tag.setTitle("title");
+        id3v24Tag.setYear("year");
 
         final Mp3File mp3FileMock = mock(Mp3File.class);
         when(mp3FileMock.hasId3v2Tag()).thenReturn(true);
-        when(mp3FileMock.getId3v2Tag()).thenReturn(id3v24TagMock);
+        when(mp3FileMock.getId3v2Tag()).thenReturn(id3v24Tag);
         when(mp3FileMock.getBitrate()).thenReturn(666);
         when(mp3FileMock.getChannelMode()).thenReturn("channel mode");
         when(mp3FileMock.getLengthInSeconds()).thenReturn(61l);
         when(mp3FileMock.getSampleRate()).thenReturn(44000);
 
         File fileMock = mock(File.class);
-        when(fileMock.getCanonicalPath()).thenReturn("foo");
+        when(fileMock.getCanonicalPath()).thenReturn("path");
         AudioFileFactory audioFileStore = audioFileFactoryWithMp3FileMock(mp3FileMock);
 
         // when
@@ -282,11 +281,56 @@ public class AudioFileFactoryTest {
         assertEquals("disc number", audioFile.getDiscNumber());
         assertEquals("mp3", audioFile.getEncoding());
         assertEquals("1:01", audioFile.getDuration());
-        assertEquals("foo", audioFile.getFilePath());
+        assertEquals("path", audioFile.getFilePath());
         assertEquals("Death Metal", audioFile.getGenre());
         assertEquals("44000", audioFile.getSamplerate());
         assertEquals("title", audioFile.getTitle());
         assertEquals("year", audioFile.getYear());
     }
 
+    @Test
+    public void transfersAllMp3FieldsIntoAudioFile() throws IOException {
+        // given
+        ID3v24Tag id3v24Tag = new ID3v24Tag();
+        id3v24Tag.setAlbum("album");
+        id3v24Tag.setTrack("track");
+        id3v24Tag.setArtist("artist");
+        id3v24Tag.setComment("comment");
+        id3v24Tag.setComposer("composer");
+        id3v24Tag.setPartOfSet("disc number");
+        id3v24Tag.setGenre(22);
+        id3v24Tag.setTitle("title");
+        id3v24Tag.setYear("year");
+
+        final Mp3File mp3FileMock = mock(Mp3File.class);
+        when(mp3FileMock.hasId3v2Tag()).thenReturn(true);
+        when(mp3FileMock.getId3v2Tag()).thenReturn(id3v24Tag);
+        when(mp3FileMock.getBitrate()).thenReturn(666);
+        when(mp3FileMock.getChannelMode()).thenReturn("channel mode");
+        when(mp3FileMock.getLengthInSeconds()).thenReturn(61l);
+        when(mp3FileMock.getSampleRate()).thenReturn(44000);
+        when(mp3FileMock.getFilename()).thenReturn("path");
+
+        AudioFileFactory audioFileStore = audioFileFactoryWithMp3FileMock(mp3FileMock);
+
+        // when
+        AudioFile audioFile = audioFileStore.createAudioFile(mp3FileMock);
+
+        // then
+        assertEquals("album", audioFile.getAlbum());
+        assertEquals("track", audioFile.getTrack());
+        assertEquals("artist", audioFile.getArtist());
+        assertEquals("comment", audioFile.getComment());
+        assertEquals("composer", audioFile.getComposer());
+        assertEquals("666", audioFile.getBitRate());
+        assertEquals("channel mode", audioFile.getChannels());
+        assertEquals("disc number", audioFile.getDiscNumber());
+        assertEquals("mp3", audioFile.getEncoding());
+        assertEquals("1:01", audioFile.getDuration());
+        assertEquals("path", audioFile.getFilePath());
+        assertEquals("Death Metal", audioFile.getGenre());
+        assertEquals("44000", audioFile.getSamplerate());
+        assertEquals("title", audioFile.getTitle());
+        assertEquals("year", audioFile.getYear());
+    }
 }
