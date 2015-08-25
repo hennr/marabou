@@ -44,7 +44,9 @@ public class MainWindow extends BaseGuiClass {
     protected UserProperties userProperties;
     protected EventBus bus;
 
-    public MainWindow(EventBus bus, MainMenu mainMenu, ImageLoader imageLoader, UserProperties userProperties, Composite composite,  SashForm sashForm) {
+    public MainWindow(
+            EventBus bus, MainMenu mainMenu, ImageLoader imageLoader,
+            UserProperties userProperties, Composite composite,  SashForm sashForm) {
         this.bus = bus;
         this.imageLoader = imageLoader;
         this.userProperties = userProperties;
@@ -63,28 +65,23 @@ public class MainWindow extends BaseGuiClass {
         shell.setMenuBar(mainMenu.getMenu());
 
         // the composite is a child of the shell which holds the toolbar
-        GridLayout gl = new GridLayout();
-        gl.marginHeight = 0;
-        gl.marginWidth = 0;
-        gl.horizontalSpacing = 0;
-        gl.verticalSpacing = 0;
-        composite.setLayout(gl);
-        GridData gd = new GridData(GridData.FILL_BOTH);
-        composite.setLayoutData(gd);
+        GridLayout gridLayout = new GridLayout();
+        gridLayout.marginHeight = 0;
+        gridLayout.marginWidth = 0;
+        gridLayout.horizontalSpacing = 0;
+        gridLayout.verticalSpacing = 0;
+        composite.setLayout(gridLayout);
+        GridData gridData = new GridData(GridData.FILL_BOTH);
+        composite.setLayoutData(gridData);
 
         // the upper toolbar below the menu
         ToolBar toolbar = new ToolBar(composite, SWT.HORIZONTAL);
-        ToolItem ti = new ToolItem(toolbar, SWT.PUSH);
-        ti.setImage(imageLoader.getImage(AvailableImage.SAVE_ICON));
-        ti.addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                bus.post(new SaveSelectedFilesEvent());
-            }
-        });
+        ToolItem saveItem = new ToolItem(toolbar, SWT.PUSH);
+        saveItem.setImage(imageLoader.getImage(AvailableImage.SAVE_ICON));
+        saveItem.addListener(SWT.Selection, event -> bus.post(new SaveSelectedFilesEvent()));
         toolbar.pack();
 
-        sashForm.setLayoutData(gd);
+        sashForm.setLayoutData(gridData);
 
 		/* Right side */
         tableComposite = new Composite(sashForm, SWT.NONE);

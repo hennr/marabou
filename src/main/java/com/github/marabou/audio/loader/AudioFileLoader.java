@@ -36,7 +36,7 @@ import static java.util.Arrays.asList;
 
 public class AudioFileLoader {
 
-    Logger log = LoggerFactory.getLogger(getClass());
+    Logger log = LoggerFactory.getLogger(AudioFileLoader.class);
 
     private final AudioFileFilter audioFileFilter;
 

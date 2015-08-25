@@ -46,7 +46,7 @@ import org.slf4j.LoggerFactory;
 
 public class Main {
 
-    static Logger log = LoggerFactory.getLogger("Main.class");
+    static Logger log = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
 
@@ -64,13 +64,8 @@ public class Main {
 
         AudioFileFilter audioFileFilter = new AudioFileFilter();
         AudioFileLoader audioFileLoader = new AudioFileLoader(audioFileFilter);
-        SubscriberExceptionHandler eventBusExceptionHandler = new SubscriberExceptionHandler() {
-            @Override
-            public void handleException(Throwable exception, SubscriberExceptionContext context) {
-                log.error("A terrible thing happened in marabou.\n" +
-                        "If you read this please copy the whole text and report a bug at the project web site.", exception);
-            }
-        };
+        SubscriberExceptionHandler eventBusExceptionHandler = (exception, context) ->
+                log.error("A terrible thing happened in marabou.\n If you read this please copy the whole text and report a bug at the project web site.", exception);
         EventBus bus = new EventBus(eventBusExceptionHandler);
         AudioFileFactory audioFileFactory = new AudioFileFactory(bus);
         AudioFileStore audioFileStore = new AudioFileStore(bus, audioFileFactory);
