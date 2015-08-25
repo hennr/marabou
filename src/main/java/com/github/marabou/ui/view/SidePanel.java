@@ -80,15 +80,12 @@ public class SidePanel {
     }
 
     private ModifyListener addOnModifyListener() {
-        return new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                Combo combo = (Combo) e.getSource();
-                AudioFileProperty property = (AudioFileProperty) combo.getData();
+        return (event -> {
+            Combo combo = (Combo) event.getSource();
+            AudioFileProperty property = (AudioFileProperty) combo.getData();
 
-                controller.onPropertyChange(new ComboPropertyChange(property, combo.getText()));
-            }
-        };
+            controller.onPropertyChange(new ComboPropertyChange(property, combo.getText()));
+        });
     }
 
     public void updateComboBoxes(Set<AudioFile> audioFiles) {
