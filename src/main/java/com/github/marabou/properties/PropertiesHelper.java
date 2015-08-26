@@ -1,20 +1,20 @@
 /**
  * Marabou - Audio Tagger
- *
+ * <p>
  * Copyright (C) 2012 - 2015 Jan-Hendrik Peters
- *
+ * <p>
  * https://github.com/hennr/marabou
- *
+ * <p>
  * Marabou is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
@@ -25,6 +25,7 @@ import com.github.marabou.helper.PathHelper;
 
 import java.io.*;
 import java.util.Properties;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,17 +69,17 @@ public class PropertiesHelper {
             log.info("Couldn't find marabou configuration. Loading defaults.");
             userPropertiesInstance = loadDefaultUserProperties();
             persistUserProperties(userPropertiesInstance.properties);
-        } else if(userPropertiesNotReadable()) {
+        } else if (userPropertiesNotReadable()) {
             log.info("Couldn't find marabou configuration. Loading defaults.");
             userPropertiesInstance = loadDefaultUserProperties();
-        }else{
+        } else {
             userPropertiesInstance = getExistingUserProperties();
         }
     }
 
     protected boolean userPropertiesNonExistent() {
         File userPropertiesFile = getUserPropertiesFile();
-       return !userPropertiesFile.exists();
+        return !userPropertiesFile.exists();
     }
 
     protected boolean userPropertiesNotReadable() {
@@ -104,7 +105,7 @@ public class PropertiesHelper {
 
     UserProperties loadDefaultUserProperties() {
         InputStream userPropertiesStream = getClass().getClassLoader().getResourceAsStream(pathHelper.getUserPropertiesFileName());
-        return  new UserProperties(propertiesLoader.loadProperties(userPropertiesStream), this);
+        return new UserProperties(propertiesLoader.loadProperties(userPropertiesStream), this);
     }
 
     public void persistUserProperties(Properties userProperties) {

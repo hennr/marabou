@@ -1,20 +1,20 @@
 /**
  * Marabou - Audio Tagger
- *
+ * <p>
  * Copyright (C) 2012 - 2015 Jan-Hendrik Peters
- *
+ * <p>
  * https://github.com/hennr/marabou
- *
+ * <p>
  * Marabou is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
@@ -44,7 +44,7 @@ public class AudioFileLoaderTest {
         AudioFileFilter audioFileFilter = new AudioFileFilter();
         AudioFileLoader service = new AudioFileLoader(audioFileFilter);
         File dirToScan = mock(File.class);
-        File[] files = new File[] {};
+        File[] files = new File[]{};
         when(dirToScan.listFiles()).thenReturn(files);
 
         // when
@@ -62,7 +62,7 @@ public class AudioFileLoaderTest {
         AudioFileLoader service = new AudioFileLoader(audioFileFilter);
         File dirToScan = mock(File.class);
         File mockedMp3File = aValidMp3File();
-        File[] files = new File[] {mockedMp3File};
+        File[] files = new File[]{mockedMp3File};
         when(dirToScan.listFiles()).thenReturn(files);
 
         // when
@@ -81,7 +81,7 @@ public class AudioFileLoaderTest {
         AudioFileLoader service = new AudioFileLoader(audioFileFilter);
         File mockedMp3File = aValidMp3File();
         File dirToScan = mock(File.class);
-        when(dirToScan.listFiles()).thenReturn(new File[] {mockedMp3File});
+        when(dirToScan.listFiles()).thenReturn(new File[]{mockedMp3File});
 
         // when
         List<File> result = service.findAcceptableFilesRecursively(dirToScan);
@@ -113,15 +113,15 @@ public class AudioFileLoaderTest {
 
         File slashFooSlashXSlashY = mock(File.class);
         when(slashFooSlashXSlashY.isDirectory()).thenReturn(true);
-        when(slashFooSlashXSlashY.listFiles()).thenReturn(new File[] {});
+        when(slashFooSlashXSlashY.listFiles()).thenReturn(new File[]{});
         when(slashFooSlashXSlashY.getCanonicalPath()).thenReturn(SLASH_FOO_CANONICAL_PATH_NAME);
 
         File slashFooSlashX = mock(File.class);
         when(slashFooSlashX.isDirectory()).thenReturn(true);
-        when(slashFooSlashX.listFiles()).thenReturn(new File[] {slashFooSlashXSlashY});
+        when(slashFooSlashX.listFiles()).thenReturn(new File[]{slashFooSlashXSlashY});
         when(slashFooSlashX.getCanonicalPath()).thenReturn(SLASH_FOO_CANONICAL_PATH_NAME);
 
-        when(slashFoo.listFiles()).thenReturn(new File[] {slashFooSlashX, slashFooSlashXSlashY, mockedMp3File});
+        when(slashFoo.listFiles()).thenReturn(new File[]{slashFooSlashX, slashFooSlashXSlashY, mockedMp3File});
 
         // when
         List<File> result = service.findAcceptableFilesRecursively(slashFoo);
@@ -146,15 +146,15 @@ public class AudioFileLoaderTest {
 
         File slashFooSlashXSlashY = mock(File.class);
         when(slashFooSlashXSlashY.isDirectory()).thenReturn(true);
-        when(slashFooSlashXSlashY.listFiles()).thenReturn(new File[] {mockedMp3File});
+        when(slashFooSlashXSlashY.listFiles()).thenReturn(new File[]{mockedMp3File});
         when(slashFooSlashXSlashY.getCanonicalPath()).thenReturn("/foo/x/y");
 
         File slashFooSlashX = mock(File.class);
         when(slashFooSlashX.isDirectory()).thenReturn(true);
-        when(slashFooSlashX.listFiles()).thenReturn(new File[] {slashFooSlashXSlashY, mockedMp3File});
+        when(slashFooSlashX.listFiles()).thenReturn(new File[]{slashFooSlashXSlashY, mockedMp3File});
         when(slashFooSlashX.getCanonicalPath()).thenReturn("/foo/x");
 
-        when(slashFoo.listFiles()).thenReturn(new File[] {slashFooSlashX, slashFooSlashXSlashY, mockedMp3File});
+        when(slashFoo.listFiles()).thenReturn(new File[]{slashFooSlashX, slashFooSlashXSlashY, mockedMp3File});
 
         // when
         List<File> result = service.findAcceptableFilesRecursively(slashFoo);
@@ -175,13 +175,13 @@ public class AudioFileLoaderTest {
         when(badlyNamedFolder.isDirectory()).thenReturn(true);
         when(badlyNamedFolder.getName()).thenReturn("bar.mp3");
         when(badlyNamedFolder.getCanonicalPath()).thenReturn("bar.mp3");
-        when(badlyNamedFolder.listFiles()).thenReturn(new File[] {validFile});
+        when(badlyNamedFolder.listFiles()).thenReturn(new File[]{validFile});
 
         // when
         List<File> results = service.findAcceptableFilesRecursively(badlyNamedFolder);
 
         // then
-      assertEquals(1, results.size());
+        assertEquals(1, results.size());
     }
 
     private File aValidMp3File() throws IOException {

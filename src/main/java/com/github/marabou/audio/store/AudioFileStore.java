@@ -1,20 +1,20 @@
 /**
  * Marabou - Audio Tagger
- *
+ * <p>
  * Copyright (C) 2012 - 2015 Jan-Hendrik Peters
- *
+ * <p>
  * https://github.com/hennr/marabou
- *
+ * <p>
  * Marabou is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
@@ -62,12 +62,12 @@ public class AudioFileStore {
 
     protected void addFile(final File inputFile) {
         try {
-          AudioFile audioFile = audioFileFactory.createAudioFile(inputFile);
-          storeAudioFile(audioFile);
-          bus.post(new AudioFileAddedEvent(audioFile));
+            AudioFile audioFile = audioFileFactory.createAudioFile(inputFile);
+            storeAudioFile(audioFile);
+            bus.post(new AudioFileAddedEvent(audioFile));
         } catch (Exception e) {
-          log.error("error during file add", e);
-          bus.post(new ErrorEvent(e.getMessage()));
+            log.error("error during file add", e);
+            bus.post(new ErrorEvent(e.getMessage()));
         }
     }
 
@@ -85,11 +85,11 @@ public class AudioFileStore {
 
     @Subscribe
     public void onOpenFile(OpenFileEvent openFileEvent) {
-      try {
-        addFile(openFileEvent.getFile());
-      } catch (RuntimeException e) {
-        bus.post(new ErrorEvent("Couldn't open file: " + openFileEvent.getFile()));
-      }
+        try {
+            addFile(openFileEvent.getFile());
+        } catch (RuntimeException e) {
+            bus.post(new ErrorEvent("Couldn't open file: " + openFileEvent.getFile()));
+        }
     }
 
     @Subscribe
@@ -104,34 +104,34 @@ public class AudioFileStore {
 
         switch (property) {
             case Album:
-                audioFile =  audioFile.withAlbum(newValue);
+                audioFile = audioFile.withAlbum(newValue);
                 break;
             case Artist:
-                audioFile =  audioFile.withArtist(newValue);
+                audioFile = audioFile.withArtist(newValue);
                 break;
             case Comments:
-                audioFile =  audioFile.withComment(newValue);
+                audioFile = audioFile.withComment(newValue);
                 break;
             case Composer:
-                audioFile =  audioFile.withComposer(newValue);
+                audioFile = audioFile.withComposer(newValue);
                 break;
             case Disc_number:
-                audioFile =  audioFile.withDiscNumber(newValue);
+                audioFile = audioFile.withDiscNumber(newValue);
                 break;
             case Genre:
-                audioFile =  audioFile.withGenre(newValue);
+                audioFile = audioFile.withGenre(newValue);
                 break;
             case Title:
-                audioFile =  audioFile.withTitle(newValue);
+                audioFile = audioFile.withTitle(newValue);
                 break;
             case Track:
-                audioFile =  audioFile.withTrack(newValue);
+                audioFile = audioFile.withTrack(newValue);
                 break;
             case Year:
-                audioFile =  audioFile.withYear(newValue);
+                audioFile = audioFile.withYear(newValue);
                 break;
             default:
-                throw new RuntimeException("Found an untreated audio file property: " + property +  " Please file a bug report at the project website.");
+                throw new RuntimeException("Found an untreated audio file property: " + property + " Please file a bug report at the project website.");
         }
     }
 
@@ -155,37 +155,37 @@ public class AudioFileStore {
     }
 
     protected String saveMp3File(Mp3File mp3File) {
-      try {
-          File tempFile = getTempFile();
-        mp3File.save(tempFile.getAbsolutePath());
+        try {
+            File tempFile = getTempFile();
+            mp3File.save(tempFile.getAbsolutePath());
 
-        Files.copy(tempFile, new File(mp3File.getFilename()));
-        tempFile.delete();
-      } catch (IOException | NotSupportedException saveException) {
-        throw new RuntimeException(saveException);
-      }
+            Files.copy(tempFile, new File(mp3File.getFilename()));
+            tempFile.delete();
+        } catch (IOException | NotSupportedException saveException) {
+            throw new RuntimeException(saveException);
+        }
         return mp3File.getFilename();
     }
 
     private File getTempFile() {
-      return new File(System.getProperty("java.io.tmpdir") + File.separatorChar + UUID.randomUUID().toString());
+        return new File(System.getProperty("java.io.tmpdir") + File.separatorChar + UUID.randomUUID().toString());
     }
 
     private ID3v2 createTagForAudioFile() {
-      ID3v24Tag id3Tag = new ID3v24Tag();
-      id3Tag.setAlbum(audioFile.getAlbum());
-      id3Tag.setArtist(audioFile.getArtist());
-      id3Tag.setComment(audioFile.getComment());
-      id3Tag.setComposer(audioFile.getComposer());
-      id3Tag.setPartOfSet(audioFile.getDiscNumber());
-      try {
-          id3Tag.setGenre(Genres.getIndexForName(audioFile.getGenre()));
-      } catch (UnknownGenreException e) {
-          id3Tag.setGenreDescription(audioFile.getGenre());
-      }
+        ID3v24Tag id3Tag = new ID3v24Tag();
+        id3Tag.setAlbum(audioFile.getAlbum());
+        id3Tag.setArtist(audioFile.getArtist());
+        id3Tag.setComment(audioFile.getComment());
+        id3Tag.setComposer(audioFile.getComposer());
+        id3Tag.setPartOfSet(audioFile.getDiscNumber());
+        try {
+            id3Tag.setGenre(Genres.getIndexForName(audioFile.getGenre()));
+        } catch (UnknownGenreException e) {
+            id3Tag.setGenreDescription(audioFile.getGenre());
+        }
         id3Tag.setTitle(audioFile.getTitle());
-      id3Tag.setTrack(audioFile.getTrack());
-      id3Tag.setYear(audioFile.getYear());
-      return id3Tag;
+        id3Tag.setTrack(audioFile.getTrack());
+        id3Tag.setYear(audioFile.getYear());
+        return id3Tag;
     }
 }

@@ -1,20 +1,20 @@
 /**
  * Marabou - Audio Tagger
- *
+ * <p>
  * Copyright (C) 2012 - 2015 Jan-Hendrik Peters
- *
+ * <p>
  * https://github.com/hennr/marabou
- *
+ * <p>
  * Marabou is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
@@ -31,23 +31,23 @@ public class PathHelper {
         return getMarabouHomeFolder() + PROPERTIES_FILE_NAME;
     }
 
-	private String getMarabouHomeFolder() {
-		if (isUnix()) {
-			return System.getProperty("user.home") + File.separator + ".config" + File.separator + "marabou" + File.separator;
-		} else if (isWindows()) {
-			return System.getProperty("user.home") + File.separator + "marabou" + File.separator;
-		} else if (isMacOS()) {
+    private String getMarabouHomeFolder() {
+        if (isUnix()) {
+            return System.getProperty("user.home") + File.separator + ".config" + File.separator + "marabou" + File.separator;
+        } else if (isWindows()) {
+            return System.getProperty("user.home") + File.separator + "marabou" + File.separator;
+        } else if (isMacOS()) {
             return System.getProperty("user.home") + File.separator + ".marabou" + File.separator;
-		} else {
-			throw new RuntimeException("Your operating system couldn't get detected properly. Please file a bug report.");
-		}
-	}
+        } else {
+            throw new RuntimeException("Your operating system couldn't get detected properly. Please file a bug report.");
+        }
+    }
 
     private boolean isUnix() {
         return
                 System.getProperty("os.name").toLowerCase().contains("nix") ||
-                System.getProperty("os.name").toLowerCase().contains("nux") ||
-                System.getProperty("os.name").toLowerCase().contains("bsd");
+                        System.getProperty("os.name").toLowerCase().contains("nux") ||
+                        System.getProperty("os.name").toLowerCase().contains("bsd");
     }
 
     private boolean isWindows() {

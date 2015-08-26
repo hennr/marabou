@@ -1,20 +1,20 @@
 /**
  * Marabou - Audio Tagger
- *
+ * <p>
  * Copyright (C) 2012 - 2015 Jan-Hendrik Peters
- *
+ * <p>
  * https://github.com/hennr/marabou
- *
+ * <p>
  * Marabou is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
@@ -91,7 +91,7 @@ public class TableController {
         length.setMoveable(true);
 
         // track number
-        TableColumn track= new TableColumn(table, SWT.LEFT);
+        TableColumn track = new TableColumn(table, SWT.LEFT);
         track.setWidth(60);
         track.setText(_("Track number"));
         track.setMoveable(true);
@@ -243,25 +243,25 @@ public class TableController {
     }
 
     private void updateTableItem(TableItem tableItem) {
-      if (tableItem.getData() instanceof AudioFile) {
-        AudioFile audioFile = (AudioFile) tableItem.getData();
+        if (tableItem.getData() instanceof AudioFile) {
+            AudioFile audioFile = (AudioFile) tableItem.getData();
 
-        tableItem.setText(new String[] {
-          audioFile.getArtist(),
-          audioFile.getTitle(),
-          audioFile.getAlbum(),
-          audioFile.getDuration(),
-          audioFile.getTrack(),
-          audioFile.getBitRate(),
-          audioFile.getSamplerate(),
-          audioFile.getChannels(),
-          audioFile.getYear(),
-          audioFile.getGenre(),
-          audioFile.getComment(),
-          audioFile.getDiscNumber(),
-          audioFile.getComposer(),
-          audioFile.getEncoding(),
-          audioFile.getFilePath()});
-      }
+            tableItem.setText(new String[]{
+                    audioFile.getArtist(),
+                    audioFile.getTitle(),
+                    audioFile.getAlbum(),
+                    audioFile.getDuration(),
+                    audioFile.getTrack(),
+                    audioFile.getBitRate(),
+                    audioFile.getSamplerate(),
+                    audioFile.getChannels(),
+                    audioFile.getYear(),
+                    audioFile.getGenre(),
+                    audioFile.getComment(),
+                    audioFile.getDiscNumber(),
+                    audioFile.getComposer(),
+                    audioFile.getEncoding(),
+                    audioFile.getFilePath()});
+        }
     }
 }

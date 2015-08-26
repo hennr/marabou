@@ -1,20 +1,20 @@
 /**
  * Marabou - Audio Tagger
- *
+ * <p>
  * Copyright (C) 2012 - 2015 Jan-Hendrik Peters
- *
+ * <p>
  * https://github.com/hennr/marabou
- *
+ * <p>
  * Marabou is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,7 +52,7 @@ public class OpenFileDialog extends BaseGuiClass {
         final String[] supportedFileEndingsDesc = {
                 _("all supported audio files"),
                 "*.mp3",
-                _("all files") };
+                _("all files")};
 
         /**
          *  currently supported file endings
@@ -59,7 +60,7 @@ public class OpenFileDialog extends BaseGuiClass {
         final String[] supportedFileEndings = {
                 "*.[m|M][p|P]3",
                 "*.[m|M][p|P]3",
-                "*" };
+                "*"};
 
         fileDialog.setFilterExtensions(supportedFileEndings);
         fileDialog.setFilterNames(supportedFileEndingsDesc);
@@ -68,7 +69,7 @@ public class OpenFileDialog extends BaseGuiClass {
         lastPath = fileDialog.getFilterPath();
 
         for (String file : fileDialog.getFileNames()) {
-            File f = new File (lastPath + "/" + file);
+            File f = new File(lastPath + "/" + file);
             filesToOpen.add(f);
         }
 
