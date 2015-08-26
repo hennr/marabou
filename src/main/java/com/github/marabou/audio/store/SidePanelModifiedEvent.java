@@ -23,12 +23,12 @@ package com.github.marabou.audio.store;
 
 import com.github.marabou.audio.AudioFileProperty;
 
-public class AudioFilePropertyChangeEvent {
+public class SidePanelModifiedEvent {
 
     private final AudioFileProperty audioFileProperty;
     private final String newValue;
 
-    public AudioFilePropertyChangeEvent(AudioFileProperty audioFileProperty, String newValue) {
+    public SidePanelModifiedEvent(AudioFileProperty audioFileProperty, String newValue) {
         this.audioFileProperty = audioFileProperty;
         this.newValue = newValue;
     }

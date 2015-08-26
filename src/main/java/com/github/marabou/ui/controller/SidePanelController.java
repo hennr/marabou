@@ -21,7 +21,7 @@
  */
 package com.github.marabou.ui.controller;
 
-import com.github.marabou.audio.store.AudioFilePropertyChangeEvent;
+import com.github.marabou.audio.store.SidePanelModifiedEvent;
 import com.github.marabou.ui.events.FilesSelectedEvent;
 import com.github.marabou.ui.events.ComboPropertyChange;
 import com.github.marabou.audio.AudioFile;
@@ -51,6 +51,6 @@ public class SidePanelController {
     }
 
     public void onPropertyChange(ComboPropertyChange propertyChange) {
-        bus.post(new AudioFilePropertyChangeEvent(propertyChange.getProperty(), propertyChange.getNewValue()));
+        bus.post(new SidePanelModifiedEvent(propertyChange.getProperty(), propertyChange.getNewValue()));
     }
 }

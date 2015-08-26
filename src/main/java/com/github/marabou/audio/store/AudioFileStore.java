@@ -33,7 +33,6 @@ import com.github.marabou.ui.events.SaveSelectedFilesEvent;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.common.io.Files;
-import com.mpatric.mp3agic.ID3v2;
 import com.mpatric.mp3agic.ID3v24Tag;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.NotSupportedException;
@@ -52,7 +51,7 @@ public class AudioFileStore {
     AudioFileFactory audioFileFactory;
     protected Map<String, AudioFile> audioFiles = new HashMap<>();
     protected Set<AudioFile> currentlySelectedFiles = new HashSet<>();
-    private AudioFile audioFile = new AudioFile("");
+    private AudioFile currentSidePanelEntries = new AudioFile("");
 
     public AudioFileStore(EventBus bus, AudioFileFactory audioFileFactory) {
         this.bus = bus;
@@ -98,37 +97,37 @@ public class AudioFileStore {
     }
 
     @Subscribe
-    public void onAudioFilePropertyUpdate(AudioFilePropertyChangeEvent update) {
+    public void onAudioFilePropertyUpdate(SidePanelModifiedEvent update) {
         AudioFileProperty property = update.getAudioFileProperty();
         String newValue = update.getNewValue();
 
         switch (property) {
             case Album:
-                audioFile = audioFile.withAlbum(newValue);
+                currentSidePanelEntries = currentSidePanelEntries.withAlbum(newValue);
                 break;
             case Artist:
-                audioFile = audioFile.withArtist(newValue);
+                currentSidePanelEntries = currentSidePanelEntries.withArtist(newValue);
                 break;
             case Comments:
-                audioFile = audioFile.withComment(newValue);
+                currentSidePanelEntries = currentSidePanelEntries.withComment(newValue);
                 break;
             case Composer:
-                audioFile = audioFile.withComposer(newValue);
+                currentSidePanelEntries = currentSidePanelEntries.withComposer(newValue);
                 break;
             case Disc_number:
-                audioFile = audioFile.withDiscNumber(newValue);
+                currentSidePanelEntries = currentSidePanelEntries.withDiscNumber(newValue);
                 break;
             case Genre:
-                audioFile = audioFile.withGenre(newValue);
+                currentSidePanelEntries = currentSidePanelEntries.withGenre(newValue);
                 break;
             case Title:
-                audioFile = audioFile.withTitle(newValue);
+                currentSidePanelEntries = currentSidePanelEntries.withTitle(newValue);
                 break;
             case Track:
-                audioFile = audioFile.withTrack(newValue);
+                currentSidePanelEntries = currentSidePanelEntries.withTrack(newValue);
                 break;
             case Year:
-                audioFile = audioFile.withYear(newValue);
+                currentSidePanelEntries = currentSidePanelEntries.withYear(newValue);
                 break;
             default:
                 throw new RuntimeException("Found an untreated audio file property: " + property + " Please file a bug report at the project website.");
@@ -171,21 +170,21 @@ public class AudioFileStore {
         return new File(System.getProperty("java.io.tmpdir") + File.separatorChar + UUID.randomUUID().toString());
     }
 
-    private ID3v2 createTagForAudioFile() {
+    private ID3v24Tag createTagForAudioFile() {
         ID3v24Tag id3Tag = new ID3v24Tag();
-        id3Tag.setAlbum(audioFile.getAlbum());
-        id3Tag.setArtist(audioFile.getArtist());
-        id3Tag.setComment(audioFile.getComment());
-        id3Tag.setComposer(audioFile.getComposer());
-        id3Tag.setPartOfSet(audioFile.getDiscNumber());
+        id3Tag.setAlbum(currentSidePanelEntries.getAlbum());
+        id3Tag.setArtist(currentSidePanelEntries.getArtist());
+        id3Tag.setComment(currentSidePanelEntries.getComment());
+        id3Tag.setComposer(currentSidePanelEntries.getComposer());
+        id3Tag.setPartOfSet(currentSidePanelEntries.getDiscNumber());
         try {
-            id3Tag.setGenre(Genres.getIndexForName(audioFile.getGenre()));
+            id3Tag.setGenre(Genres.getIndexForName(currentSidePanelEntries.getGenre()));
         } catch (UnknownGenreException e) {
-            id3Tag.setGenreDescription(audioFile.getGenre());
+            id3Tag.setGenreDescription(currentSidePanelEntries.getGenre());
         }
-        id3Tag.setTitle(audioFile.getTitle());
-        id3Tag.setTrack(audioFile.getTrack());
-        id3Tag.setYear(audioFile.getYear());
+        id3Tag.setTitle(currentSidePanelEntries.getTitle());
+        id3Tag.setTrack(currentSidePanelEntries.getTrack());
+        id3Tag.setYear(currentSidePanelEntries.getYear());
         return id3Tag;
     }
 }
