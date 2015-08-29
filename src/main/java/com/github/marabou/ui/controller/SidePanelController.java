@@ -45,7 +45,6 @@ public class SidePanelController {
 
     @Subscribe
     public void updateSidePanelModel(FilesSelectedEvent event) {
-        // TODO post AudioFilePropertyChangeEvent here and remove addOnModifyListener() in SidePanel class as well as the method onPropertyChange() below
         Set<AudioFile> audioFiles = event.selectedAudioFiles;
         sidePanel.updateComboBoxes(audioFiles);
     }
