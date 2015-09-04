@@ -187,4 +187,8 @@ public class AudioFileStore {
         id3Tag.setYear(currentSidePanelEntries.getYear());
         return id3Tag;
     }
+
+    public List<AudioFile> getStoredAudioFiles() {
+        return new LinkedList<>(audioFiles.values());
+    }
 }

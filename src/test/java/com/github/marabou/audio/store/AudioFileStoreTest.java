@@ -25,14 +25,11 @@ import com.github.marabou.audio.AudioFile;
 import com.github.marabou.audio.AudioFileFactory;
 import com.github.marabou.ui.events.SaveSelectedFilesEvent;
 import com.google.common.eventbus.EventBus;
-import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
-import com.mpatric.mp3agic.UnsupportedTagException;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -40,6 +37,8 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class AudioFileStoreTest {
+
+    private String storedAudioFileFilePath = "/path";
 
     @Test
     public void getsTheSameAudioFileByFilePathAfterStoring() throws Exception {
@@ -49,12 +48,12 @@ public class AudioFileStoreTest {
         AudioFileStore audioFileStore = new AudioFileStore(new EventBus(), fileFactoryMock);
 
         File dummyFile = mock(File.class);
-        AudioFile audioFile = new AudioFile("/path");
+        AudioFile audioFile = new AudioFile(storedAudioFileFilePath);
         when(fileFactoryMock.createAudioFile(any(File.class))).thenReturn(audioFile);
 
         // when
         audioFileStore.addFile(dummyFile);
-        AudioFile result = audioFileStore.getAudioFileByFilePath("/path");
+        AudioFile result = audioFileStore.getAudioFileByFilePath(storedAudioFileFilePath);
 
         // then
         assertEquals(audioFile, result);
@@ -68,15 +67,15 @@ public class AudioFileStoreTest {
         AudioFileStore audioFileStore = new AudioFileStore(new EventBus(), fileFactoryMock);
 
         File dummyFile = mock(File.class);
-        AudioFile audioFile = new AudioFile("/path");
+        AudioFile audioFile = new AudioFile(storedAudioFileFilePath);
         when(fileFactoryMock.createAudioFile(any(File.class))).thenReturn(audioFile);
 
         // when
         audioFileStore.addFile(dummyFile);
-        audioFileStore.removeAudioFile("/path");
+        audioFileStore.removeAudioFile(storedAudioFileFilePath);
 
         // then
-        assertNull(audioFileStore.getAudioFileByFilePath("/path"));
+        assertNull(audioFileStore.getAudioFileByFilePath(storedAudioFileFilePath));
         assertEquals(0, audioFileStore.audioFiles.size());
     }
 
@@ -84,7 +83,19 @@ public class AudioFileStoreTest {
     public void selectedFilesAreStoredCorrectly() {
 
         // given
+        AudioFileFactory fileFactoryMock = mock(AudioFileFactory.class);
+        AudioFileStore audioFileStore = new AudioFileStore(new EventBus(), fileFactoryMock);
 
+        File dummyFile = mock(File.class);
+        AudioFile audioFile = new AudioFile(storedAudioFileFilePath);
+        when(fileFactoryMock.createAudioFile(any(File.class))).thenReturn(audioFile);
+
+        // when
+        audioFileStore.addFile(dummyFile);
+
+        // then
+        assertEquals(1, audioFileStore.getStoredAudioFiles().size());
+        assertEquals(storedAudioFileFilePath, audioFileStore.getStoredAudioFiles().get(0).getFilePath());
     }
 
     @Test
