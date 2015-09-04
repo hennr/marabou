@@ -84,7 +84,26 @@ public class AudioFileStoreTest {
     public void selectedFilesAreStoredCorrectly() {
 
         // given
-        
+
+    }
+
+    @Test
+    public void doesNotAcceptTheSameFileMoreThanOnce() {
+
+        // given
+        AudioFileFactory fileFactoryMock = mock(AudioFileFactory.class);
+        AudioFileStore audioFileStore = new AudioFileStore(new EventBus(), fileFactoryMock);
+
+        File dummyFile = mock(File.class);
+        AudioFile audioFile = new AudioFile("/path");
+        when(fileFactoryMock.createAudioFile(any(File.class))).thenReturn(audioFile);
+
+        // when
+        audioFileStore.addFile(dummyFile);
+        audioFileStore.addFile(dummyFile);
+
+        // then
+        assertEquals(1, audioFileStore.audioFiles.size());
     }
 
     @Test
