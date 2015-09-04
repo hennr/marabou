@@ -170,6 +170,9 @@
                         <configuration>
                             <rules>
                                 <dependencyConvergence/>
+                                <requireJavaVersion>
+                                    <version>[1.8,)</version>
+                                </requireJavaVersion>
                             </rules>
                         </configuration>
                         <goals>
