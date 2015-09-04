@@ -81,6 +81,13 @@ public class AudioFileStoreTest {
     }
 
     @Test
+    public void selectedFilesAreStoredCorrectly() {
+
+        // given
+        
+    }
+
+    @Test
     public void aSaveSelectedFilesEventProvokesNewAudioFileSavedEvent() throws Exception {
 
         // given

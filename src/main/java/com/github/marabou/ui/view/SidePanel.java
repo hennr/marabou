@@ -27,7 +27,6 @@ import com.github.marabou.audio.AudioFile;
 import com.github.marabou.audio.AudioFileProperty;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -43,6 +42,7 @@ import static java.util.Arrays.asList;
 
 public class SidePanel {
 
+    private static final String IGNORE_THIS_WHEN_SAVING = " - ";
     Map<AudioFileProperty, Combo> comboBoxes = new HashMap<>();
     private SidePanelController controller;
 
@@ -91,15 +91,12 @@ public class SidePanel {
     public void updateComboBoxes(Set<AudioFile> audioFiles) {
         cleanComboBoxes();
         addFilesToComboBoxes(audioFiles);
-        setFirstValueAsText(comboBoxes.values());
+        addDummyDropDownEntries(audioFiles);
+        makeFirstEntryVisible(comboBoxes.values());
     }
 
-    private void setFirstValueAsText(Collection<Combo> comboBoxes) {
-        for (Combo combo : comboBoxes) {
-            if (combo.getItemCount() > 0) {
-                combo.setText(combo.getItems()[0]);
-            }
-        }
+    private void cleanComboBoxes() {
+        comboBoxes.values().forEach(Combo::removeAll);
     }
 
     private void addFilesToComboBoxes(Set<AudioFile> audioFiles) {
@@ -117,16 +114,21 @@ public class SidePanel {
     }
 
     private void addToComboBoxIfNotPresent(Combo combo, String value) {
-        if (asList(combo.getItems()).contains(value)) {
-            return;
-        } else if (value != null && !value.isEmpty()) {
+        if (!value.isEmpty() && !asList(combo.getItems()).contains(value)) {
             combo.add(value);
         }
     }
 
-    private void cleanComboBoxes() {
-        for (Combo combo : comboBoxes.values()) {
-            combo.removeAll();
+    private void addDummyDropDownEntries(Set<AudioFile> audioFiles) {
+        if (audioFiles.size() > 1) {
+            comboBoxes.get(Title).add(IGNORE_THIS_WHEN_SAVING, 0);
+            comboBoxes.get(Track).add(IGNORE_THIS_WHEN_SAVING, 0);
+            comboBoxes.get(Comments).add(IGNORE_THIS_WHEN_SAVING);
+            comboBoxes.get(Disc_number).add(IGNORE_THIS_WHEN_SAVING);
         }
+    }
+
+    private void makeFirstEntryVisible(Collection<Combo> comboBoxes) {
+        comboBoxes.stream().forEach(combo -> combo.select(0));
     }
 }
