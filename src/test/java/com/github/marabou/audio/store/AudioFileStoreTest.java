@@ -81,7 +81,7 @@ public class AudioFileStoreTest {
     }
 
     @Test
-    public void aSaveSelectedFilesEventProvokesNewAudioFileSavedEvent() throws InvalidDataException, IOException, UnsupportedTagException {
+    public void aSaveSelectedFilesEventProvokesNewAudioFileSavedEvent() throws Exception {
 
         // given
         AudioFile audioFileMock = mock(AudioFile.class);
