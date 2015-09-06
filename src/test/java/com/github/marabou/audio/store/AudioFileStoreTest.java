@@ -23,15 +23,17 @@ package com.github.marabou.audio.store;
 
 import com.github.marabou.audio.AudioFile;
 import com.github.marabou.audio.AudioFileFactory;
+import com.github.marabou.audio.save.SaveService;
 import com.github.marabou.ui.events.FilesSelectedEvent;
 import com.github.marabou.ui.events.SaveSelectedFilesEvent;
+import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
+import com.mpatric.mp3agic.ID3v24Tag;
 import com.mpatric.mp3agic.Mp3File;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.io.File;
-import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -45,7 +47,7 @@ public class AudioFileStoreTest {
     public void getsTheSameAudioFileByFilePathAfterStoring() throws Exception {
         // given
         AudioFileFactory fileFactoryMock = mock(AudioFileFactory.class);
-        AudioFileStore audioFileStore = new AudioFileStore(new EventBus(), fileFactoryMock);
+        AudioFileStore audioFileStore = new AudioFileStore(new EventBus(), fileFactoryMock, new SaveService());
 
         File dummyFile = mock(File.class);
         AudioFile audioFile = new AudioFile(storedAudioFileFilePath);
@@ -63,7 +65,7 @@ public class AudioFileStoreTest {
     public void getStoredFilesReturnsCorrectResults() {
         // given
         AudioFileFactory fileFactoryMock = mock(AudioFileFactory.class);
-        AudioFileStore audioFileStore = new AudioFileStore(new EventBus(), fileFactoryMock);
+        AudioFileStore audioFileStore = new AudioFileStore(new EventBus(), fileFactoryMock, new SaveService());
 
         File dummyFile = mock(File.class);
         AudioFile audioFile = new AudioFile(storedAudioFileFilePath);
@@ -81,7 +83,7 @@ public class AudioFileStoreTest {
     public void canRemoveAudioFile() throws Exception {
         // given
         AudioFileFactory fileFactoryMock = mock(AudioFileFactory.class);
-        AudioFileStore audioFileStore = new AudioFileStore(new EventBus(), fileFactoryMock);
+        AudioFileStore audioFileStore = new AudioFileStore(new EventBus(), fileFactoryMock, new SaveService());
 
         File dummyFile = mock(File.class);
         AudioFile audioFile = new AudioFile(storedAudioFileFilePath);
@@ -100,7 +102,7 @@ public class AudioFileStoreTest {
     public void doesNotStoreTheSameFileMoreThanOnce() {
         // given
         AudioFileFactory fileFactoryMock = mock(AudioFileFactory.class);
-        AudioFileStore audioFileStore = new AudioFileStore(new EventBus(), fileFactoryMock);
+        AudioFileStore audioFileStore = new AudioFileStore(new EventBus(), fileFactoryMock, new SaveService());
 
         File dummyFile = mock(File.class);
         AudioFile audioFile = new AudioFile("/path");
@@ -119,13 +121,12 @@ public class AudioFileStoreTest {
         // given
         AudioFileFactory fileFactoryMock = mock(AudioFileFactory.class);
         EventBus bus = new EventBus();
-        AudioFileStore audioFileStore = new AudioFileStore(bus, fileFactoryMock);
+        AudioFileStore audioFileStore = new AudioFileStore(bus, fileFactoryMock, new SaveService());
 
         AudioFile audioFile = new AudioFile("/path");
         when(fileFactoryMock.createAudioFile(any(File.class))).thenReturn(audioFile);
 
-        Set<AudioFile> selectedFiles = new HashSet<>(1);
-        selectedFiles.add(audioFile);
+        Set<AudioFile> selectedFiles = Sets.newHashSet(audioFile);
 
         // when
         bus.post(new FilesSelectedEvent(selectedFiles));
@@ -141,13 +142,12 @@ public class AudioFileStoreTest {
         // given
         AudioFileFactory fileFactoryMock = mock(AudioFileFactory.class);
         EventBus bus = new EventBus();
-        AudioFileStore audioFileStore = new AudioFileStore(bus, fileFactoryMock);
+        AudioFileStore audioFileStore = new AudioFileStore(bus, fileFactoryMock, new SaveService());
 
         AudioFile audioFileOne = new AudioFile("/one");
         when(fileFactoryMock.createAudioFile(any(File.class))).thenReturn(audioFileOne);
 
-        Set<AudioFile> selectedFiles = new HashSet<>(1);
-        selectedFiles.add(audioFileOne);
+        Set<AudioFile> selectedFiles = Sets.newHashSet(audioFileOne);
 
         // when
         bus.post(new FilesSelectedEvent(selectedFiles));
@@ -176,17 +176,14 @@ public class AudioFileStoreTest {
 
         EventBus eventBusMock = mock(EventBus.class);
 
-        AudioFileStore audioFileStore = new AudioFileStore(eventBusMock, audioFileFactoryMock) {
-            @Override
-            public String saveMp3File(Mp3File mp3File) {
-                return "/newPath";
-            }
-        };
+        SaveService saveServiceMock = mock(SaveService.class);
+        when(saveServiceMock.saveMp3File(any(Mp3File.class))).thenReturn("/newPath");
+
+        AudioFileStore audioFileStore = new AudioFileStore(eventBusMock, audioFileFactoryMock, saveServiceMock);
 
         AudioFile audioFile = new AudioFile("/path").withAlbum("album");
-        Set<AudioFile> fileSet = new HashSet<>(1);
-        fileSet.add(audioFile);
-        audioFileStore.currentlySelectedFiles = fileSet;
+
+        audioFileStore.currentlySelectedFiles = Sets.newHashSet(audioFile);
 
         // when
         audioFileStore.onSaveSelectedFiles(new SaveSelectedFilesEvent());
@@ -196,5 +193,55 @@ public class AudioFileStoreTest {
         verify(eventBusMock).post(argument.capture());
         assertEquals("/path", argument.getValue().oldFilePath);
         assertEquals("/newPath", argument.getValue().newFilePath);
+    }
+
+    @Test
+    public void doesNotOverwriteValuesIfFieldIsSetToIgnore() {
+        // given
+        Mp3File mp3FileMock = mock(Mp3File.class);
+
+        AudioFileFactory audioFileFactoryMock = mock(AudioFileFactory.class);
+        when(audioFileFactoryMock.createAudioFile(any(Mp3File.class))).thenReturn(
+                new AudioFile("will be used to hold new entries"));
+        when(audioFileFactoryMock.createMp3File(any())).thenReturn(mp3FileMock);
+
+        EventBus bus = new EventBus();
+
+        SaveService saveServiceMock = mock(SaveService.class);
+
+        AudioFileStore audioFileStore = new AudioFileStore(bus, audioFileFactoryMock, saveServiceMock);
+
+        AudioFile sidePanelEntriesAudioFile = new AudioFile("path")
+                .withArtist("artist")
+                .withAlbum("album")
+                .withComment("comment")
+                .withComposer("composer")
+                .withDiscNumber("disc_number")
+                .withGenre("22")
+                .withTitle("title")
+                .withTrack("track")
+                .withYear("year");
+        audioFileStore.currentSidePanelEntries = sidePanelEntriesAudioFile;
+
+        AudioFile audioFile = new AudioFile("we need at least one selected file");
+        audioFileStore.currentlySelectedFiles = Sets.newHashSet(audioFile);
+
+        // when
+        bus.post(new SaveSelectedFilesEvent());
+
+        // then
+        ArgumentCaptor<ID3v24Tag> tagToBeSavedCaptor = ArgumentCaptor.forClass(ID3v24Tag.class);
+        verify(mp3FileMock).setId3v2Tag(tagToBeSavedCaptor.capture());
+        ID3v24Tag tag = tagToBeSavedCaptor.getValue();
+
+        assertEquals("artist", tag.getArtist());
+        assertEquals("album", tag.getAlbum());
+        assertEquals("comment", tag.getComment());
+        assertEquals("composer", tag.getComposer());
+        assertEquals("disc_number", tag.getPartOfSet());
+        assertEquals(22, tag.getGenre());
+        assertEquals("title", tag.getTitle());
+        assertEquals("track", tag.getTrack());
+        assertEquals("year", tag.getYear());
     }
 }

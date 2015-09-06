@@ -26,21 +26,19 @@ import com.github.marabou.audio.AudioFileFactory;
 import com.github.marabou.audio.AudioFileProperty;
 import com.github.marabou.audio.Genres;
 import com.github.marabou.audio.UnknownGenreException;
+import com.github.marabou.audio.save.SaveService;
 import com.github.marabou.ui.events.ErrorEvent;
 import com.github.marabou.ui.events.FilesSelectedEvent;
 import com.github.marabou.ui.events.OpenFileEvent;
 import com.github.marabou.ui.events.SaveSelectedFilesEvent;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import com.google.common.io.Files;
 import com.mpatric.mp3agic.ID3v24Tag;
 import com.mpatric.mp3agic.Mp3File;
-import com.mpatric.mp3agic.NotSupportedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 public class AudioFileStore {
@@ -48,15 +46,17 @@ public class AudioFileStore {
     Logger log = LoggerFactory.getLogger(AudioFileStore.class);
 
     private final EventBus bus;
+    private final SaveService saveService;
     AudioFileFactory audioFileFactory;
     protected Map<String, AudioFile> audioFiles = new HashMap<>();
     protected Set<AudioFile> currentlySelectedFiles = new HashSet<>();
-    private AudioFile currentSidePanelEntries = new AudioFile("");
+    protected AudioFile currentSidePanelEntries = new AudioFile("");
 
-    public AudioFileStore(EventBus bus, AudioFileFactory audioFileFactory) {
+    public AudioFileStore(EventBus bus, AudioFileFactory audioFileFactory, SaveService saveService) {
         this.bus = bus;
         bus.register(this);
         this.audioFileFactory = audioFileFactory;
+        this.saveService = saveService;
     }
 
     protected void addFile(final File inputFile) {
@@ -141,7 +141,7 @@ public class AudioFileStore {
             mp3File.setId3v2Tag(createTagForAudioFile());
 
             try {
-                String newFilePath = saveMp3File(mp3File);
+                String newFilePath = saveService.saveMp3File(mp3File);
                 removeAudioFile(mp3File.getFilename());
                 storeAudioFile(audioFileFactory.createAudioFile(mp3File));
 
@@ -151,23 +151,6 @@ public class AudioFileStore {
                 bus.post(new ErrorEvent("Error saving file: " + mp3File.getFilename()));
             }
         }
-    }
-
-    protected String saveMp3File(Mp3File mp3File) {
-        try {
-            File tempFile = getTempFile();
-            mp3File.save(tempFile.getAbsolutePath());
-
-            Files.copy(tempFile, new File(mp3File.getFilename()));
-            tempFile.delete();
-        } catch (IOException | NotSupportedException saveException) {
-            throw new RuntimeException(saveException);
-        }
-        return mp3File.getFilename();
-    }
-
-    private File getTempFile() {
-        return new File(System.getProperty("java.io.tmpdir") + File.separatorChar + UUID.randomUUID().toString());
     }
 
     private ID3v24Tag createTagForAudioFile() {

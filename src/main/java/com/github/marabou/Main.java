@@ -23,6 +23,7 @@ package com.github.marabou;
 
 import com.github.marabou.audio.AudioFileFactory;
 import com.github.marabou.audio.loader.AudioFileFilter;
+import com.github.marabou.audio.save.SaveService;
 import com.github.marabou.ui.controller.MainMenuController;
 import com.github.marabou.ui.controller.SidePanelController;
 import com.github.marabou.ui.controller.TableController;
@@ -68,7 +69,8 @@ public class Main {
                 log.error("A terrible thing happened in marabou.\n If you read this please copy the whole text and report a bug at the project web site.", exception);
         EventBus bus = new EventBus(eventBusExceptionHandler);
         AudioFileFactory audioFileFactory = new AudioFileFactory(bus);
-        AudioFileStore audioFileStore = new AudioFileStore(bus, audioFileFactory);
+        SaveService saveService = new SaveService();
+        AudioFileStore audioFileStore = new AudioFileStore(bus, audioFileFactory, saveService);
         MainMenuController mainMenuController = new MainMenuController(bus, audioFileStore, userProperties, audioFileLoader, aboutWindow);
         MainMenu mainMenu = new MainMenu(mainMenuController);
         mainMenu.init();
