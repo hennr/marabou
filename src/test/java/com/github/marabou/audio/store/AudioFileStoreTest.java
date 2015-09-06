@@ -23,6 +23,7 @@ package com.github.marabou.audio.store;
 
 import com.github.marabou.audio.AudioFile;
 import com.github.marabou.audio.AudioFileFactory;
+import com.github.marabou.ui.events.FilesSelectedEvent;
 import com.github.marabou.ui.events.SaveSelectedFilesEvent;
 import com.google.common.eventbus.EventBus;
 import com.mpatric.mp3agic.Mp3File;
@@ -76,7 +77,6 @@ public class AudioFileStoreTest {
         assertEquals(storedAudioFileFilePath, audioFileStore.getStoredAudioFiles().get(0).getFilePath());
     }
 
-
     @Test
     public void canRemoveAudioFile() throws Exception {
         // given
@@ -97,7 +97,7 @@ public class AudioFileStoreTest {
     }
 
     @Test
-    public void doesNotAcceptTheSameFileMoreThanOnce() {
+    public void doesNotStoreTheSameFileMoreThanOnce() {
         // given
         AudioFileFactory fileFactoryMock = mock(AudioFileFactory.class);
         AudioFileStore audioFileStore = new AudioFileStore(new EventBus(), fileFactoryMock);
@@ -112,6 +112,56 @@ public class AudioFileStoreTest {
 
         // then
         assertEquals(1, audioFileStore.audioFiles.size());
+    }
+
+    @Test
+    public void remembersSelectedFilesOnFilesSelectedEvent() {
+        // given
+        AudioFileFactory fileFactoryMock = mock(AudioFileFactory.class);
+        EventBus bus = new EventBus();
+        AudioFileStore audioFileStore = new AudioFileStore(bus, fileFactoryMock);
+
+        AudioFile audioFile = new AudioFile("/path");
+        when(fileFactoryMock.createAudioFile(any(File.class))).thenReturn(audioFile);
+
+        Set<AudioFile> selectedFiles = new HashSet<>(1);
+        selectedFiles.add(audioFile);
+
+        // when
+        bus.post(new FilesSelectedEvent(selectedFiles));
+
+        // then
+        Set<AudioFile> result = audioFileStore.getSelectedAudioFiles();
+        assertEquals(1, result.size());
+        assertTrue(result.contains(audioFile));
+    }
+
+    @Test
+    public void forgetsAboutPreviouslySelectedFilesOnNewFilesSelectedEvent() {
+        // given
+        AudioFileFactory fileFactoryMock = mock(AudioFileFactory.class);
+        EventBus bus = new EventBus();
+        AudioFileStore audioFileStore = new AudioFileStore(bus, fileFactoryMock);
+
+        AudioFile audioFileOne = new AudioFile("/one");
+        when(fileFactoryMock.createAudioFile(any(File.class))).thenReturn(audioFileOne);
+
+        Set<AudioFile> selectedFiles = new HashSet<>(1);
+        selectedFiles.add(audioFileOne);
+
+        // when
+        bus.post(new FilesSelectedEvent(selectedFiles));
+
+        // next event
+        AudioFile audioFileTwo = new AudioFile("/two");
+        selectedFiles.clear();
+        selectedFiles.add(audioFileTwo);
+        bus.post(new FilesSelectedEvent(selectedFiles));
+
+        // then
+        Set<AudioFile> result = audioFileStore.getSelectedAudioFiles();
+        assertTrue(result.contains(audioFileTwo));
+        assertFalse(result.contains(audioFileOne));
     }
 
     @Test

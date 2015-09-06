@@ -22,11 +22,58 @@
 package com.github.marabou.audio;
 
 public class AudioFile {
+
     String artist = "";
     String title = "";
     String album = "";
     String duration = "";
     String track = "";
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AudioFile audioFile = (AudioFile) o;
+
+        if (artist != null ? !artist.equals(audioFile.artist) : audioFile.artist != null) return false;
+        if (title != null ? !title.equals(audioFile.title) : audioFile.title != null) return false;
+        if (album != null ? !album.equals(audioFile.album) : audioFile.album != null) return false;
+        if (duration != null ? !duration.equals(audioFile.duration) : audioFile.duration != null) return false;
+        if (track != null ? !track.equals(audioFile.track) : audioFile.track != null) return false;
+        if (bitRate != null ? !bitRate.equals(audioFile.bitRate) : audioFile.bitRate != null) return false;
+        if (samplerate != null ? !samplerate.equals(audioFile.samplerate) : audioFile.samplerate != null) return false;
+        if (channels != null ? !channels.equals(audioFile.channels) : audioFile.channels != null) return false;
+        if (year != null ? !year.equals(audioFile.year) : audioFile.year != null) return false;
+        if (genre != null ? !genre.equals(audioFile.genre) : audioFile.genre != null) return false;
+        if (comment != null ? !comment.equals(audioFile.comment) : audioFile.comment != null) return false;
+        if (discNumber != null ? !discNumber.equals(audioFile.discNumber) : audioFile.discNumber != null) return false;
+        if (composer != null ? !composer.equals(audioFile.composer) : audioFile.composer != null) return false;
+        if (encoding != null ? !encoding.equals(audioFile.encoding) : audioFile.encoding != null) return false;
+        return !(filePath != null ? !filePath.equals(audioFile.filePath) : audioFile.filePath != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = artist != null ? artist.hashCode() : 0;
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (album != null ? album.hashCode() : 0);
+        result = 31 * result + (duration != null ? duration.hashCode() : 0);
+        result = 31 * result + (track != null ? track.hashCode() : 0);
+        result = 31 * result + (bitRate != null ? bitRate.hashCode() : 0);
+        result = 31 * result + (samplerate != null ? samplerate.hashCode() : 0);
+        result = 31 * result + (channels != null ? channels.hashCode() : 0);
+        result = 31 * result + (year != null ? year.hashCode() : 0);
+        result = 31 * result + (genre != null ? genre.hashCode() : 0);
+        result = 31 * result + (comment != null ? comment.hashCode() : 0);
+        result = 31 * result + (discNumber != null ? discNumber.hashCode() : 0);
+        result = 31 * result + (composer != null ? composer.hashCode() : 0);
+        result = 31 * result + (encoding != null ? encoding.hashCode() : 0);
+        result = 31 * result + (filePath != null ? filePath.hashCode() : 0);
+        return result;
+    }
+
     String bitRate = "";
     String samplerate = "";
     String channels = "";

@@ -188,6 +188,10 @@ public class AudioFileStore {
         return id3Tag;
     }
 
+    public Set<AudioFile> getSelectedAudioFiles() {
+        return currentlySelectedFiles;
+    }
+
     public List<AudioFile> getStoredAudioFiles() {
         return new LinkedList<>(audioFiles.values());
     }
