@@ -42,7 +42,6 @@ public class AudioFileStoreTest {
 
     @Test
     public void getsTheSameAudioFileByFilePathAfterStoring() throws Exception {
-
         // given
         AudioFileFactory fileFactoryMock = mock(AudioFileFactory.class);
         AudioFileStore audioFileStore = new AudioFileStore(new EventBus(), fileFactoryMock);
@@ -60,8 +59,26 @@ public class AudioFileStoreTest {
     }
 
     @Test
-    public void canRemoveAudioFile() throws Exception {
+    public void getStoredFilesReturnsCorrectResults() {
+        // given
+        AudioFileFactory fileFactoryMock = mock(AudioFileFactory.class);
+        AudioFileStore audioFileStore = new AudioFileStore(new EventBus(), fileFactoryMock);
 
+        File dummyFile = mock(File.class);
+        AudioFile audioFile = new AudioFile(storedAudioFileFilePath);
+        when(fileFactoryMock.createAudioFile(any(File.class))).thenReturn(audioFile);
+
+        // when
+        audioFileStore.addFile(dummyFile);
+
+        // then
+        assertEquals(1, audioFileStore.getStoredAudioFiles().size());
+        assertEquals(storedAudioFileFilePath, audioFileStore.getStoredAudioFiles().get(0).getFilePath());
+    }
+
+
+    @Test
+    public void canRemoveAudioFile() throws Exception {
         // given
         AudioFileFactory fileFactoryMock = mock(AudioFileFactory.class);
         AudioFileStore audioFileStore = new AudioFileStore(new EventBus(), fileFactoryMock);
@@ -80,27 +97,7 @@ public class AudioFileStoreTest {
     }
 
     @Test
-    public void selectedFilesAreStoredCorrectly() {
-
-        // given
-        AudioFileFactory fileFactoryMock = mock(AudioFileFactory.class);
-        AudioFileStore audioFileStore = new AudioFileStore(new EventBus(), fileFactoryMock);
-
-        File dummyFile = mock(File.class);
-        AudioFile audioFile = new AudioFile(storedAudioFileFilePath);
-        when(fileFactoryMock.createAudioFile(any(File.class))).thenReturn(audioFile);
-
-        // when
-        audioFileStore.addFile(dummyFile);
-
-        // then
-        assertEquals(1, audioFileStore.getStoredAudioFiles().size());
-        assertEquals(storedAudioFileFilePath, audioFileStore.getStoredAudioFiles().get(0).getFilePath());
-    }
-
-    @Test
     public void doesNotAcceptTheSameFileMoreThanOnce() {
-
         // given
         AudioFileFactory fileFactoryMock = mock(AudioFileFactory.class);
         AudioFileStore audioFileStore = new AudioFileStore(new EventBus(), fileFactoryMock);
@@ -119,7 +116,6 @@ public class AudioFileStoreTest {
 
     @Test
     public void aSaveSelectedFilesEventProvokesNewAudioFileSavedEvent() throws Exception {
-
         // given
         AudioFile audioFileMock = mock(AudioFile.class);
         Mp3File mp3FileMock = mock(Mp3File.class);
