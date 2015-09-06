@@ -21,7 +21,6 @@
  */
 package com.github.marabou.audio;
 
-import com.github.marabou.helper.UnknownGenreException;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

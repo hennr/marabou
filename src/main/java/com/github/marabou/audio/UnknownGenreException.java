@@ -19,7 +19,7 @@
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
-package com.github.marabou.helper;
+package com.github.marabou.audio;
 
 public class UnknownGenreException extends Exception {
 

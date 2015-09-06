@@ -21,7 +21,6 @@
  */
 package com.github.marabou.audio;
 
-import com.github.marabou.helper.UnknownGenreException;
 import com.github.marabou.ui.events.ErrorEvent;
 import com.google.common.eventbus.EventBus;
 import com.mpatric.mp3agic.*;

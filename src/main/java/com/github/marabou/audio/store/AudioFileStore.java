@@ -25,7 +25,7 @@ import com.github.marabou.audio.AudioFile;
 import com.github.marabou.audio.AudioFileFactory;
 import com.github.marabou.audio.AudioFileProperty;
 import com.github.marabou.audio.Genres;
-import com.github.marabou.helper.UnknownGenreException;
+import com.github.marabou.audio.UnknownGenreException;
 import com.github.marabou.ui.events.ErrorEvent;
 import com.github.marabou.ui.events.FilesSelectedEvent;
 import com.github.marabou.ui.events.OpenFileEvent;

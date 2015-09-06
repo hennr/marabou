@@ -21,8 +21,6 @@
  */
 package com.github.marabou.audio;
 
-import com.github.marabou.helper.UnknownGenreException;
-
 import static java.util.Arrays.asList;
 
 public class Genres {
