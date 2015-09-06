@@ -21,16 +21,12 @@
  */
 package com.github.marabou.audio.loader;
 
-import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static java.util.Arrays.asList;
 
@@ -48,7 +44,7 @@ public class AudioFileLoader {
     public List<File> findAcceptableFilesRecursively(File dirToScan) {
         log.info("recursively scanning directory for compatible files: " + dirToScan.getName());
 
-        return findAcceptableFilesRecursively(dirToScan, Sets.<String>newHashSet());
+        return findAcceptableFilesRecursively(dirToScan, new HashSet<>());
     }
 
     private List<File> findAcceptableFilesRecursively(File dirToScan, Set<String> alreadyVisitedPaths) {
