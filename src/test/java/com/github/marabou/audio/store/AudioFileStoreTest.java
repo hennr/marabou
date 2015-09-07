@@ -122,8 +122,8 @@ public class AudioFileStoreTest {
     @Test
     public void remembersSelectedFilesOnFilesSelectedEvent() {
         // given
-        AudioFileFactory fileFactoryMock = mock(AudioFileFactory.class);
         EventBus bus = new EventBus();
+        AudioFileFactory fileFactoryMock = mock(AudioFileFactory.class);
         AudioFileStore audioFileStore = new AudioFileStore(bus, fileFactoryMock, new SaveService());
 
         AudioFile audioFile = new AudioFile("/path");
@@ -143,8 +143,8 @@ public class AudioFileStoreTest {
     @Test
     public void forgetsAboutPreviouslySelectedFilesOnNewFilesSelectedEvent() {
         // given
-        AudioFileFactory fileFactoryMock = mock(AudioFileFactory.class);
         EventBus bus = new EventBus();
+        AudioFileFactory fileFactoryMock = mock(AudioFileFactory.class);
         AudioFileStore audioFileStore = new AudioFileStore(bus, fileFactoryMock, new SaveService());
 
         AudioFile audioFileOne = new AudioFile("/one");
@@ -171,11 +171,10 @@ public class AudioFileStoreTest {
     public void aSaveSelectedFilesEventProvokesNewAudioFileSavedEvent() throws Exception {
         // given
         AudioFile audioFileMock = mock(AudioFile.class);
-        Mp3File mp3FileMock = mock(Mp3File.class);
 
         AudioFileFactory audioFileFactoryMock = mock(AudioFileFactory.class);
         when(audioFileFactoryMock.createAudioFile(any(Mp3File.class))).thenReturn(audioFileMock);
-        when(audioFileFactoryMock.createMp3File(any())).thenReturn(mp3FileMock);
+        when(audioFileFactoryMock.createMp3File(any())).thenReturn(mock(Mp3File.class));
 
         EventBus eventBusMock = mock(EventBus.class);
 
@@ -199,7 +198,7 @@ public class AudioFileStoreTest {
     }
 
     @Test
-    public void doesNotOverwriteValuesIfFieldIsSetToIgnore() throws UnknownGenreException {
+    public void savesSidePanelEntriesToSelectedFiles() throws UnknownGenreException {
         // given
         Mp3File mp3FileMock = mock(Mp3File.class);
 
