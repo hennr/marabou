@@ -23,6 +23,8 @@ package com.github.marabou.audio.store;
 
 import com.github.marabou.audio.AudioFile;
 import com.github.marabou.audio.AudioFileFactory;
+import com.github.marabou.audio.Genres;
+import com.github.marabou.audio.UnknownGenreException;
 import com.github.marabou.audio.save.SaveService;
 import com.github.marabou.ui.events.FilesSelectedEvent;
 import com.github.marabou.ui.events.SaveSelectedFilesEvent;
@@ -38,6 +40,7 @@ import java.util.Set;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import static testdata.builder.TestAudioFileBuilder.aValidCompleteAudioFile;
 
 public class AudioFileStoreTest {
 
@@ -196,7 +199,7 @@ public class AudioFileStoreTest {
     }
 
     @Test
-    public void doesNotOverwriteValuesIfFieldIsSetToIgnore() {
+    public void doesNotOverwriteValuesIfFieldIsSetToIgnore() throws UnknownGenreException {
         // given
         Mp3File mp3FileMock = mock(Mp3File.class);
 
@@ -211,16 +214,8 @@ public class AudioFileStoreTest {
 
         AudioFileStore audioFileStore = new AudioFileStore(bus, audioFileFactoryMock, saveServiceMock);
 
-        AudioFile sidePanelEntriesAudioFile = new AudioFile("path")
-                .withArtist("artist")
-                .withAlbum("album")
-                .withComment("comment")
-                .withComposer("composer")
-                .withDiscNumber("disc_number")
-                .withGenre("22")
-                .withTitle("title")
-                .withTrack("track")
-                .withYear("year");
+        AudioFile sidePanelEntriesAudioFile = aValidCompleteAudioFile();
+
         audioFileStore.currentSidePanelEntries = sidePanelEntriesAudioFile;
 
         AudioFile audioFile = new AudioFile("we need at least one selected file");
@@ -234,14 +229,14 @@ public class AudioFileStoreTest {
         verify(mp3FileMock).setId3v2Tag(tagToBeSavedCaptor.capture());
         ID3v24Tag tag = tagToBeSavedCaptor.getValue();
 
-        assertEquals("artist", tag.getArtist());
-        assertEquals("album", tag.getAlbum());
-        assertEquals("comment", tag.getComment());
-        assertEquals("composer", tag.getComposer());
-        assertEquals("disc_number", tag.getPartOfSet());
-        assertEquals(22, tag.getGenre());
-        assertEquals("title", tag.getTitle());
-        assertEquals("track", tag.getTrack());
-        assertEquals("year", tag.getYear());
+        assertEquals(sidePanelEntriesAudioFile.getArtist(), tag.getArtist());
+        assertEquals(sidePanelEntriesAudioFile.getAlbum(), tag.getAlbum());
+        assertEquals(sidePanelEntriesAudioFile.getComment(), tag.getComment());
+        assertEquals(sidePanelEntriesAudioFile.getComposer(), tag.getComposer());
+        assertEquals(sidePanelEntriesAudioFile.getDiscNumber(), tag.getPartOfSet());
+        assertEquals(sidePanelEntriesAudioFile.getGenre(), Genres.getGenreById(tag.getGenre()));
+        assertEquals(sidePanelEntriesAudioFile.getTitle(), tag.getTitle());
+        assertEquals(sidePanelEntriesAudioFile.getTrack(), tag.getTrack());
+        assertEquals(sidePanelEntriesAudioFile.getYear(), tag.getYear());
     }
 }
