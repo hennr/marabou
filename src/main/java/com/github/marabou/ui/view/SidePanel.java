@@ -21,6 +21,7 @@
  */
 package com.github.marabou.ui.view;
 
+import com.github.marabou.helper.Constants;
 import com.github.marabou.ui.controller.SidePanelController;
 import com.github.marabou.ui.events.ComboPropertyChange;
 import com.github.marabou.audio.AudioFile;
@@ -42,7 +43,6 @@ import static java.util.Arrays.asList;
 
 public class SidePanel {
 
-    private static final String IGNORE_THIS_WHEN_SAVING = " - ";
     Map<AudioFileProperty, Combo> comboBoxes = new HashMap<>();
     private SidePanelController controller;
 
@@ -121,10 +121,10 @@ public class SidePanel {
 
     private void addDummyDropDownEntries(Set<AudioFile> audioFiles) {
         if (audioFiles.size() > 1) {
-            comboBoxes.get(Title).add(IGNORE_THIS_WHEN_SAVING, 0);
-            comboBoxes.get(Track).add(IGNORE_THIS_WHEN_SAVING, 0);
-            comboBoxes.get(Comments).add(IGNORE_THIS_WHEN_SAVING);
-            comboBoxes.get(Disc_number).add(IGNORE_THIS_WHEN_SAVING);
+            comboBoxes.get(Title).add(Constants.IGNORE_THIS_WHEN_SAVING, 0);
+            comboBoxes.get(Track).add(Constants.IGNORE_THIS_WHEN_SAVING, 0);
+            comboBoxes.get(Comments).add(Constants.IGNORE_THIS_WHEN_SAVING);
+            comboBoxes.get(Disc_number).add(Constants.IGNORE_THIS_WHEN_SAVING);
         }
     }
 

@@ -41,6 +41,8 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.*;
 
+import static com.github.marabou.helper.Constants.IGNORE_THIS_WHEN_SAVING;
+
 public class AudioFileStore {
 
     Logger log = LoggerFactory.getLogger(AudioFileStore.class);
@@ -50,7 +52,7 @@ public class AudioFileStore {
     AudioFileFactory audioFileFactory;
     protected Map<String, AudioFile> audioFiles = new HashMap<>();
     protected Set<AudioFile> currentlySelectedFiles = new HashSet<>();
-    protected AudioFile currentSidePanelEntries = new AudioFile("");
+    protected AudioFile sidePanelEntries = new AudioFile("");
 
     public AudioFileStore(EventBus bus, AudioFileFactory audioFileFactory, SaveService saveService) {
         this.bus = bus;
@@ -103,31 +105,31 @@ public class AudioFileStore {
 
         switch (property) {
             case Album:
-                currentSidePanelEntries = currentSidePanelEntries.withAlbum(newValue);
+                sidePanelEntries = sidePanelEntries.withAlbum(newValue);
                 break;
             case Artist:
-                currentSidePanelEntries = currentSidePanelEntries.withArtist(newValue);
+                sidePanelEntries = sidePanelEntries.withArtist(newValue);
                 break;
             case Comments:
-                currentSidePanelEntries = currentSidePanelEntries.withComment(newValue);
+                sidePanelEntries = sidePanelEntries.withComment(newValue);
                 break;
             case Composer:
-                currentSidePanelEntries = currentSidePanelEntries.withComposer(newValue);
+                sidePanelEntries = sidePanelEntries.withComposer(newValue);
                 break;
             case Disc_number:
-                currentSidePanelEntries = currentSidePanelEntries.withDiscNumber(newValue);
+                sidePanelEntries = sidePanelEntries.withDiscNumber(newValue);
                 break;
             case Genre:
-                currentSidePanelEntries = currentSidePanelEntries.withGenre(newValue);
+                sidePanelEntries = sidePanelEntries.withGenre(newValue);
                 break;
             case Title:
-                currentSidePanelEntries = currentSidePanelEntries.withTitle(newValue);
+                sidePanelEntries = sidePanelEntries.withTitle(newValue);
                 break;
             case Track:
-                currentSidePanelEntries = currentSidePanelEntries.withTrack(newValue);
+                sidePanelEntries = sidePanelEntries.withTrack(newValue);
                 break;
             case Year:
-                currentSidePanelEntries = currentSidePanelEntries.withYear(newValue);
+                sidePanelEntries = sidePanelEntries.withYear(newValue);
                 break;
             default:
                 throw new RuntimeException("Found an untreated audio file property: " + property + " Please file a bug report at the project website.");
@@ -138,7 +140,7 @@ public class AudioFileStore {
     public void onSaveSelectedFiles(SaveSelectedFilesEvent saveSelectedFilesEvent) {
         for (AudioFile audioFile : currentlySelectedFiles) {
             Mp3File mp3File = audioFileFactory.createMp3File(new File(audioFile.getFilePath()));
-            mp3File.setId3v2Tag(createTagForAudioFile());
+            mp3File.setId3v2Tag(createTagForAudioFile(audioFile));
 
             try {
                 String newFilePath = saveService.saveMp3File(mp3File);
@@ -153,22 +155,31 @@ public class AudioFileStore {
         }
     }
 
-    private ID3v24Tag createTagForAudioFile() {
+    private ID3v24Tag createTagForAudioFile(AudioFile currentAudioFile) {
+
         ID3v24Tag id3Tag = new ID3v24Tag();
-        id3Tag.setAlbum(currentSidePanelEntries.getAlbum());
-        id3Tag.setArtist(currentSidePanelEntries.getArtist());
-        id3Tag.setComment(currentSidePanelEntries.getComment());
-        id3Tag.setComposer(currentSidePanelEntries.getComposer());
-        id3Tag.setPartOfSet(currentSidePanelEntries.getDiscNumber());
-        try {
-            id3Tag.setGenre(Genres.getIndexForName(currentSidePanelEntries.getGenre()));
-        } catch (UnknownGenreException e) {
-            id3Tag.setGenreDescription(currentSidePanelEntries.getGenre());
+        id3Tag.setAlbum(determineSaveValue(sidePanelEntries.getAlbum(), currentAudioFile.getAlbum()));
+        id3Tag.setArtist(determineSaveValue(sidePanelEntries.getArtist(), currentAudioFile.getArtist()));
+        id3Tag.setComment(determineSaveValue(sidePanelEntries.getComment(), currentAudioFile.getComment()));
+        id3Tag.setComposer(determineSaveValue(sidePanelEntries.getComposer(), currentAudioFile.getComposer()));
+        id3Tag.setPartOfSet(determineSaveValue(sidePanelEntries.getDiscNumber(), currentAudioFile.getDiscNumber()));
+        if (!sidePanelEntries.getGenre().equals(IGNORE_THIS_WHEN_SAVING)) {
+            try {
+                id3Tag.setGenre(Genres.getIndexForName(sidePanelEntries.getGenre()));
+            } catch (UnknownGenreException e) {
+                id3Tag.setGenreDescription(sidePanelEntries.getGenre());
+            }
+        } else {
+            id3Tag.setGenreDescription(currentAudioFile.getGenre());
         }
-        id3Tag.setTitle(currentSidePanelEntries.getTitle());
-        id3Tag.setTrack(currentSidePanelEntries.getTrack());
-        id3Tag.setYear(currentSidePanelEntries.getYear());
+        id3Tag.setTitle(determineSaveValue(sidePanelEntries.getTitle(), currentAudioFile.getTitle()));
+        id3Tag.setTrack(determineSaveValue(sidePanelEntries.getTrack(), currentAudioFile.getTrack()));
+        id3Tag.setYear(determineSaveValue(sidePanelEntries.getYear(), currentAudioFile.getYear()));
         return id3Tag;
+    }
+
+    private String determineSaveValue(String sidePanelValue, String oldValue) {
+        return sidePanelValue.equals(IGNORE_THIS_WHEN_SAVING) ? oldValue : sidePanelValue;
     }
 
     public Set<AudioFile> getSelectedAudioFiles() {

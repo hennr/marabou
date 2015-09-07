@@ -38,9 +38,11 @@ import org.mockito.ArgumentCaptor;
 import java.io.File;
 import java.util.Set;
 
+import static com.github.marabou.helper.Constants.IGNORE_THIS_WHEN_SAVING;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static testdata.builder.TestAudioFileBuilder.aValidCompleteAudioFile;
+import static testdata.builder.TestAudioFileBuilder.anotherValidCompleteAudioFile;
 
 public class AudioFileStoreTest {
 
@@ -215,7 +217,7 @@ public class AudioFileStoreTest {
 
         AudioFile sidePanelEntriesAudioFile = aValidCompleteAudioFile();
 
-        audioFileStore.currentSidePanelEntries = sidePanelEntriesAudioFile;
+        audioFileStore.sidePanelEntries = sidePanelEntriesAudioFile;
 
         AudioFile audioFile = new AudioFile("we need at least one selected file");
         audioFileStore.currentlySelectedFiles = Sets.newHashSet(audioFile);
@@ -237,5 +239,54 @@ public class AudioFileStoreTest {
         assertEquals(sidePanelEntriesAudioFile.getTitle(), tag.getTitle());
         assertEquals(sidePanelEntriesAudioFile.getTrack(), tag.getTrack());
         assertEquals(sidePanelEntriesAudioFile.getYear(), tag.getYear());
+    }
+
+    @Test
+    public void doesNotOverwriteValuesIfFieldIsSetToIgnore() throws UnknownGenreException {
+        // given
+        Mp3File mp3FileMock = mock(Mp3File.class);
+
+        AudioFileFactory audioFileFactoryMock = mock(AudioFileFactory.class);
+        when(audioFileFactoryMock.createAudioFile(any(Mp3File.class))).thenReturn(
+                new AudioFile("will be used to hold new entries"));
+        when(audioFileFactoryMock.createMp3File(any())).thenReturn(mp3FileMock);
+
+        EventBus bus = new EventBus();
+
+        SaveService saveServiceMock = mock(SaveService.class);
+
+        AudioFileStore audioFileStore = new AudioFileStore(bus, audioFileFactoryMock, saveServiceMock);
+
+        AudioFile sidePanelEntriesAudioFile = aValidCompleteAudioFile()
+                .withTitle(IGNORE_THIS_WHEN_SAVING)
+                .withTrack(IGNORE_THIS_WHEN_SAVING)
+                .withDiscNumber(IGNORE_THIS_WHEN_SAVING);
+
+        audioFileStore.sidePanelEntries = sidePanelEntriesAudioFile;
+
+        AudioFile selectedAudioFile = anotherValidCompleteAudioFile();
+
+        audioFileStore.currentlySelectedFiles = Sets.newHashSet(selectedAudioFile);
+
+        // when
+        bus.post(new SaveSelectedFilesEvent());
+
+        // then
+        ArgumentCaptor<ID3v24Tag> tagToBeSavedCaptor = ArgumentCaptor.forClass(ID3v24Tag.class);
+        verify(mp3FileMock).setId3v2Tag(tagToBeSavedCaptor.capture());
+        ID3v24Tag tag = tagToBeSavedCaptor.getValue();
+
+        // these should contain the side panel values
+        assertEquals(sidePanelEntriesAudioFile.getArtist(), tag.getArtist());
+        assertEquals(sidePanelEntriesAudioFile.getAlbum(), tag.getAlbum());
+        assertEquals(sidePanelEntriesAudioFile.getComment(), tag.getComment());
+        assertEquals(sidePanelEntriesAudioFile.getComposer(), tag.getComposer());
+        assertEquals(sidePanelEntriesAudioFile.getGenre(), Genres.getGenreById(tag.getGenre()));
+        assertEquals(sidePanelEntriesAudioFile.getYear(), tag.getYear());
+
+        // these should contain the old values
+        assertEquals(selectedAudioFile.getTitle(), tag.getTitle());
+        assertEquals(selectedAudioFile.getTrack(), tag.getTrack());
+        assertEquals(selectedAudioFile.getDiscNumber(), tag.getPartOfSet());
     }
 }
