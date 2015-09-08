@@ -6,3 +6,7 @@ add project here: http://tango.freedesktop.org/Tango_Showroom
 add project here: http://alternativeto.net
 add album art to overview
 revert changes
+
+select first entry after saving files to update the side panel entries
+
+open file externally freezes marabou even after the external program is closed
