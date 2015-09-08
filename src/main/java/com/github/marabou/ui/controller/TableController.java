@@ -180,7 +180,7 @@ public class TableController {
 
     @Subscribe
     public void addNewFile(AudioFileAddedEvent audioFileAddedEvent) {
-        updateTableItem(createNewTableItem(audioFileAddedEvent.getAudioFile()));
+        addTableItem(createNewTableItem(audioFileAddedEvent.getAudioFile()));
         table.setFocus();
     }
 
@@ -215,29 +215,26 @@ public class TableController {
     }
 
     @Subscribe
-    public void onAudioFilesUpdated(AudioFileSavedEvent audioFileSavedEvent) {
+    public void onAudioFileSavedEvent(AudioFileSavedEvent audioFileSavedEvent) {
         removeTableItem(audioFileSavedEvent.oldFilePath);
 
         AudioFile audioFile = audioFileStore.getAudioFileByFilePath(audioFileSavedEvent.newFilePath);
-        updateTableItem(createNewTableItem(audioFile));
+        addTableItem(createNewTableItem(audioFile));
     }
 
     private void removeTableItem(String filePath) {
         TableItem[] items = table.getItems();
 
-        // FIXME performance
         for (TableItem item : items) {
             Object audioFile = item.getData();
-            if (audioFile instanceof AudioFile) {
-                AudioFile file = (AudioFile) audioFile;
-                if (file.getFilePath().equals(filePath)) {
-                    table.remove(table.indexOf(item));
-                }
+            AudioFile file = (AudioFile) audioFile;
+            if (file.getFilePath().equals(filePath)) {
+                table.remove(table.indexOf(item));
             }
         }
     }
 
-    private void updateTableItem(TableItem tableItem) {
+    private void addTableItem(TableItem tableItem) {
         if (tableItem.getData() instanceof AudioFile) {
             AudioFile audioFile = (AudioFile) tableItem.getData();
 
