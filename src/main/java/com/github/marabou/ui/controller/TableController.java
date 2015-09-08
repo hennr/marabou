@@ -54,17 +54,22 @@ public class TableController {
     final static Logger log = LoggerFactory.getLogger(TableController.class);
 
     public TableController(EventBus bus, Table table, AudioFileStore audioFileStore) {
-        bus.register(this);
         this.bus = bus;
-        this.table = table;
+        bus.register(this);
+        setupTable(table);
         this.audioFileStore = audioFileStore;
-
-        setupTableColumns();
-        addDoubleClickListener();
-        addItemsSelectedListenerAndPostThatEventToTheEventBus();
     }
 
-    private void setupTableColumns() {
+    private void setupTable(Table table) {
+        this.table = table;
+        this.table.setLinesVisible(true);
+        this.table.setHeaderVisible(true);
+        setupTableColumns(table);
+        addDoubleClickListener(table);
+        addItemsSelectedListener(table);
+    }
+
+    private void setupTableColumns(Table table) {
         // artist
         TableColumn artist = new TableColumn(table, SWT.LEFT);
         artist.setWidth(200);
@@ -156,9 +161,7 @@ public class TableController {
         path.setMoveable(true);
     }
 
-    private void addDoubleClickListener() {
-        table.setLinesVisible(true);
-        table.setHeaderVisible(true);
+    private void addDoubleClickListener(Table table) {
         table.addListener(SWT.MouseDoubleClick, event -> {
             int index = table.getSelectionIndex();
             if (index == -1) {
@@ -169,22 +172,13 @@ public class TableController {
             try {
                 log.info("Trying to open file with default media player: " + path);
                 Desktop.getDesktop().open(new File(path));
-            } catch (IOException e) {
-                bus.post(new ErrorEvent(_("Error while opening file: ") + path));
-                log.warn("Couldn't open file because of an IOException: " + path);
-            } catch (UnsupportedOperationException e) {
-                log.warn("awt couldn't detect the platform, so no media player can be determined.");
+            } catch (IOException | UnsupportedOperationException e) {
+                bus.post(new ErrorEvent(_("Failed to open file with your default media player: ") + path));
             }
         });
     }
 
-    @Subscribe
-    public void addNewFile(AudioFileAddedEvent audioFileAddedEvent) {
-        addTableItem(createNewTableItem(audioFileAddedEvent.getAudioFile()));
-        table.setFocus();
-    }
-
-    private void addItemsSelectedListenerAndPostThatEventToTheEventBus() {
+    private void addItemsSelectedListener(Table table) {
         table.addSelectionListener(new SelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -208,10 +202,10 @@ public class TableController {
         });
     }
 
-    private TableItem createNewTableItem(AudioFile audioFile) {
-        TableItem tableItem = new TableItem(table, SWT.None);
-        tableItem.setData(audioFile);
-        return tableItem;
+    @Subscribe
+    public void addNewFile(AudioFileAddedEvent audioFileAddedEvent) {
+        addTableItem(createNewTableItem(audioFileAddedEvent.getAudioFile()));
+        table.setFocus();
     }
 
     @Subscribe
@@ -220,6 +214,12 @@ public class TableController {
 
         AudioFile audioFile = audioFileStore.getAudioFileByFilePath(audioFileSavedEvent.newFilePath);
         addTableItem(createNewTableItem(audioFile));
+    }
+
+    private TableItem createNewTableItem(AudioFile audioFile) {
+        TableItem tableItem = new TableItem(table, SWT.None);
+        tableItem.setData(audioFile);
+        return tableItem;
     }
 
     private void removeTableItem(String filePath) {
