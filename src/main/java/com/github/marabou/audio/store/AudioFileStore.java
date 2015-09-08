@@ -76,7 +76,7 @@ public class AudioFileStore {
         audioFiles.put(newFile.getFilePath(), newFile);
     }
 
-    protected void removeAudioFile(String filePath) {
+    public void removeAudioFile(String filePath) {
         audioFiles.remove(filePath);
     }
 

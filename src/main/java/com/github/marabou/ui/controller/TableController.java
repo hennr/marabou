@@ -68,6 +68,7 @@ public class TableController {
         setupTableColumns(table);
         addDoubleClickListener(table);
         addItemsSelectedListener(table);
+        addRemoveItemsListener(table);
     }
 
     private void setupTableColumns(Table table) {
@@ -201,6 +202,23 @@ public class TableController {
             public void widgetDefaultSelected(SelectionEvent e) {
             }
         });
+    }
+
+    private void addRemoveItemsListener(Table table) {
+        table.addListener(SWT.KeyDown, event -> {
+            if (event.keyCode == SWT.DEL) {
+                Arrays.stream(table.getSelection()).forEach(tableItem -> {
+                    AudioFile audioFile = (AudioFile) tableItem.getData();
+                    removeTableItem(audioFile.getFilePath());
+                    audioFileStore.removeAudioFile(audioFile.getFilePath());
+                });
+                clearSidePanelEntries();
+            }
+        });
+    }
+
+    private void clearSidePanelEntries() {
+        bus.post(new FilesSelectedEvent(Sets.newHashSet(new AudioFile(""))));
     }
 
     @Subscribe
