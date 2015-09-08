@@ -21,7 +21,6 @@
  */
 package com.github.marabou.ui.view;
 
-import com.github.marabou.ui.events.SaveSelectedFilesEvent;
 import com.github.marabou.helper.AvailableImage;
 import com.github.marabou.helper.ImageLoader;
 import com.github.marabou.properties.UserProperties;
@@ -73,13 +72,6 @@ public class MainWindow extends BaseGuiClass {
         composite.setLayout(gridLayout);
         GridData gridData = new GridData(GridData.FILL_BOTH);
         composite.setLayoutData(gridData);
-
-        // the upper toolbar below the menu
-        ToolBar toolbar = new ToolBar(composite, SWT.HORIZONTAL);
-        ToolItem saveItem = new ToolItem(toolbar, SWT.PUSH);
-        saveItem.setImage(imageLoader.getImage(AvailableImage.SAVE_ICON));
-        saveItem.addListener(SWT.Selection, event -> bus.post(new SaveSelectedFilesEvent()));
-        toolbar.pack();
 
         sashForm.setLayoutData(gridData);
 

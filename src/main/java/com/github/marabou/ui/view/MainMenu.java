@@ -108,5 +108,13 @@ public class MainMenu extends BaseGuiClass {
 
         // listener for Help -> About
         aboutItem.addListener(SWT.Selection, event -> mainMenuController.handleShowAboutWindow());
+
+        // separator
+        new MenuItem(menu, SWT.SEPARATOR);
+
+        // Buttons
+        MenuItem saveButton = new MenuItem(menu, SWT.PUSH);
+        saveButton.setImage(imageLoader.getImage(AvailableImage.SAVE_ICON));
+        saveButton.addListener(SWT.Arm, event -> mainMenuController.handleSaveSelectedFilesEvent());
     }
 }
