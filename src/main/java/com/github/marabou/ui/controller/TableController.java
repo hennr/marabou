@@ -40,6 +40,7 @@ import org.slf4j.LoggerFactory;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -223,15 +224,12 @@ public class TableController {
     }
 
     private void removeTableItem(String filePath) {
-        TableItem[] items = table.getItems();
-
-        for (TableItem item : items) {
-            Object audioFile = item.getData();
-            AudioFile file = (AudioFile) audioFile;
-            if (file.getFilePath().equals(filePath)) {
-                table.remove(table.indexOf(item));
+        Arrays.stream(table.getItems()).forEach(tableItem -> {
+            AudioFile audioFile = (AudioFile) tableItem.getData();
+            if (audioFile.getFilePath().equals(filePath)) {
+                table.remove(table.indexOf(tableItem));
             }
-        }
+        });
     }
 
     private void addTableItem(TableItem tableItem) {
