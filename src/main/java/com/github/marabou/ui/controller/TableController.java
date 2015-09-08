@@ -34,7 +34,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.*;
-import org.eclipse.swt.widgets.Event;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -160,25 +159,21 @@ public class TableController {
     private void addDoubleClickListener() {
         table.setLinesVisible(true);
         table.setHeaderVisible(true);
-        table.addListener(SWT.MouseDoubleClick, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
+        table.addListener(SWT.MouseDoubleClick, event -> {
+            int index = table.getSelectionIndex();
+            if (index == -1) {
+                return;
+            }
+            String path = table.getItem(index).getText(TABLE_COLUMN_FILE_PATH);
 
-                int index = table.getSelectionIndex();
-                if (index == -1) {
-                    return;
-                }
-                String path = table.getItem(index).getText(TABLE_COLUMN_FILE_PATH);
-
-                try {
-                    log.info("Trying to open file with default media player: " + path);
-                    Desktop.getDesktop().open(new File(path));
-                } catch (IOException e) {
-                    bus.post(new ErrorEvent(_("Error while opening file: ") + path));
-                    log.warn("Couldn't open file because of an IOException: " + path);
-                } catch (UnsupportedOperationException e) {
-                    log.warn("awt couldn't detect the platform, so no media player can be determined.");
-                }
+            try {
+                log.info("Trying to open file with default media player: " + path);
+                Desktop.getDesktop().open(new File(path));
+            } catch (IOException e) {
+                bus.post(new ErrorEvent(_("Error while opening file: ") + path));
+                log.warn("Couldn't open file because of an IOException: " + path);
+            } catch (UnsupportedOperationException e) {
+                log.warn("awt couldn't detect the platform, so no media player can be determined.");
             }
         });
     }
