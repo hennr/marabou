@@ -35,7 +35,6 @@ public class AudioFileFactoryTest {
 
     @Test
     public void calculatesTrackLengthAsExpected() {
-
         // given
         AudioFileFactory audioFileFactory = new AudioFileFactory(new EventBus());
 
@@ -52,7 +51,6 @@ public class AudioFileFactoryTest {
 
     @Test
     public void prefersId3v2TagsOverId3v1Tags() throws IOException {
-
         // given
         File fileMock = mock(File.class);
         when(fileMock.getCanonicalPath()).thenReturn("foo");
@@ -93,7 +91,6 @@ public class AudioFileFactoryTest {
 
     @Test
     public void fallsBackToId3v1TagsOfNoId3v2TagsAreFound() throws IOException {
-
         // given
         File fileMock = mock(File.class);
         when(fileMock.getCanonicalPath()).thenReturn("foo");
@@ -132,7 +129,6 @@ public class AudioFileFactoryTest {
 
     @Test
     public void createsCorrectAudioFileIfNoTagsAreFound() throws IOException {
-
         // given
         File fileMock = mock(File.class);
         when(fileMock.getCanonicalPath()).thenReturn("foo");
@@ -176,7 +172,6 @@ public class AudioFileFactoryTest {
 
     @Test
     public void createAudioFileCanHandleNastyReturnsInId3v1Tags() throws IOException {
-
         // given
         File fileMock = mock(File.class);
         when(fileMock.getCanonicalPath()).thenReturn("foo");
@@ -209,7 +204,6 @@ public class AudioFileFactoryTest {
 
     @Test
     public void createAudioFileCanHandleNastyReturnsInId3v2Tags() throws IOException {
-
         // given
         File fileMock = mock(File.class);
         when(fileMock.getCanonicalPath()).thenReturn("foo");

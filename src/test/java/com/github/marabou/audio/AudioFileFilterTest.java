@@ -35,7 +35,6 @@ public class AudioFileFilterTest {
 
     @Test
     public void testAccept() throws Exception {
-
         // given
         File validFile = mock(File.class);
 
@@ -44,13 +43,12 @@ public class AudioFileFilterTest {
         when(validFile.isFile()).thenReturn(true);
         AudioFileFilter filter = new AudioFileFilter();
 
-        // when
+        // expect
         assertTrue(filter.accept(validFile));
     }
 
     @Test
     public void ignoresFilesWithNonSupportedFileName() throws Exception {
-
         // given
         AudioFileFilter audioFileFilter = new AudioFileFilter();
 
@@ -59,8 +57,7 @@ public class AudioFileFilterTest {
         when(unsupportedFile.canRead()).thenReturn(true);
         when(unsupportedFile.isFile()).thenReturn(true);
 
-        // then
+        // expect
         assertFalse(audioFileFilter.accept(unsupportedFile));
     }
-
 }
