@@ -186,11 +186,9 @@ public class TableController {
             public void widgetSelected(SelectionEvent e) {
 
                 Set<TableItem> selectedItems = Sets.newHashSet();
-                for (int index : table.getSelectionIndices()) {
-                    selectedItems.add(table.getItem(index));
-                }
-                Set<AudioFile> selectedAudioFiles = new HashSet<>();
+                Arrays.stream(table.getSelectionIndices()).forEach(index -> selectedItems.add(table.getItem(index)));
 
+                Set<AudioFile> selectedAudioFiles = new HashSet<>();
                 for (TableItem item : selectedItems) {
                     AudioFile audioFile = audioFileStore.getAudioFileByFilePath(item.getText(TABLE_COLUMN_FILE_PATH));
                     selectedAudioFiles.add(audioFile);
@@ -223,7 +221,7 @@ public class TableController {
 
     @Subscribe
     public void addNewFile(AudioFileAddedEvent audioFileAddedEvent) {
-        addTableItem(createNewTableItem(audioFileAddedEvent.getAudioFile()));
+        addTableItem(audioFileAddedEvent.getAudioFile());
         table.setFocus();
     }
 
@@ -232,13 +230,14 @@ public class TableController {
         removeTableItem(audioFileSavedEvent.oldFilePath);
 
         AudioFile audioFile = audioFileStore.getAudioFileByFilePath(audioFileSavedEvent.newFilePath);
-        addTableItem(createNewTableItem(audioFile));
+        addTableItem(audioFile);
+        correctFocusAndSidePanelAfterSaving(audioFile);
     }
 
-    private TableItem createNewTableItem(AudioFile audioFile) {
-        TableItem tableItem = new TableItem(table, SWT.None);
-        tableItem.setData(audioFile);
-        return tableItem;
+    private void correctFocusAndSidePanelAfterSaving(AudioFile audioFile) {
+        table.select(0);
+        table.setFocus();
+        bus.post(new FilesSelectedEvent(Sets.newHashSet(audioFile)));
     }
 
     private void removeTableItem(String filePath) {
@@ -250,26 +249,31 @@ public class TableController {
         });
     }
 
-    private void addTableItem(TableItem tableItem) {
-        if (tableItem.getData() instanceof AudioFile) {
-            AudioFile audioFile = (AudioFile) tableItem.getData();
+    private void addTableItem(AudioFile audioFile) {
 
-            tableItem.setText(new String[]{
-                    audioFile.getArtist(),
-                    audioFile.getTitle(),
-                    audioFile.getAlbum(),
-                    audioFile.getDuration(),
-                    audioFile.getTrack(),
-                    audioFile.getBitRate(),
-                    audioFile.getSamplerate(),
-                    audioFile.getChannels(),
-                    audioFile.getYear(),
-                    audioFile.getGenre(),
-                    audioFile.getComment(),
-                    audioFile.getDiscNumber(),
-                    audioFile.getComposer(),
-                    audioFile.getEncoding(),
-                    audioFile.getFilePath()});
-        }
+        TableItem tableItem = createNewTableItem(audioFile);
+
+        tableItem.setText(new String[]{
+                audioFile.getArtist(),
+                audioFile.getTitle(),
+                audioFile.getAlbum(),
+                audioFile.getDuration(),
+                audioFile.getTrack(),
+                audioFile.getBitRate(),
+                audioFile.getSamplerate(),
+                audioFile.getChannels(),
+                audioFile.getYear(),
+                audioFile.getGenre(),
+                audioFile.getComment(),
+                audioFile.getDiscNumber(),
+                audioFile.getComposer(),
+                audioFile.getEncoding(),
+                audioFile.getFilePath()});
+    }
+
+    private TableItem createNewTableItem(AudioFile audioFile) {
+        TableItem tableItem = new TableItem(table, SWT.None);
+        tableItem.setData(audioFile);
+        return tableItem;
     }
 }
