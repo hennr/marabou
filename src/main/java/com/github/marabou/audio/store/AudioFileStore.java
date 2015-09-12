@@ -163,15 +163,7 @@ public class AudioFileStore {
         id3Tag.setComment(determineSaveValue(sidePanelEntries.getComment(), currentAudioFile.getComment()));
         id3Tag.setComposer(determineSaveValue(sidePanelEntries.getComposer(), currentAudioFile.getComposer()));
         id3Tag.setPartOfSet(determineSaveValue(sidePanelEntries.getDiscNumber(), currentAudioFile.getDiscNumber()));
-        if (!sidePanelEntries.getGenre().equals(IGNORE_THIS_WHEN_SAVING)) {
-            try {
-                id3Tag.setGenre(Genres.getIndexForName(sidePanelEntries.getGenre()));
-            } catch (UnknownGenreException e) {
-                id3Tag.setGenreDescription(sidePanelEntries.getGenre());
-            }
-        } else {
-            id3Tag.setGenreDescription(currentAudioFile.getGenre());
-        }
+        id3Tag.setGenreDescription(determineSaveValue(sidePanelEntries.getGenre(), currentAudioFile.getGenre()));
         id3Tag.setTitle(determineSaveValue(sidePanelEntries.getTitle(), currentAudioFile.getTitle()));
         id3Tag.setTrack(determineSaveValue(sidePanelEntries.getTrack(), currentAudioFile.getTrack()));
         id3Tag.setYear(determineSaveValue(sidePanelEntries.getYear(), currentAudioFile.getYear()));

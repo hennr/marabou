@@ -281,7 +281,7 @@ public class AudioFileStoreTest {
         assertEquals(sidePanelEntriesAudioFile.getAlbum(), tag.getAlbum());
         assertEquals(sidePanelEntriesAudioFile.getComment(), tag.getComment());
         assertEquals(sidePanelEntriesAudioFile.getComposer(), tag.getComposer());
-        assertEquals(sidePanelEntriesAudioFile.getGenre(), Genres.getGenreById(tag.getGenre()));
+        assertEquals(sidePanelEntriesAudioFile.getGenre(), tag.getGenreDescription());
         assertEquals(sidePanelEntriesAudioFile.getYear(), tag.getYear());
 
         // these should contain the old values
