@@ -20,7 +20,6 @@ import com.github.marabou.audio.loader.AudioFileFilter;
 
 import com.github.marabou.audio.loader.AudioFileLoader;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 
 import static org.junit.Assert.*;
 
@@ -82,9 +81,7 @@ public class AudioFileLoaderTest {
         List<File> result = service.findAcceptableFilesRecursively(dirToScan);
 
         // then
-        ArgumentCaptor<File> argumentCaptor = ArgumentCaptor.forClass(File.class);
-        verify(audioFileFilter).accept(argumentCaptor.capture());
-        assertTrue(argumentCaptor.getValue() instanceof File);
+        verify(audioFileFilter).accept(isA(File.class));
 
         assertEquals(1, result.size());
         result.contains(mockedMp3File);

@@ -26,12 +26,10 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 
 import static org.junit.Assert.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 public class MainWindowTest {
@@ -61,9 +59,7 @@ public class MainWindowTest {
         mainWindow.init();
 
         // then
-        ArgumentCaptor<PersistPropertiesListener> argumentCaptor = ArgumentCaptor.forClass(PersistPropertiesListener.class);
-        verify(shell).addDisposeListener(argumentCaptor.capture());
-        assertTrue(argumentCaptor.getValue() instanceof PersistPropertiesListener);
+        verify(shell).addDisposeListener(isA(PersistPropertiesListener.class));
     }
 
     @Test

@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 public class MainMenuControllerTest {
@@ -95,11 +94,8 @@ public class MainMenuControllerTest {
         // when
         controllerUnderTest.openFiles(files);
 
-        ArgumentCaptor argumentCaptor = ArgumentCaptor.forClass(OpenFileEvent.class);
-        verify(bus, times(2)).post(argumentCaptor.capture());
-
         // then
-        assertTrue(argumentCaptor.getValue() instanceof OpenFileEvent);
+        verify(bus, times(2)).post(isA(OpenFileEvent.class));
     }
 
     @Test
