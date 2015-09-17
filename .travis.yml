@@ -17,7 +17,7 @@ before_deploy: "mvn -DskipTests package -Pgtk_linux_i386,-gtk_linux_amd64"
 
 deploy:
   provider: releases
-  api_key: "b6fd8251c0aa2505555f38341bfe6951449e797f"
+  api_key: "fe538f3e62783dbf4bc5c9347432057619bfa124"
   file: "marabou-*-linux-gtk-x86"
   skip_cleanup: true
   on:
