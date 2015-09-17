@@ -3,7 +3,6 @@
 [![GPLv3](https://img.shields.io/badge/licence-GPLv3-brightgreen.svg)](http://www.gnu.org/licenses/gpl-3.0.html)
 [![Flattr](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=hennr&url=https://github.com/hennr/marabou&title=marabou&language=java&tags=github&category=software)
 
-
 Marabou
 =======
 Marabou is a cross platform audio tagger written in Java.
@@ -18,7 +17,7 @@ Marabou is still under development and there is no stable release out yet, sorry
 
 If you want to give the snapshot a try, clone the repo and run:
 ```
-mvn package && java -jar target/marabou-0.1-SNAPSHOT-jar-with-dependencies.jar
+mvn package && java -jar target/marabou.jar
 ```
 
 Help
