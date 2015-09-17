@@ -201,7 +201,7 @@
                 </configuration>
             </plugin>
 
-            <!-- add headers if "maven verify" fails (due to license:check) mvn license:format -->
+            <!-- add headers if "maven verify" fails (due to license:check) with: mvn license:format -->
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
