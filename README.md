@@ -17,7 +17,7 @@ Marabou is still under development and there is no stable release out yet, sorry
 
 If you want to give the snapshot a try, clone the repo and run:
 ```
-mvn package && java -jar target/marabou.jar
+mvn package && java -jar target/marabou-<version>-<your-platform>.jar
 ```
 
 Help
