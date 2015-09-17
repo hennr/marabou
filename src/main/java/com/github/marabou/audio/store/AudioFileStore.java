@@ -19,8 +19,6 @@ package com.github.marabou.audio.store;
 import com.github.marabou.audio.AudioFile;
 import com.github.marabou.audio.AudioFileFactory;
 import com.github.marabou.audio.AudioFileProperty;
-import com.github.marabou.audio.Genres;
-import com.github.marabou.audio.UnknownGenreException;
 import com.github.marabou.audio.save.SaveService;
 import com.github.marabou.ui.events.ErrorEvent;
 import com.github.marabou.ui.events.FilesSelectedEvent;
@@ -34,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 import static com.github.marabou.helper.Constants.IGNORE_THIS_WHEN_SAVING;
@@ -57,6 +56,11 @@ public class AudioFileStore {
     }
 
     protected void addFile(final File inputFile) {
+
+        if (isFileAlreadyInStore(inputFile)) {
+            return;
+        }
+
         try {
             AudioFile audioFile = audioFileFactory.createAudioFile(inputFile);
             storeAudioFile(audioFile);
@@ -65,6 +69,17 @@ public class AudioFileStore {
             log.error("error during file add", e);
             bus.post(new ErrorEvent(e.getMessage()));
         }
+    }
+
+    private boolean isFileAlreadyInStore(File inputFile) {
+        try {
+            if (audioFiles.containsKey(inputFile.getCanonicalPath())) {
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private void storeAudioFile(AudioFile newFile) {

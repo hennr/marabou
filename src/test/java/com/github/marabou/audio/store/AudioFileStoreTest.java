@@ -22,6 +22,7 @@ import com.github.marabou.audio.Genres;
 import com.github.marabou.audio.UnknownGenreException;
 import com.github.marabou.audio.save.SaveService;
 import com.github.marabou.ui.events.FilesSelectedEvent;
+import com.github.marabou.ui.events.OpenFileEvent;
 import com.github.marabou.ui.events.SaveSelectedFilesEvent;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
@@ -31,6 +32,7 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Set;
 
 import static com.github.marabou.helper.Constants.IGNORE_THIS_WHEN_SAVING;
@@ -114,6 +116,27 @@ public class AudioFileStoreTest {
 
         // then
         assertEquals(1, audioFileStore.audioFiles.size());
+    }
+
+    @Test
+    public void propagatesANewFileFOnlyOnceOverTheEventBus() throws IOException {
+        // given
+        AudioFileFactory fileFactoryMock = mock(AudioFileFactory.class);
+        EventBus bus = spy(new EventBus());
+        AudioFileStore audioFileStore = new AudioFileStore(bus, fileFactoryMock, new SaveService());
+
+        File dummyFile = mock(File.class);
+        when(dummyFile.getCanonicalPath()).thenReturn("/path");
+        AudioFile audioFile = new AudioFile("/path");
+        when(fileFactoryMock.createAudioFile(any(File.class))).thenReturn(audioFile);
+
+        // when
+        bus.post(new OpenFileEvent(dummyFile));
+        bus.post(new OpenFileEvent(dummyFile));
+
+        // then
+        assertEquals(1, audioFileStore.audioFiles.size());
+        verify(bus, atMost(1)).post(isA(AudioFileAddedEvent.class));
     }
 
     @Test
