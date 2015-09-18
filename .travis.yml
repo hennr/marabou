@@ -13,14 +13,27 @@ after_success:
 sudo: false
 
 before_deploy:
-  - "mvn -DskipTests package -Pgtk_linux_i386,-gtk_linux_amd64"
+  - "mvn -DskipTests package -Pgtk_linux_i386,-gtk_linux_amd64,-windows_32,-windows_amd64"
   - export LINUX_GTK_x86=$(ls target/marabou-*-linux-gtk-x86.jar)
+
+  - "mvn -DskipTests package -P-gtk_linux_i386,gtk_linux_amd64,-windows_32,-windows_amd64"
+  - export LINUX_GTK_x86_64=$(ls target/marabou-*-linux-gtk-x86_64.jar)
+
+  - "mvn -DskipTests package -P-gtk_linux_i386,-gtk_linux_amd64,windows_32,-windows_amd64"
+  - export WINDOWS_32=$(ls target/marabou-*-win32-x86.jar)
+
+  - "mvn -DskipTests package -P-gtk_linux_i386,-gtk_linux_amd64,-windows_32,windows_amd64"
+  - export WINDOWS_64=$(ls target/marabou-*-win32-x86_64.jar)
 
 deploy:
   provider: releases
   api_key:
     secure: 0iDt+ZxARY2JLnZPO6pw2yz5SBfYYDmAz545xI5BBluGT1p2R7H0+e0D+/XkqGcuKpegHt17maON4H4qSTQabj4Ams0NxdQajSqIu9QvsPcXSAuc6NOv/HdgQf1f35birMTBSt1oPCkeuZc8Wi0xgRAFhTKTnESJzHHcYOcsVPc=
-  file: "${LINUX_GTK_x86}"
+  file:
+    - "${LINUX_GTK_x86}"
+    - "${LINUX_GTK_x86_64}"
+    - "${WINDOWS_32}"
+    - "${WINDOWS_64}"
   on:
     repo: hennr/marabou
     tags: true
