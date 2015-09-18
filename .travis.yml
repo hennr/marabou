@@ -8,6 +8,8 @@ after_success:
 - mvn clean cobertura:cobertura coveralls:report
 sudo: false
 
+before_deploy: "mvn -DskipTests package -Pgtk_linux_i386,-gtk_linux_amd64" 
+
 deploy:
   provider: releases
   api_key:
