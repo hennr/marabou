@@ -1,20 +1,26 @@
 language: java
-jdk:
-- oraclejdk8
+
+jdk: oraclejdk8
+
 before_install:
-- export DISPLAY=:99.0
-- sh -e /etc/init.d/xvfb start
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+
 after_success:
-- mvn clean cobertura:cobertura coveralls:report
+  - mvn clean cobertura:cobertura coveralls:report
+
+# run in travis' container based infrastructure; we don't have sudo there
 sudo: false
 
-before_deploy: "mvn -DskipTests package -Pgtk_linux_i386,-gtk_linux_amd64" 
+before_deploy:
+  - "mvn -DskipTests package -Pgtk_linux_i386,-gtk_linux_amd64"
+  - export LINUX_GTK_x86=$(ls target/marabou-*-linux-gtk-x86.jar)
 
 deploy:
   provider: releases
   api_key:
     secure: 0iDt+ZxARY2JLnZPO6pw2yz5SBfYYDmAz545xI5BBluGT1p2R7H0+e0D+/XkqGcuKpegHt17maON4H4qSTQabj4Ams0NxdQajSqIu9QvsPcXSAuc6NOv/HdgQf1f35birMTBSt1oPCkeuZc8Wi0xgRAFhTKTnESJzHHcYOcsVPc=
-  file: marabou-*-linux-gtk-x86
+  file: "${LINUX_GTK_x86}"
   on:
     repo: hennr/marabou
     tags: true
