@@ -28,6 +28,7 @@ import com.google.common.eventbus.Subscribe;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -161,16 +162,8 @@ public class TableController {
     private void addDoubleClickListener(Table table) {
         table.addListener(SWT.MouseDoubleClick, event -> {
             int index = table.getSelectionIndex();
-            if (index == -1) {
-                return;
-            }
-            String path = table.getItem(index).getText(TABLE_COLUMN_FILE_PATH);
-
-            try {
-                log.info("Trying to open file with default media player: " + path);
-                Desktop.getDesktop().open(new File(path));
-            } catch (IOException | UnsupportedOperationException e) {
-                bus.post(new ErrorEvent(_("Failed to open file with your default media player: ") + path));
+            if (index != -1) {
+                Program.launch(table.getItem(index).getText(TABLE_COLUMN_FILE_PATH));
             }
         });
     }
