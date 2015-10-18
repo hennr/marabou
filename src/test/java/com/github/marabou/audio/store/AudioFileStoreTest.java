@@ -26,8 +26,7 @@ import com.github.marabou.ui.events.OpenFileEvent;
 import com.github.marabou.ui.events.SaveSelectedFilesEvent;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
-import com.mpatric.mp3agic.ID3v24Tag;
-import com.mpatric.mp3agic.Mp3File;
+import com.mpatric.mp3agic.*;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -185,6 +184,28 @@ public class AudioFileStoreTest {
         Set<AudioFile> result = audioFileStore.getSelectedAudioFiles();
         assertTrue(result.contains(audioFileTwo));
         assertFalse(result.contains(audioFileOne));
+    }
+
+    @Test
+    public void justStoresAnId3v24TagWhenSavingFile() throws InvalidDataException, IOException, UnsupportedTagException {
+        // given
+        EventBus bus = new EventBus();
+        AudioFileFactory fileFactoryMock = mock(AudioFileFactory.class);
+        Mp3File mp3FileMock = mock(Mp3File.class);
+        when(fileFactoryMock.createMp3File(any())).thenReturn(mp3FileMock);
+        SaveService saveServiceMock = mock(SaveService.class);
+        AudioFileStore audioFileStore = new AudioFileStore(bus, fileFactoryMock, saveServiceMock);
+
+        AudioFile fileToBeSaved = new AudioFile("foo").withAlbum("bar");
+        audioFileStore.currentlySelectedFiles = Sets.newHashSet(fileToBeSaved);
+
+        // when
+        bus.post(new SaveSelectedFilesEvent());
+
+        // then
+        verify(mp3FileMock).setId3v2Tag(isA(ID3v24Tag.class));
+        verify(mp3FileMock, times(1)).setId3v2Tag(isA(ID3v2.class));
+        verify(mp3FileMock, never()).setId3v1Tag(isA(ID3v1.class));
     }
 
     @Test
