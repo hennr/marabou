@@ -17,25 +17,21 @@
 package com.github.marabou.ui.controller;
 
 import com.github.marabou.audio.store.AudioFileSavedEvent;
-import com.github.marabou.ui.events.ErrorEvent;
 import com.github.marabou.ui.events.FilesSelectedEvent;
 import com.github.marabou.audio.store.AudioFileAddedEvent;
 import com.github.marabou.audio.AudioFile;
 import com.github.marabou.audio.store.AudioFileStore;
+
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -48,7 +44,6 @@ public class TableController {
     Table table;
     private final AudioFileStore audioFileStore;
     public static final int TABLE_COLUMN_FILE_PATH = 14;
-    final static Logger log = LoggerFactory.getLogger(TableController.class);
 
     public TableController(EventBus bus, Table table, AudioFileStore audioFileStore) {
         this.bus = bus;
