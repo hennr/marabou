@@ -58,6 +58,7 @@ public class TableController {
         this.table.setHeaderVisible(true);
         setupTableColumns(table);
         addDoubleClickListener(table);
+        addPressedEnterListener(table);
         addItemsSelectedListener(table);
         addRemoveItemsListener(table);
     }
@@ -159,6 +160,17 @@ public class TableController {
             int index = table.getSelectionIndex();
             if (index != -1) {
                 Program.launch(table.getItem(index).getText(TABLE_COLUMN_FILE_PATH));
+            }
+        });
+    }
+
+    private void addPressedEnterListener(Table table) {
+        table.addTraverseListener(event -> {
+            if (event.detail == SWT.TRAVERSE_RETURN) {
+                int index = table.getSelectionIndex();
+                if (index != -1) {
+                    Program.launch(table.getItem(index).getText(TABLE_COLUMN_FILE_PATH));
+                }
             }
         });
     }
