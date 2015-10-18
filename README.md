@@ -13,9 +13,8 @@ It relies on SWT to provide a native look and feel.
 
 Download
 --------
-Marabou is still under development and there is no stable release out yet, sorry.
-
-If you want to give the alpha a try, find a download at the [release page.](https://github.com/hennr/marabou/releases)
+Marabou is currently in alpha state, means it's feature complete and needs testing now.
+If you want to give it a try, find a download at the [release page.](https://github.com/hennr/marabou/releases)
 
 <b>Note</b>: There is no Mac OS port yet, patches are welcome.
 
