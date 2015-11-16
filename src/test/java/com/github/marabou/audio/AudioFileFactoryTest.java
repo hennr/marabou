@@ -34,14 +34,14 @@ public class AudioFileFactoryTest {
         AudioFileFactory audioFileFactory = new AudioFileFactory(new EventBus());
 
         // expect
-        assertEquals("0:00", audioFileFactory.calculateTrackLength(-1l));
-        assertEquals("0:00", audioFileFactory.calculateTrackLength(0l));
-        assertEquals("0:59", audioFileFactory.calculateTrackLength(59l));
-        assertEquals("1:00", audioFileFactory.calculateTrackLength(60l));
-        assertEquals("1:01", audioFileFactory.calculateTrackLength(61l));
-        assertEquals("10:00", audioFileFactory.calculateTrackLength(600l));
-        assertEquals("99:00", audioFileFactory.calculateTrackLength(5940l));
-        assertEquals("100:01", audioFileFactory.calculateTrackLength(6001l));
+        assertEquals("0:00", audioFileFactory.calculateTrackLength(-1L));
+        assertEquals("0:00", audioFileFactory.calculateTrackLength(0L));
+        assertEquals("0:59", audioFileFactory.calculateTrackLength(59L));
+        assertEquals("1:00", audioFileFactory.calculateTrackLength(60L));
+        assertEquals("1:01", audioFileFactory.calculateTrackLength(61L));
+        assertEquals("10:00", audioFileFactory.calculateTrackLength(600L));
+        assertEquals("99:00", audioFileFactory.calculateTrackLength(5940L));
+        assertEquals("100:01", audioFileFactory.calculateTrackLength(6001L));
     }
 
     @Test
@@ -249,7 +249,7 @@ public class AudioFileFactoryTest {
         when(mp3FileMock.getId3v2Tag()).thenReturn(id3v24Tag);
         when(mp3FileMock.getBitrate()).thenReturn(666);
         when(mp3FileMock.getChannelMode()).thenReturn("channel mode");
-        when(mp3FileMock.getLengthInSeconds()).thenReturn(61l);
+        when(mp3FileMock.getLengthInSeconds()).thenReturn(61L);
         when(mp3FileMock.getSampleRate()).thenReturn(44000);
 
         File fileMock = mock(File.class);
@@ -296,7 +296,7 @@ public class AudioFileFactoryTest {
         when(mp3FileMock.getId3v2Tag()).thenReturn(id3v24Tag);
         when(mp3FileMock.getBitrate()).thenReturn(666);
         when(mp3FileMock.getChannelMode()).thenReturn("channel mode");
-        when(mp3FileMock.getLengthInSeconds()).thenReturn(61l);
+        when(mp3FileMock.getLengthInSeconds()).thenReturn(61L);
         when(mp3FileMock.getSampleRate()).thenReturn(44000);
         when(mp3FileMock.getFilename()).thenReturn("path");
 
