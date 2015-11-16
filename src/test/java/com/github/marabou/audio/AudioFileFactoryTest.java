@@ -240,7 +240,7 @@ public class AudioFileFactoryTest {
         id3v24Tag.setComment("comment");
         id3v24Tag.setComposer("composer");
         id3v24Tag.setPartOfSet("disc number");
-        id3v24Tag.setGenre(22);
+        id3v24Tag.setGenreDescription("Death Metal");
         id3v24Tag.setTitle("title");
         id3v24Tag.setYear("year");
 
@@ -287,7 +287,7 @@ public class AudioFileFactoryTest {
         id3v24Tag.setComment("comment");
         id3v24Tag.setComposer("composer");
         id3v24Tag.setPartOfSet("disc number");
-        id3v24Tag.setGenre(22);
+        id3v24Tag.setGenreDescription("Death Metal");
         id3v24Tag.setTitle("title");
         id3v24Tag.setYear("year");
 
@@ -321,5 +321,44 @@ public class AudioFileFactoryTest {
         assertEquals("44000", audioFile.getSamplerate());
         assertEquals("title", audioFile.getTitle());
         assertEquals("year", audioFile.getYear());
+    }
+
+    @Test
+    public void canHandleGenreIDs() throws IOException {
+        // given
+        ID3v1Tag id3v1Tag = new ID3v1Tag();
+        id3v1Tag.setGenre(22);
+
+        final Mp3File mp3FileMock = mock(Mp3File.class);
+        when(mp3FileMock.hasId3v1Tag()).thenReturn(true);
+        when(mp3FileMock.getId3v1Tag()).thenReturn(id3v1Tag);
+
+        AudioFileFactory audioFileStore = audioFileFactoryWithMp3FileMock(mp3FileMock);
+
+        // when
+        AudioFile audioFile = audioFileStore.createAudioFile(mp3FileMock);
+
+        // then
+        assertEquals("Death Metal", audioFile.getGenre());
+    }
+
+    @Test
+    public void prefersGenreDescriptionOverGenreID() throws IOException {
+        // given
+        ID3v24Tag id3v24Tag = new ID3v24Tag();
+        id3v24Tag.setGenre(1);
+        id3v24Tag.setGenreDescription("Death Metal");
+
+        final Mp3File mp3FileMock = mock(Mp3File.class);
+        when(mp3FileMock.hasId3v1Tag()).thenReturn(true);
+        when(mp3FileMock.getId3v1Tag()).thenReturn(id3v24Tag);
+
+        AudioFileFactory audioFileStore = audioFileFactoryWithMp3FileMock(mp3FileMock);
+
+        // when
+        AudioFile audioFile = audioFileStore.createAudioFile(mp3FileMock);
+
+        // then
+        assertEquals("Death Metal", audioFile.getGenre());
     }
 }

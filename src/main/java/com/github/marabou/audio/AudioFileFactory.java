@@ -41,12 +41,32 @@ public class AudioFileFactory {
         audioFile = withId3VersionAgnosticValues(mp3File, audioFile);
 
         if (mp3File.hasId3v2Tag()) {
-            audioFile = withPropertiesFromID3V1(mp3File.getId3v2Tag(), audioFile);
-            return withPropertiesFromID3V2(mp3File.getId3v2Tag(), audioFile);
+            audioFile = withPropertiesAvailableInID3V1(mp3File.getId3v2Tag(), audioFile);
+            audioFile = withPropertiesAvailableInID3V2(mp3File.getId3v2Tag(), audioFile);
+            return audioFile;
 
         } else if (mp3File.hasId3v1Tag()) {
-            return withPropertiesFromID3V1(mp3File.getId3v1Tag(), audioFile);
+            return withPropertiesAvailableInID3V1(mp3File.getId3v1Tag(), audioFile);
         }
+        return audioFile;
+    }
+
+    public AudioFile createAudioFile(Mp3File mp3File) {
+
+        AudioFile audioFile = new AudioFile(mp3File.getFilename());
+
+        audioFile = withId3VersionAgnosticValues(mp3File, audioFile);
+
+        if (mp3File.hasId3v2Tag()) {
+            audioFile = withPropertiesAvailableInID3V1(mp3File.getId3v2Tag(), audioFile);
+            audioFile = withPropertiesAvailableInID3V2(mp3File.getId3v2Tag(), audioFile);
+            return audioFile;
+        }
+
+        if (mp3File.hasId3v1Tag()) {
+            return withPropertiesAvailableInID3V1(mp3File.getId3v1Tag(), audioFile);
+        }
+
         return audioFile;
     }
 
@@ -98,45 +118,51 @@ public class AudioFileFactory {
     }
 
 
-    private AudioFile withPropertiesFromID3V1(ID3v1 id31Tag, AudioFile audioFile) {
+    private AudioFile withPropertiesAvailableInID3V1(ID3v1 id31TagOrBetter, AudioFile audioFile) {
 
-        if (id31Tag.getArtist() != null) {
-            audioFile.withArtist(id31Tag.getArtist());
+        if (id31TagOrBetter.getArtist() != null) {
+            audioFile.withArtist(id31TagOrBetter.getArtist());
         }
 
-        if (id31Tag.getTitle() != null) {
-            audioFile.withTitle(id31Tag.getTitle());
+        if (id31TagOrBetter.getTitle() != null) {
+            audioFile.withTitle(id31TagOrBetter.getTitle());
         }
 
-        if (id31Tag.getAlbum() != null) {
-            audioFile.withAlbum(id31Tag.getAlbum());
+        if (id31TagOrBetter.getAlbum() != null) {
+            audioFile.withAlbum(id31TagOrBetter.getAlbum());
         }
 
-        if (id31Tag.getTrack() != null) {
-            audioFile.withTrack(id31Tag.getTrack());
+        if (id31TagOrBetter.getTrack() != null) {
+            audioFile.withTrack(id31TagOrBetter.getTrack());
         }
 
-        if (id31Tag.getYear() != null) {
-            audioFile.withYear(id31Tag.getYear());
+        if (id31TagOrBetter.getYear() != null) {
+            audioFile.withYear(id31TagOrBetter.getYear());
         }
 
-        int genreId = id31Tag.getGenre();
-        try {
-            String genre = Genres.getGenreById(genreId);
-            audioFile.withGenre(genre);
-        } catch (UnknownGenreException e) {
-            if (id31Tag.getGenreDescription() != null)
-                audioFile.withGenre(id31Tag.getGenreDescription());
+        if (id31TagOrBetter.getGenreDescription() != null) {
+            audioFile.withGenre(id31TagOrBetter.getGenreDescription());
+        } else {
+            getGenreDescriptionByGenreId(id31TagOrBetter);
         }
 
-        if (id31Tag.getComment() != null) {
-            audioFile.withComment(id31Tag.getComment());
+        if (id31TagOrBetter.getComment() != null) {
+            audioFile.withComment(id31TagOrBetter.getComment());
         }
 
         return audioFile;
     }
 
-    private AudioFile withPropertiesFromID3V2(ID3v2 id32Tag, AudioFile audioFile) {
+    private String getGenreDescriptionByGenreId(ID3v1 id31TagOrBetter) {
+        int genreId = id31TagOrBetter.getGenre();
+        try {
+            return ID3v1Genres.GENRES[genreId];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return "";
+        }
+    }
+
+    private AudioFile withPropertiesAvailableInID3V2(ID3v2 id32Tag, AudioFile audioFile) {
 
         if (id32Tag.getPartOfSet() != null) {
             audioFile.withDiscNumber(id32Tag.getPartOfSet());
@@ -168,23 +194,5 @@ public class AudioFileFactory {
             bus.post(new ErrorEvent(errorMessage));
             throw new RuntimeException(errorMessage);
         }
-    }
-
-    public AudioFile createAudioFile(Mp3File mp3File) {
-
-        AudioFile audioFile = new AudioFile(mp3File.getFilename());
-
-        audioFile = withId3VersionAgnosticValues(mp3File, audioFile);
-
-        if (mp3File.hasId3v2Tag()) {
-            audioFile = withPropertiesFromID3V1(mp3File.getId3v2Tag(), audioFile);
-            return withPropertiesFromID3V2(mp3File.getId3v2Tag(), audioFile);
-        }
-
-        if (mp3File.hasId3v1Tag()) {
-            return withPropertiesFromID3V1(mp3File.getId3v1Tag(), audioFile);
-        }
-
-        return audioFile;
     }
 }

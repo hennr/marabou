@@ -18,8 +18,6 @@ package com.github.marabou.audio.store;
 
 import com.github.marabou.audio.AudioFile;
 import com.github.marabou.audio.AudioFileFactory;
-import com.github.marabou.audio.Genres;
-import com.github.marabou.audio.UnknownGenreException;
 import com.github.marabou.audio.save.SaveService;
 import com.github.marabou.ui.events.FilesSelectedEvent;
 import com.github.marabou.ui.events.OpenFileEvent;
@@ -239,7 +237,7 @@ public class AudioFileStoreTest {
     }
 
     @Test
-    public void savesSidePanelEntriesToSelectedFiles() throws UnknownGenreException {
+    public void savesSidePanelEntriesToSelectedFiles() {
         // given
         Mp3File mp3FileMock = mock(Mp3File.class);
 
@@ -274,14 +272,14 @@ public class AudioFileStoreTest {
         assertEquals(sidePanelEntriesAudioFile.getComment(), tag.getComment());
         assertEquals(sidePanelEntriesAudioFile.getComposer(), tag.getComposer());
         assertEquals(sidePanelEntriesAudioFile.getDiscNumber(), tag.getPartOfSet());
-        assertEquals(sidePanelEntriesAudioFile.getGenre(), Genres.getGenreById(tag.getGenre()));
+        assertEquals(sidePanelEntriesAudioFile.getGenre(), tag.getGenreDescription());
         assertEquals(sidePanelEntriesAudioFile.getTitle(), tag.getTitle());
         assertEquals(sidePanelEntriesAudioFile.getTrack(), tag.getTrack());
         assertEquals(sidePanelEntriesAudioFile.getYear(), tag.getYear());
     }
 
     @Test
-    public void doesNotOverwriteValuesIfFieldIsSetToIgnore() throws UnknownGenreException {
+    public void doesNotOverwriteValuesIfFieldIsSetToIgnore() {
         // given
         Mp3File mp3FileMock = mock(Mp3File.class);
 
