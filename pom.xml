@@ -361,6 +361,11 @@
                         <configuration>
                             <argLine>-XstartOnFirstThread</argLine>
                         </configuration>
+                        <executions>
+                            <execution>
+                                <phase>test</phase>
+                            </execution>
+                        </executions>
                     </plugin>
 
                     <plugin>
