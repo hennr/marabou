@@ -4,7 +4,7 @@
 
     <groupId>com.github</groupId>
     <artifactId>marabou</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>1.0.0-alpha</version>
 
     <description>
         Marabou is a cross-platform audio tagger using SWT for the frontend
@@ -79,7 +79,7 @@
         <dependency>
             <groupId>org.eclipse.swt</groupId>
             <artifactId>${swt.artifactId}</artifactId>
-            <version>4.5</version>
+            <version>4.5.1</version>
         </dependency>
 
         <dependency>

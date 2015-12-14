@@ -34,14 +34,14 @@ public class AudioFileFactoryTest {
         AudioFileFactory audioFileFactory = new AudioFileFactory(new EventBus());
 
         // expect
-        assertEquals("0:00", audioFileFactory.calculateTrackLength(-1l));
-        assertEquals("0:00", audioFileFactory.calculateTrackLength(0l));
-        assertEquals("0:59", audioFileFactory.calculateTrackLength(59l));
-        assertEquals("1:00", audioFileFactory.calculateTrackLength(60l));
-        assertEquals("1:01", audioFileFactory.calculateTrackLength(61l));
-        assertEquals("10:00", audioFileFactory.calculateTrackLength(600l));
-        assertEquals("99:00", audioFileFactory.calculateTrackLength(5940l));
-        assertEquals("100:01", audioFileFactory.calculateTrackLength(6001l));
+        assertEquals("0:00", audioFileFactory.calculateTrackLength(-1L));
+        assertEquals("0:00", audioFileFactory.calculateTrackLength(0L));
+        assertEquals("0:59", audioFileFactory.calculateTrackLength(59L));
+        assertEquals("1:00", audioFileFactory.calculateTrackLength(60L));
+        assertEquals("1:01", audioFileFactory.calculateTrackLength(61L));
+        assertEquals("10:00", audioFileFactory.calculateTrackLength(600L));
+        assertEquals("99:00", audioFileFactory.calculateTrackLength(5940L));
+        assertEquals("100:01", audioFileFactory.calculateTrackLength(6001L));
     }
 
     @Test
@@ -240,7 +240,7 @@ public class AudioFileFactoryTest {
         id3v24Tag.setComment("comment");
         id3v24Tag.setComposer("composer");
         id3v24Tag.setPartOfSet("disc number");
-        id3v24Tag.setGenre(22);
+        id3v24Tag.setGenreDescription("Death Metal");
         id3v24Tag.setTitle("title");
         id3v24Tag.setYear("year");
 
@@ -249,7 +249,7 @@ public class AudioFileFactoryTest {
         when(mp3FileMock.getId3v2Tag()).thenReturn(id3v24Tag);
         when(mp3FileMock.getBitrate()).thenReturn(666);
         when(mp3FileMock.getChannelMode()).thenReturn("channel mode");
-        when(mp3FileMock.getLengthInSeconds()).thenReturn(61l);
+        when(mp3FileMock.getLengthInSeconds()).thenReturn(61L);
         when(mp3FileMock.getSampleRate()).thenReturn(44000);
 
         File fileMock = mock(File.class);
@@ -287,7 +287,7 @@ public class AudioFileFactoryTest {
         id3v24Tag.setComment("comment");
         id3v24Tag.setComposer("composer");
         id3v24Tag.setPartOfSet("disc number");
-        id3v24Tag.setGenre(22);
+        id3v24Tag.setGenreDescription("Death Metal");
         id3v24Tag.setTitle("title");
         id3v24Tag.setYear("year");
 
@@ -296,7 +296,7 @@ public class AudioFileFactoryTest {
         when(mp3FileMock.getId3v2Tag()).thenReturn(id3v24Tag);
         when(mp3FileMock.getBitrate()).thenReturn(666);
         when(mp3FileMock.getChannelMode()).thenReturn("channel mode");
-        when(mp3FileMock.getLengthInSeconds()).thenReturn(61l);
+        when(mp3FileMock.getLengthInSeconds()).thenReturn(61L);
         when(mp3FileMock.getSampleRate()).thenReturn(44000);
         when(mp3FileMock.getFilename()).thenReturn("path");
 
@@ -321,5 +321,44 @@ public class AudioFileFactoryTest {
         assertEquals("44000", audioFile.getSamplerate());
         assertEquals("title", audioFile.getTitle());
         assertEquals("year", audioFile.getYear());
+    }
+
+    @Test
+    public void canHandleGenreIDs() throws IOException {
+        // given
+        ID3v1Tag id3v1Tag = new ID3v1Tag();
+        id3v1Tag.setGenre(22);
+
+        final Mp3File mp3FileMock = mock(Mp3File.class);
+        when(mp3FileMock.hasId3v1Tag()).thenReturn(true);
+        when(mp3FileMock.getId3v1Tag()).thenReturn(id3v1Tag);
+
+        AudioFileFactory audioFileStore = audioFileFactoryWithMp3FileMock(mp3FileMock);
+
+        // when
+        AudioFile audioFile = audioFileStore.createAudioFile(mp3FileMock);
+
+        // then
+        assertEquals("Death Metal", audioFile.getGenre());
+    }
+
+    @Test
+    public void prefersGenreDescriptionOverGenreID() throws IOException {
+        // given
+        ID3v24Tag id3v24Tag = new ID3v24Tag();
+        id3v24Tag.setGenre(1);
+        id3v24Tag.setGenreDescription("Death Metal");
+
+        final Mp3File mp3FileMock = mock(Mp3File.class);
+        when(mp3FileMock.hasId3v1Tag()).thenReturn(true);
+        when(mp3FileMock.getId3v1Tag()).thenReturn(id3v24Tag);
+
+        AudioFileFactory audioFileStore = audioFileFactoryWithMp3FileMock(mp3FileMock);
+
+        // when
+        AudioFile audioFile = audioFileStore.createAudioFile(mp3FileMock);
+
+        // then
+        assertEquals("Death Metal", audioFile.getGenre());
     }
 }

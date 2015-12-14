@@ -8,3 +8,5 @@
 bin/
 /nb-configuration.xml
 nbactions.xml
+hs_err*.log
+

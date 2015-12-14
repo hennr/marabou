@@ -18,16 +18,13 @@ package com.github.marabou.audio.store;
 
 import com.github.marabou.audio.AudioFile;
 import com.github.marabou.audio.AudioFileFactory;
-import com.github.marabou.audio.Genres;
-import com.github.marabou.audio.UnknownGenreException;
 import com.github.marabou.audio.save.SaveService;
 import com.github.marabou.ui.events.FilesSelectedEvent;
 import com.github.marabou.ui.events.OpenFileEvent;
 import com.github.marabou.ui.events.SaveSelectedFilesEvent;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
-import com.mpatric.mp3agic.ID3v24Tag;
-import com.mpatric.mp3agic.Mp3File;
+import com.mpatric.mp3agic.*;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -188,6 +185,28 @@ public class AudioFileStoreTest {
     }
 
     @Test
+    public void justStoresAnId3v24TagWhenSavingFile() throws InvalidDataException, IOException, UnsupportedTagException {
+        // given
+        EventBus bus = new EventBus();
+        AudioFileFactory fileFactoryMock = mock(AudioFileFactory.class);
+        Mp3File mp3FileMock = mock(Mp3File.class);
+        when(fileFactoryMock.createMp3File(any())).thenReturn(mp3FileMock);
+        SaveService saveServiceMock = mock(SaveService.class);
+        AudioFileStore audioFileStore = new AudioFileStore(bus, fileFactoryMock, saveServiceMock);
+
+        AudioFile fileToBeSaved = new AudioFile("foo").withAlbum("bar");
+        audioFileStore.currentlySelectedFiles = Sets.newHashSet(fileToBeSaved);
+
+        // when
+        bus.post(new SaveSelectedFilesEvent());
+
+        // then
+        verify(mp3FileMock).setId3v2Tag(isA(ID3v24Tag.class));
+        verify(mp3FileMock, times(1)).setId3v2Tag(isA(ID3v2.class));
+        verify(mp3FileMock, never()).setId3v1Tag(isA(ID3v1.class));
+    }
+
+    @Test
     public void aSaveSelectedFilesEventProvokesNewAudioFileSavedEvent() throws Exception {
         // given
         AudioFile audioFileMock = mock(AudioFile.class);
@@ -218,7 +237,7 @@ public class AudioFileStoreTest {
     }
 
     @Test
-    public void savesSidePanelEntriesToSelectedFiles() throws UnknownGenreException {
+    public void savesSidePanelEntriesToSelectedFiles() {
         // given
         Mp3File mp3FileMock = mock(Mp3File.class);
 
@@ -253,14 +272,14 @@ public class AudioFileStoreTest {
         assertEquals(sidePanelEntriesAudioFile.getComment(), tag.getComment());
         assertEquals(sidePanelEntriesAudioFile.getComposer(), tag.getComposer());
         assertEquals(sidePanelEntriesAudioFile.getDiscNumber(), tag.getPartOfSet());
-        assertEquals(sidePanelEntriesAudioFile.getGenre(), Genres.getGenreById(tag.getGenre()));
+        assertEquals(sidePanelEntriesAudioFile.getGenre(), tag.getGenreDescription());
         assertEquals(sidePanelEntriesAudioFile.getTitle(), tag.getTitle());
         assertEquals(sidePanelEntriesAudioFile.getTrack(), tag.getTrack());
         assertEquals(sidePanelEntriesAudioFile.getYear(), tag.getYear());
     }
 
     @Test
-    public void doesNotOverwriteValuesIfFieldIsSetToIgnore() throws UnknownGenreException {
+    public void doesNotOverwriteValuesIfFieldIsSetToIgnore() {
         // given
         Mp3File mp3FileMock = mock(Mp3File.class);
 
