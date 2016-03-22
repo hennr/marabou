@@ -7,7 +7,7 @@ before_install:
   - sh -e /etc/init.d/xvfb start
 
 after_success:
-  - mvn clean cobertura:cobertura coveralls:report
+  - bash <(curl -s https://codecov.io/bash)
 
 # run in travis' container based infrastructure; we don't have sudo there
 sudo: false
