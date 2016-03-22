@@ -1,6 +1,6 @@
 [![Build Status](https://secure.travis-ci.org/hennr/marabou.png?branch=master)](http://travis-ci.org/hennr/marabou)
 [![Build status](https://ci.appveyor.com/api/projects/status/k64j9tc037klyjv1/branch/master?svg=true)](https://ci.appveyor.com/project/hennr/marabou/branch/master)
-[![Coverage Status](https://coveralls.io/repos/hennr/marabou/badge.svg?branch=master&service=github)](https://coveralls.io/github/hennr/marabou?branch=master)
+[![codecov.io](https://codecov.io/github/hennr/marabou/coverage.svg?branch=master)](https://codecov.io/github/hennr/marabou?branch=master)
 [![GPLv3](https://img.shields.io/badge/licence-GPLv3-brightgreen.svg)](http://www.gnu.org/licenses/gpl-3.0.html)
 [![Flattr](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=hennr&url=https://github.com/hennr/marabou&title=marabou&language=java&tags=github&category=software)
 
