@@ -36,7 +36,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.github.marabou.helper.I18nHelper._;
+import static com.github.marabou.helper.I18nHelper.i18n;
 
 public class TableController {
 
@@ -67,91 +67,91 @@ public class TableController {
         // artist
         TableColumn artist = new TableColumn(table, SWT.LEFT);
         artist.setWidth(200);
-        artist.setText(_("Artist"));
+        artist.setText(i18n("Artist"));
         artist.setMoveable(true);
 
         // title
         TableColumn title = new TableColumn(table, SWT.LEFT);
         title.setWidth(200);
-        title.setText(_("Title"));
+        title.setText(i18n("Title"));
         title.setMoveable(true);
 
         // album
         TableColumn album = new TableColumn(table, SWT.LEFT);
         album.setWidth(200);
-        album.setText(_("Album"));
+        album.setText(i18n("Album"));
         album.setMoveable(true);
 
         // duration
         TableColumn length = new TableColumn(table, SWT.LEFT);
         length.setWidth(60);
-        length.setText(_("Length"));
+        length.setText(i18n("Length"));
         length.setMoveable(true);
 
         // track number
         TableColumn track = new TableColumn(table, SWT.LEFT);
         track.setWidth(60);
-        track.setText(_("Track number"));
+        track.setText(i18n("Track number"));
         track.setMoveable(true);
 
         // bit rate
         TableColumn bitRate = new TableColumn(table, SWT.LEFT);
         bitRate.setWidth(60);
-        bitRate.setText(_("Bit rate"));
+        bitRate.setText(i18n("Bit rate"));
         bitRate.setMoveable(true);
 
         // sample rate
         TableColumn sampleRate = new TableColumn(table, SWT.LEFT);
         sampleRate.setWidth(60);
-        sampleRate.setText(_("Samplerate"));
+        sampleRate.setText(i18n("Samplerate"));
         sampleRate.setMoveable(true);
 
         // channels
         TableColumn channels = new TableColumn(table, SWT.LEFT);
         channels.setWidth(60);
-        channels.setText(_("Channels"));
+        channels.setText(i18n("Channels"));
         channels.setMoveable(true);
 
         // year
         TableColumn year = new TableColumn(table, SWT.LEFT);
         year.setWidth(60);
-        year.setText(_("Year"));
+        year.setText(i18n("Year"));
         year.setMoveable(true);
 
         // genre
         TableColumn genre = new TableColumn(table, SWT.LEFT);
         genre.setWidth(120);
-        genre.setText(_("Genre"));
+        genre.setText(i18n("Genre"));
         genre.setMoveable(true);
 
         // comments
         TableColumn comments = new TableColumn(table, SWT.LEFT);
         comments.setWidth(120);
-        comments.setText(_("Comments"));
+        comments.setText(i18n("Comments"));
         comments.setMoveable(true);
 
         // disc number
         TableColumn diskNumber = new TableColumn(table, SWT.LEFT);
         diskNumber.setWidth(60);
-        diskNumber.setText(_("Disk number"));
+        diskNumber.setText(i18n("Disk number"));
         diskNumber.setMoveable(true);
 
         // composer
         TableColumn composer = new TableColumn(table, SWT.LEFT);
         composer.setWidth(120);
-        composer.setText(_("Composer"));
+        composer.setText(i18n("Composer"));
         composer.setMoveable(true);
 
         // file type
         TableColumn format = new TableColumn(table, SWT.LEFT);
         format.setWidth(100);
-        format.setText(_("Format"));
+        format.setText(i18n("Format"));
         format.setMoveable(true);
 
         // path
         TableColumn path = new TableColumn(table, SWT.LEFT);
         path.setWidth(1000);
-        path.setText(_("Path"));
+        path.setText(i18n("Path"));
         path.setMoveable(true);
     }
 

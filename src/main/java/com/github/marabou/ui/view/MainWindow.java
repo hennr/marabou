@@ -27,7 +27,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 
-import static com.github.marabou.helper.I18nHelper._;
+import static com.github.marabou.helper.I18nHelper.i18n;
 
 public class MainWindow extends BaseGuiClass {
 
@@ -53,7 +53,7 @@ public class MainWindow extends BaseGuiClass {
     protected void createWidgetsAndLayout(MainMenu mainMenu) {
         shell.setLayout(new FillLayout(SWT.VERTICAL));
         shell.setImage(imageLoader.getImage(AvailableImage.LOGO_SMALL));
-        shell.setText(_("Marabou - Audio tagger"));
+        shell.setText(i18n("Marabou - Audio tagger"));
 
         //Create a menu, place it in the shell and fill the menu
         shell.setMenuBar(mainMenu.getMenu());

@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.github.marabou.helper.I18nHelper._;
+import static com.github.marabou.helper.I18nHelper.i18n;
 
 public class OpenDirectoryDialog extends BaseGuiClass {
 
@@ -30,7 +30,7 @@ public class OpenDirectoryDialog extends BaseGuiClass {
     public String getDirectoryToOpen(String openPath) {
 
         DirectoryDialog directoryDialog = new DirectoryDialog(shell);
-        directoryDialog.setText(_("Choose directory..."));
+        directoryDialog.setText(i18n("Choose directory..."));
 
         directoryDialog.setFilterPath(openPath);
         String dirToOpen = directoryDialog.open();

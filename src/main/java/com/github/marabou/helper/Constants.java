@@ -16,8 +16,8 @@
  */
 package com.github.marabou.helper;
 
-import static com.github.marabou.helper.I18nHelper._;
+import static com.github.marabou.helper.I18nHelper.i18n;
 
 public class Constants {
-    public static final String IGNORE_THIS_WHEN_SAVING = _("(keep value)");
+    public static final String IGNORE_THIS_WHEN_SAVING = i18n("(keep value)");
 }

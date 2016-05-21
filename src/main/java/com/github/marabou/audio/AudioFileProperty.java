@@ -16,19 +16,19 @@
  */
 package com.github.marabou.audio;
 
-import static com.github.marabou.helper.I18nHelper._;
+import static com.github.marabou.helper.I18nHelper.i18n;
 
 public enum AudioFileProperty {
 
-    Artist(_("Artist")),
-    Title(_("Title")),
-    Album(_("Album")),
-    Track(_("Track")),
-    Year(_("Year")),
-    Genre(_("Genre")),
-    Comments(_("Comments")),
-    Disc_number(_("Disc number")),
-    Composer(_("Composer"));
+    Artist(i18n("Artist")),
+    Title(i18n("Title")),
+    Album(i18n("Album")),
+    Track(i18n("Track")),
+    Year(i18n("Year")),
+    Genre(i18n("Genre")),
+    Comments(i18n("Comments")),
+    Disc_number(i18n("Disc number")),
+    Composer(i18n("Composer"));
 
     final String labelName;
 

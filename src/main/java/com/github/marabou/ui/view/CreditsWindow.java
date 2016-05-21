@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 
-import static com.github.marabou.helper.I18nHelper._;
+import static com.github.marabou.helper.I18nHelper.i18n;
 
 public class CreditsWindow {
 
@@ -34,7 +34,7 @@ public class CreditsWindow {
         final Display display = Display.getCurrent();
 
         final Shell shell = new Shell(display);
-        shell.setText(_("Credits"));
+        shell.setText(i18n("Credits"));
         shell.setImage(new ImageLoader().getImage(AvailableImage.LOGO_SMALL));
 
         GridLayout gridLayout = new GridLayout();
@@ -61,19 +61,19 @@ public class CreditsWindow {
         Composite depsComp = new Composite(tabFolder, SWT.NONE);
 
         TabItem codersTab = new TabItem(tabFolder, SWT.None);
-        codersTab.setText(_("Developers"));
+        codersTab.setText(i18n("Developers"));
         codersTab.setControl(devsComp);
 
         TabItem translatorsTab = new TabItem(tabFolder, SWT.None);
-        translatorsTab.setText(_("Translators"));
+        translatorsTab.setText(i18n("Translators"));
         translatorsTab.setControl(transComp);
 
         TabItem dependenciesTab = new TabItem(tabFolder, SWT.None);
-        dependenciesTab.setText(_("Dependencies"));
+        dependenciesTab.setText(i18n("Dependencies"));
         dependenciesTab.setControl(depsComp);
 
         Link developers = new Link(devsComp, SWT.None);
-        developers.setText(_("\n\n Jan-Hendrik Peters  <a>hennr@hennr.name</a>"));
+        developers.setText(i18n("\n\n Jan-Hendrik Peters  <a>hennr@hennr.name</a>"));
         developers.pack();
         // listener to open mail client for the E-Mail-address clicked
         developers.addListener(SWT.Selection, new Listener() {
@@ -90,11 +90,11 @@ public class CreditsWindow {
         });
 
         Link translators = new Link(transComp, SWT.None);
-        translators.setText(_("\n English:\n Jan-Hendrik Peters  <a>hennr@hennr.name</a>"));
+        translators.setText(i18n("\n English:\n Jan-Hendrik Peters  <a>hennr@hennr.name</a>"));
         translators.pack();
 
         Link dependencies = new Link(depsComp, SWT.None);
-        dependencies.setText(_(
+        dependencies.setText(i18n(
                         "\nThanks to the following projects and persons:\n\n" +
                                 "SWT; " + "EPL; " + "<a>http://www.eclipse.org/swt/</a>\n" +
                                 "Michael Patricios for mp3agic; " + "GPL 3; " + "<a>https://github.com/mpatric/mp3agic/</a>\n" +
@@ -105,7 +105,7 @@ public class CreditsWindow {
         dependencies.pack();
 
         Button close = new Button(shell, SWT.NONE);
-        close.setText(_("&Close"));
+        close.setText(i18n("&Close"));
         close.addListener(SWT.Selection, new Listener() {
 
             @Override

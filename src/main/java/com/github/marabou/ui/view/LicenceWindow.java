@@ -27,7 +27,7 @@ import org.eclipse.swt.layout.RowLayout;
 import java.io.IOException;
 import java.net.URL;
 
-import static com.github.marabou.helper.I18nHelper._;
+import static com.github.marabou.helper.I18nHelper.i18n;
 
 public class LicenceWindow {
 
@@ -36,7 +36,7 @@ public class LicenceWindow {
 
     public void showLicence() {
 
-        shell.setText(_("Licence"));
+        shell.setText(i18n("Licence"));
         shell.setImage(new ImageLoader().getImage(AvailableImage.LOGO_SMALL));
 
         RowLayout rowLayout = new RowLayout(1);
@@ -74,7 +74,7 @@ public class LicenceWindow {
 
         // close button
         Button close = new Button(shell, SWT.NONE);
-        close.setText(_("&Close"));
+        close.setText(i18n("&Close"));
         close.addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {

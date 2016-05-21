@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Label;
 import java.awt.*;
 import java.net.URI;
 
-import static com.github.marabou.helper.I18nHelper._;
+import static com.github.marabou.helper.I18nHelper.i18n;
 
 public class AboutWindow {
 
@@ -47,7 +47,7 @@ public class AboutWindow {
     public void show() {
         final Display display = Display.getCurrent();
         final Shell shell = new Shell(display);
-        shell.setText(_("About Marabou"));
+        shell.setText(i18n("About Marabou"));
         shell.setImage(new ImageLoader().getImage(AvailableImage.LOGO_SMALL));
         FormLayout formLayout = new FormLayout();
         formLayout.marginBottom = 10;
@@ -73,7 +73,7 @@ public class AboutWindow {
 
         // project name and version
         Label text = new Label(comp1, SWT.NONE);
-        text.setText(_("Marabou - Audio Tagger \n" + "Version " + projectVersion));
+        text.setText(i18n("Marabou - Audio Tagger \n" + "Version " + projectVersion));
 
         Image logo = new ImageLoader().getImage(AvailableImage.LOGO_BIG);
         Label labelImage = new Label(comp1, SWT.NONE);
@@ -83,7 +83,7 @@ public class AboutWindow {
         Label labelText = new Label(comp1, SWT.NONE);
         labelText.setAlignment(SWT.CENTER);
         labelText
-                .setText(_("\nThe Marabou is a scavenger and so is this software.\n"
+                .setText(i18n("\nThe Marabou is a scavenger and so is this software.\n"
                         + "It's written to eat badly tagged music files.\n"));
         labelText.pack();
 
@@ -114,7 +114,7 @@ public class AboutWindow {
         comp2.setLayout(rowLayout2);
 
         Button credits = new Button(comp2, SWT.None);
-        credits.setText(_("Cr&edits"));
+        credits.setText(i18n("Cr&edits"));
         credits.addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
@@ -124,7 +124,7 @@ public class AboutWindow {
         credits.pack();
 
         final Button licence = new Button(comp2, SWT.None);
-        licence.setText(_("&Licence"));
+        licence.setText(i18n("&Licence"));
         licence.addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
@@ -134,7 +134,7 @@ public class AboutWindow {
         licence.pack();
 
         Button close = new Button(comp2, SWT.NONE);
-        close.setText(_("&Close"));
+        close.setText(i18n("&Close"));
         close.addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {

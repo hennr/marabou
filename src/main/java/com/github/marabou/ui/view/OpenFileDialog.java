@@ -26,7 +26,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.github.marabou.helper.I18nHelper._;
+import static com.github.marabou.helper.I18nHelper.i18n;
 
 public class OpenFileDialog extends BaseGuiClass {
 
@@ -38,16 +38,16 @@ public class OpenFileDialog extends BaseGuiClass {
         ArrayList<File> filesToOpen = new ArrayList<>();
 
         FileDialog fileDialog = new FileDialog(shell, SWT.MULTI);
-        fileDialog.setText(_("Choose file..."));
+        fileDialog.setText(i18n("Choose file..."));
         fileDialog.setFilterPath(openPath);
 
         /**
          * currently supported file endings, text for GUI
          */
         final String[] supportedFileEndingsDesc = {
-                _("all supported audio files"),
+                i18n("all supported audio files"),
                 "*.mp3",
-                _("all files")};
+                i18n("all files")};
 
         /**
          *  currently supported file endings

@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import java.util.Calendar;
 
-import static com.github.marabou.helper.I18nHelper._;
+import static com.github.marabou.helper.I18nHelper.i18n;
 
 public class ErrorWindow {
     private Shell shell;
@@ -40,7 +40,7 @@ public class ErrorWindow {
         shell = new Shell(display);
         shell.setLayout(new FillLayout());
         shell.setSize(500, 300);
-        shell.setText(_("Marabou - Error Occurred"));
+        shell.setText(i18n("Marabou - Error Occurred"));
         shell.setImage(new ImageLoader().getImage(AvailableImage.LOGO_SMALL));
         errorText = new List(shell, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 
