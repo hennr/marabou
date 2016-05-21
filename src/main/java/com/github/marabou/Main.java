@@ -31,7 +31,6 @@ import com.github.marabou.properties.PropertiesLoader;
 import com.github.marabou.properties.UserProperties;
 import com.github.marabou.audio.loader.AudioFileLoader;
 import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.SubscriberExceptionContext;
 import com.google.common.eventbus.SubscriberExceptionHandler;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
@@ -42,7 +41,7 @@ import org.slf4j.LoggerFactory;
 
 public class Main {
 
-    static Logger log = LoggerFactory.getLogger(Main.class);
+    private static Logger log = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
 

@@ -20,7 +20,7 @@ import java.io.File;
 
 public class PathHelper {
 
-    final String PROPERTIES_FILE_NAME = "marabou.properties";
+    private final String PROPERTIES_FILE_NAME = "marabou.properties";
 
     public String getUserPropertiesFilePath() {
         return getMarabouHomeFolder() + PROPERTIES_FILE_NAME;
