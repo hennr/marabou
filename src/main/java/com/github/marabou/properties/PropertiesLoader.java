@@ -16,14 +16,17 @@
  */
 package com.github.marabou.properties;
 
-import com.github.marabou.helper.PathHelper;
-import org.apache.commons.io.FileUtils;
-
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.github.marabou.helper.PathHelper;
 
 public class PropertiesLoader {
 
@@ -48,7 +51,7 @@ public class PropertiesLoader {
         try {
             createUserPropertiesDirectoryIfNonExistent();
             writeUserProperties(userProperties);
-        } catch (IOException e) {
+        } catch (IOException | SecurityException e) {
             log.error("Couldn't save config file.", e);
         }
     }
@@ -57,7 +60,7 @@ public class PropertiesLoader {
         File userPropertiesDirectory = pathHelper.getUserPropertiesDirectory();
 
         if (!userPropertiesDirectory.exists()) {
-            FileUtils.forceMkdir(userPropertiesDirectory);
+            userPropertiesDirectory.mkdirs();
         }
     }
 
