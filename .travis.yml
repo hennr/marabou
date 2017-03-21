@@ -2,7 +2,9 @@ language: java
 
 jdk: oraclejdk8
 
-install: mvn package -Ptravis_ci
+install: /bin/true
+
+script: mvn package -Ptravis_ci
 
 cache:
   directories: $HOME/.m2/repository/org/owasp/dependency-check-data/
