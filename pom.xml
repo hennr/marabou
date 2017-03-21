@@ -49,7 +49,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- gettext for internationalisation -->
+        <!-- for internationalisation -->
         <dependency>
             <groupId>com.googlecode.gettext-commons</groupId>
             <artifactId>gettext-commons</artifactId>
