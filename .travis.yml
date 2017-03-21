@@ -2,6 +2,14 @@ language: java
 
 jdk: oraclejdk8
 
+install: /bin/true
+
+script: mvn verify -Ptravis_ci
+
+# cache the dependency-check-maven plugin catalog (280MB+)
+cache:
+  directories: $HOME/.m2/repository/org/owasp/dependency-check-data/
+
 before_install:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
@@ -9,7 +17,7 @@ before_install:
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 
-# run in travis' container based infrastructure; we don't have sudo there
+# run in travis' faster container based infrastructure
 sudo: false
 
 before_deploy:
@@ -38,4 +46,3 @@ deploy:
   on:
     repo: hennr/marabou
     tags: true
-

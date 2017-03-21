@@ -210,6 +210,27 @@
 
     <profiles>
         <profile>
+            <id>travis_ci</id>
+            <build>
+                <plugins>
+                    <!-- check for known security issues in dependencies -->
+                    <plugin>
+                        <groupId>org.owasp</groupId>
+                        <artifactId>dependency-check-maven</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <version>1.4.5</version>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
             <id>gtk_linux_i386</id>
             <activation>
                 <os>
