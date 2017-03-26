@@ -243,7 +243,7 @@ public class AudioFileStoreTest {
 
         AudioFileFactory audioFileFactoryMock = mock(AudioFileFactory.class);
         when(audioFileFactoryMock.createAudioFile(any(Mp3File.class))).thenReturn(
-                new AudioFile("will be used to hold new entries"));
+            new AudioFile("will be used to hold new entries"));
         when(audioFileFactoryMock.createMp3File(any())).thenReturn(mp3FileMock);
 
         EventBus bus = new EventBus();
@@ -285,7 +285,7 @@ public class AudioFileStoreTest {
 
         AudioFileFactory audioFileFactoryMock = mock(AudioFileFactory.class);
         when(audioFileFactoryMock.createAudioFile(any(Mp3File.class))).thenReturn(
-                new AudioFile("will be used to hold new entries"));
+            new AudioFile("will be used to hold new entries"));
         when(audioFileFactoryMock.createMp3File(any())).thenReturn(mp3FileMock);
 
         EventBus bus = new EventBus();
@@ -295,9 +295,9 @@ public class AudioFileStoreTest {
         AudioFileStore audioFileStore = new AudioFileStore(bus, audioFileFactoryMock, saveServiceMock);
 
         AudioFile sidePanelEntriesAudioFile = aValidCompleteAudioFile()
-                .withTitle(IGNORE_THIS_WHEN_SAVING)
-                .withTrack(IGNORE_THIS_WHEN_SAVING)
-                .withDiscNumber(IGNORE_THIS_WHEN_SAVING);
+            .withTitle(IGNORE_THIS_WHEN_SAVING)
+            .withTrack(IGNORE_THIS_WHEN_SAVING)
+            .withDiscNumber(IGNORE_THIS_WHEN_SAVING);
 
         audioFileStore.sidePanelEntries = sidePanelEntriesAudioFile;
 

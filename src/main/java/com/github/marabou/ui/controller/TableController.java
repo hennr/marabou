@@ -249,21 +249,21 @@ public class TableController {
         TableItem tableItem = createNewTableItem(audioFile);
 
         tableItem.setText(new String[]{
-                audioFile.getArtist(),
-                audioFile.getTitle(),
-                audioFile.getAlbum(),
-                audioFile.getDuration(),
-                audioFile.getTrack(),
-                audioFile.getBitRate(),
-                audioFile.getSamplerate(),
-                audioFile.getChannels(),
-                audioFile.getYear(),
-                audioFile.getGenre(),
-                audioFile.getComment(),
-                audioFile.getDiscNumber(),
-                audioFile.getComposer(),
-                audioFile.getEncoding(),
-                audioFile.getFilePath()});
+            audioFile.getArtist(),
+            audioFile.getTitle(),
+            audioFile.getAlbum(),
+            audioFile.getDuration(),
+            audioFile.getTrack(),
+            audioFile.getBitRate(),
+            audioFile.getSamplerate(),
+            audioFile.getChannels(),
+            audioFile.getYear(),
+            audioFile.getGenre(),
+            audioFile.getComment(),
+            audioFile.getDiscNumber(),
+            audioFile.getComposer(),
+            audioFile.getEncoding(),
+            audioFile.getFilePath()});
     }
 
     private TableItem createNewTableItem(AudioFile audioFile) {

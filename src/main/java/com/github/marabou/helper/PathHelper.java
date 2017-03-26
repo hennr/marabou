@@ -40,9 +40,9 @@ public class PathHelper {
 
     private boolean isUnix() {
         return
-                System.getProperty("os.name").toLowerCase().contains("nix") ||
-                        System.getProperty("os.name").toLowerCase().contains("nux") ||
-                        System.getProperty("os.name").toLowerCase().contains("bsd");
+            System.getProperty("os.name").toLowerCase().contains("nix") ||
+                System.getProperty("os.name").toLowerCase().contains("nux") ||
+                System.getProperty("os.name").toLowerCase().contains("bsd");
     }
 
     private boolean isWindows() {

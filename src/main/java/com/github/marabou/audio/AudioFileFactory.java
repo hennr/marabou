@@ -108,11 +108,11 @@ public class AudioFileFactory {
         }
 
         audioFile
-                .withDuration(duration)
-                .withBitRate(bitRate)
-                .withSamplerate(sampleRate)
-                .withChannels(channels)
-                .withEncoding("mp3");
+            .withDuration(duration)
+            .withBitRate(bitRate)
+            .withSamplerate(sampleRate)
+            .withChannels(channels)
+            .withEncoding("mp3");
 
         return audioFile;
     }

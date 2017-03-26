@@ -95,12 +95,12 @@ public class CreditsWindow {
 
         Link dependencies = new Link(depsComp, SWT.None);
         dependencies.setText(i18n(
-                        "\nThanks to the following projects and persons:\n\n" +
-                                "SWT; " + "EPL; " + "<a>http://www.eclipse.org/swt/</a>\n" +
-                                "Michael Patricios for mp3agic; " + "GPL 3; " + "<a>https://github.com/mpatric/mp3agic/</a>\n" +
-                                "Tango Icon Library; " + "Public Domain; " + "<a>http://tango.freedesktop.org/Tango_Icon_Library</a>\n" +
-                                "maven; " + "Apache licence; " + "<a>http://maven.apache.org/</a>\n") +
-                        "Dries Bargheer for the logo; " + "CC-BY-SA" + "\n"
+            "\nThanks to the following projects and persons:\n\n" +
+                "SWT; " + "EPL; " + "<a>http://www.eclipse.org/swt/</a>\n" +
+                "Michael Patricios for mp3agic; " + "GPL 3; " + "<a>https://github.com/mpatric/mp3agic/</a>\n" +
+                "Tango Icon Library; " + "Public Domain; " + "<a>http://tango.freedesktop.org/Tango_Icon_Library</a>\n" +
+                "maven; " + "Apache licence; " + "<a>http://maven.apache.org/</a>\n") +
+            "Dries Bargheer for the logo; " + "CC-BY-SA" + "\n"
         );
         dependencies.pack();
 

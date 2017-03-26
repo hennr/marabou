@@ -83,8 +83,8 @@ public class AboutWindow {
         Label labelText = new Label(comp1, SWT.NONE);
         labelText.setAlignment(SWT.CENTER);
         labelText
-                .setText(i18n("\nThe Marabou is a scavenger and so is this software.\n"
-                        + "It's written to eat badly tagged music files.\n"));
+            .setText(i18n("\nThe Marabou is a scavenger and so is this software.\n"
+                + "It's written to eat badly tagged music files.\n"));
         labelText.pack();
 
         // button with project's url

@@ -41,21 +41,17 @@ public class OpenFileDialog extends BaseGuiClass {
         fileDialog.setText(i18n("Choose file..."));
         fileDialog.setFilterPath(openPath);
 
-        /**
-         * currently supported file endings, text for GUI
-         */
+        /* currently supported file endings, text for GUI */
         final String[] supportedFileEndingsDesc = {
-                i18n("all supported audio files"),
-                "*.mp3",
-                i18n("all files")};
+            i18n("all supported audio files"),
+            "*.mp3",
+            i18n("all files")};
 
-        /**
-         *  currently supported file endings
-         */
+        /* currently supported file endings */
         final String[] supportedFileEndings = {
-                "*.[m|M][p|P]3",
-                "*.[m|M][p|P]3",
-                "*"};
+            "*.[m|M][p|P]3",
+            "*.[m|M][p|P]3",
+            "*"};
 
         fileDialog.setFilterExtensions(supportedFileEndings);
         fileDialog.setFilterNames(supportedFileEndingsDesc);

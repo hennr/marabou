@@ -60,7 +60,7 @@ public class Main {
         AudioFileFilter audioFileFilter = new AudioFileFilter();
         AudioFileLoader audioFileLoader = new AudioFileLoader(audioFileFilter);
         SubscriberExceptionHandler eventBusExceptionHandler = (exception, context) ->
-                log.error("A terrible thing happened in marabou.\n If you read this please copy the whole text and report a bug at the project web site.", exception);
+            log.error("A terrible thing happened in marabou.\n If you read this please copy the whole text and report a bug at the project web site.", exception);
         EventBus bus = new EventBus(eventBusExceptionHandler);
         AudioFileFactory audioFileFactory = new AudioFileFactory(bus);
         SaveService saveService = new SaveService();

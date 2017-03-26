@@ -39,8 +39,8 @@ public class MainWindow extends BaseGuiClass {
     protected EventBus bus;
 
     public MainWindow(
-            EventBus bus, MainMenu mainMenu, ImageLoader imageLoader,
-            UserProperties userProperties, Composite composite, SashForm sashForm) {
+        EventBus bus, MainMenu mainMenu, ImageLoader imageLoader,
+        UserProperties userProperties, Composite composite, SashForm sashForm) {
         this.bus = bus;
         this.imageLoader = imageLoader;
         this.userProperties = userProperties;
