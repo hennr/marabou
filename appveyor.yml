@@ -7,7 +7,6 @@ clone_depth: 5
 install:
   - choco install jdk8
   - choco install maven
-  - choco install ie11
   - refreshenv
 
 build_script:
