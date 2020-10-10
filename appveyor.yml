@@ -5,7 +5,7 @@ skip_tags: true
 clone_depth: 5
 
 install:
-  - choco install jdk8
+  - choco install openjdk11
   - choco install maven
   - refreshenv
 
