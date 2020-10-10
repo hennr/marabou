@@ -4,7 +4,7 @@ jdk: openjdk11
 
 install: /bin/true
 
-script: mvn verify -Ptravis_ci
+script: mvn verify
 
 # cache the dependency-check-maven plugin catalog (280MB+)
 cache:
