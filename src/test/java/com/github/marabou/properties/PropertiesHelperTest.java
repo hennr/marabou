@@ -72,7 +72,7 @@ public class PropertiesHelperTest {
         propertiesHelper.getUserProperties();
 
         // then
-        verify(propertiesLoaderMock).persistUserProperties(any(Properties.class));
+        verify(propertiesLoaderMock).persistUserProperties(any());
     }
 
     @Test

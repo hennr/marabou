@@ -81,7 +81,7 @@ public class AudioFileFactoryTest {
         verify(id3v2TagMock).getPartOfSet();
         verify(id3v2TagMock).getComposer();
 
-        verifyZeroInteractions(id3v1TagMock);
+        verifyNoInteractions(id3v1TagMock);
     }
 
     @Test
@@ -119,7 +119,7 @@ public class AudioFileFactoryTest {
         verify(id3v1TagMock).getGenre();
         verify(id3v1TagMock).getComment();
 
-        verifyZeroInteractions(id3v2TagMock);
+        verifyNoInteractions(id3v2TagMock);
     }
 
     @Test
