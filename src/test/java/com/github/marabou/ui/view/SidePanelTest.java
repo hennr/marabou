@@ -22,17 +22,16 @@ import com.github.marabou.audio.AudioFileProperty;
 import com.google.common.collect.Sets;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Shell;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
 import static testdata.builder.TestAudioFileBuilder.*;
 import static testdata.builder.TestAudioFileBuilder.aValidCompleteAudioFile;
 import static testdata.builder.TestAudioFileBuilder.anotherValidCompleteAudioFile;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import static com.github.marabou.audio.AudioFileProperty.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 public class SidePanelTest {

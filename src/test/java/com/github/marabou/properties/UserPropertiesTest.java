@@ -17,10 +17,9 @@
 package com.github.marabou.properties;
 
 import com.github.marabou.helper.PathHelper;
-import junit.framework.TestCase;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Properties;
 
@@ -76,7 +75,7 @@ public class UserPropertiesTest {
         UserProperties userProperties = emptyUserProperties();
 
         // expect
-        TestCase.assertEquals(2, userProperties.getTagBarWeight());
+        assertEquals(2, userProperties.getTagBarWeight());
     }
 
     @Test
@@ -91,7 +90,7 @@ public class UserPropertiesTest {
         int result = userProperties.getTagBarWeight();
 
         //then
-        TestCase.assertEquals(1, result);
+        assertEquals(1, result);
     }
 
     @Test
@@ -116,7 +115,7 @@ public class UserPropertiesTest {
         UserProperties userProperties = emptyUserProperties();
 
         // expect
-        TestCase.assertEquals(5, userProperties.getTableWeight());
+        assertEquals(5, userProperties.getTableWeight());
     }
 
     @Test
@@ -131,7 +130,7 @@ public class UserPropertiesTest {
         int result = userProperties.getTableWeight();
 
         //then
-        TestCase.assertEquals(1, result);
+        assertEquals(1, result);
     }
 
     @Test
@@ -156,7 +155,7 @@ public class UserPropertiesTest {
         UserProperties userProperties = emptyUserProperties();
 
         // expect
-        TestCase.assertEquals(-1, userProperties.getWindowSizeX());
+        assertEquals(-1, userProperties.getWindowSizeX());
     }
 
     @Test
@@ -171,7 +170,7 @@ public class UserPropertiesTest {
         int result = userProperties.getWindowSizeX();
 
         //then
-        TestCase.assertEquals(1, result);
+        assertEquals(1, result);
     }
 
     @Test
@@ -196,7 +195,7 @@ public class UserPropertiesTest {
         UserProperties userProperties = emptyUserProperties();
 
         // expect
-        TestCase.assertEquals(-1, userProperties.getWindowSizeY());
+        assertEquals(-1, userProperties.getWindowSizeY());
     }
 
     @Test
@@ -211,7 +210,7 @@ public class UserPropertiesTest {
         int result = userProperties.getWindowSizeY();
 
         //then
-        TestCase.assertEquals(1, result);
+        assertEquals(1, result);
     }
 
     @Test
@@ -236,7 +235,7 @@ public class UserPropertiesTest {
         UserProperties userProperties = emptyUserProperties();
 
         // expect
-        TestCase.assertEquals(true, userProperties.rememberLastPath());
+        assertEquals(true, userProperties.rememberLastPath());
     }
 
     @Test
@@ -251,7 +250,7 @@ public class UserPropertiesTest {
         boolean result = userProperties.rememberLastPath();
 
         //then
-        TestCase.assertEquals(false, result);
+        assertEquals(false, result);
     }
 
     @Test
@@ -276,7 +275,7 @@ public class UserPropertiesTest {
         UserProperties userProperties = emptyUserProperties();
 
         // expect
-        TestCase.assertEquals("", userProperties.getLastPath());
+        assertEquals("", userProperties.getLastPath());
     }
 
     @Test
@@ -291,7 +290,7 @@ public class UserPropertiesTest {
         String result = userProperties.getLastPath();
 
         //then
-        TestCase.assertEquals("foo", result);
+        assertEquals("foo", result);
     }
 
     @Test

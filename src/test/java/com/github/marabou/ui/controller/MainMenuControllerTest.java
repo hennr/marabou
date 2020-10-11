@@ -23,14 +23,14 @@ import com.github.marabou.ui.events.OpenFileEvent;
 import com.github.marabou.ui.events.SaveSelectedFilesEvent;
 import com.github.marabou.ui.view.AboutWindow;
 import com.google.common.eventbus.EventBus;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class MainMenuControllerTest {

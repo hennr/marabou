@@ -25,7 +25,7 @@ import com.github.marabou.ui.events.SaveSelectedFilesEvent;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 import com.mpatric.mp3agic.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.io.File;
@@ -33,7 +33,7 @@ import java.io.IOException;
 import java.util.Set;
 
 import static com.github.marabou.helper.Constants.IGNORE_THIS_WHEN_SAVING;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static testdata.builder.TestAudioFileBuilder.aValidCompleteAudioFile;
 import static testdata.builder.TestAudioFileBuilder.anotherValidCompleteAudioFile;
@@ -181,6 +181,7 @@ public class AudioFileStoreTest {
         // then
         Set<AudioFile> result = audioFileStore.getSelectedAudioFiles();
         assertTrue(result.contains(audioFileTwo));
+
         assertFalse(result.contains(audioFileOne));
     }
 

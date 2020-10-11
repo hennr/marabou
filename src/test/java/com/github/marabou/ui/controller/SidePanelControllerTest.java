@@ -21,7 +21,7 @@ import com.github.marabou.ui.events.FilesSelectedEvent;
 import com.github.marabou.ui.view.SidePanel;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 

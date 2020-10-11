@@ -18,13 +18,13 @@ package com.github.marabou.properties;
 
 import com.github.marabou.helper.PathHelper;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.InputStream;
 import java.util.Properties;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class PropertiesHelperTest {

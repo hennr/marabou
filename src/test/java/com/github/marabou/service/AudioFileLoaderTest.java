@@ -19,9 +19,9 @@ package com.github.marabou.service;
 import com.github.marabou.audio.loader.AudioFileFilter;
 
 import com.github.marabou.audio.loader.AudioFileLoader;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.io.IOException;
