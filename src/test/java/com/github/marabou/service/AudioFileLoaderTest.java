@@ -19,72 +19,85 @@ package com.github.marabou.service;
 import com.github.marabou.audio.loader.AudioFileFilter;
 
 import com.github.marabou.audio.loader.AudioFileLoader;
+import com.github.marabou.ui.events.OpenFileEvent;
+import com.google.common.eventbus.EventBus;
+
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import static org.mockito.Mockito.*;
 
 public class AudioFileLoaderTest {
 
+    AudioFileFilter audioFileFilter = spy(new AudioFileFilter());
+    EventBus bus = mock(EventBus.class);
+    AudioFileLoader audioFileLoader = new AudioFileLoader(audioFileFilter, bus);
+
     @Test
-    public void anEmptyFolderStructureReturnsAnEmptyList() {
+    public void openingFileFiresEvent() throws Exception {
 
         // given
-        AudioFileFilter audioFileFilter = new AudioFileFilter();
-        AudioFileLoader service = new AudioFileLoader(audioFileFilter);
+        File file = aValidMp3File();
+
+        // when
+        audioFileLoader.openFile(file);
+
+        ArgumentCaptor<OpenFileEvent> argument = ArgumentCaptor.forClass(OpenFileEvent.class);
+        verify(bus).post(argument.capture());
+
+        // then
+        assertEquals(file, argument.getValue().getFile());
+    }
+
+    @Test
+    public void openingAnEmptyFolderDoesNotFireAnEvent() {
+
+        // given
         File dirToScan = mock(File.class);
         File[] files = new File[]{};
         when(dirToScan.listFiles()).thenReturn(files);
 
         // when
-        List<File> result = service.findAcceptableFilesRecursively(dirToScan);
+        audioFileLoader.openDirectory(dirToScan);
 
         // then
-        assertEquals(0, result.size());
+        verify(bus, never()).post(isA(OpenFileEvent.class));
     }
 
     @Test
     public void aSingleFileIsFound() throws IOException {
 
         // given
-        AudioFileFilter audioFileFilter = new AudioFileFilter();
-        AudioFileLoader service = new AudioFileLoader(audioFileFilter);
         File dirToScan = mock(File.class);
         File mockedMp3File = aValidMp3File();
         File[] files = new File[]{mockedMp3File};
         when(dirToScan.listFiles()).thenReturn(files);
 
         // when
-        List<File> result = service.findAcceptableFilesRecursively(dirToScan);
+        audioFileLoader.openDirectory(dirToScan);
 
         // then
-        assertEquals(1, result.size());
-        result.contains(mockedMp3File);
+        verify(bus, times(1)).post(isA(OpenFileEvent.class));
     }
 
     @Test
     public void makesUseOfTheAudioFileFilter() throws IOException {
 
         // given
-        AudioFileFilter audioFileFilter = spy(new AudioFileFilter());
-        AudioFileLoader service = new AudioFileLoader(audioFileFilter);
         File mockedMp3File = aValidMp3File();
         File dirToScan = mock(File.class);
         when(dirToScan.listFiles()).thenReturn(new File[]{mockedMp3File});
 
         // when
-        List<File> result = service.findAcceptableFilesRecursively(dirToScan);
+        audioFileLoader.openDirectory(dirToScan);
 
         // then
         verify(audioFileFilter).accept(isA(File.class));
-
-        assertEquals(1, result.size());
-        result.contains(mockedMp3File);
     }
 
     @Test
@@ -94,9 +107,6 @@ public class AudioFileLoaderTest {
         File mockedMp3File = aValidMp3File();
 
         final String SLASH_FOO_CANONICAL_PATH_NAME = "/foo";
-
-        AudioFileFilter audioFileFilter = new AudioFileFilter();
-        AudioFileLoader service = new AudioFileLoader(audioFileFilter);
 
         File slashFoo = mock(File.class);
         when(slashFoo.isDirectory()).thenReturn(true);
@@ -116,10 +126,10 @@ public class AudioFileLoaderTest {
         when(slashFoo.listFiles()).thenReturn(new File[]{slashFooSlashX, slashFooSlashXSlashY, mockedMp3File});
 
         // when
-        List<File> result = service.findAcceptableFilesRecursively(slashFoo);
+        audioFileLoader.openDirectory(slashFoo);
 
         // then
-        assertEquals(1, result.size());
+        verify(bus, times(1)).post(isA(OpenFileEvent.class));
     }
 
     @Test
@@ -127,10 +137,6 @@ public class AudioFileLoaderTest {
 
         // given
         File mockedMp3File = aValidMp3File();
-
-        AudioFileFilter audioFileFilter = new AudioFileFilter();
-        AudioFileLoader service = new AudioFileLoader(audioFileFilter);
-
         File slashFoo = mock(File.class);
         when(slashFoo.isDirectory()).thenReturn(true);
         when(slashFoo.getName()).thenReturn("/foo");
@@ -149,18 +155,16 @@ public class AudioFileLoaderTest {
         when(slashFoo.listFiles()).thenReturn(new File[]{slashFooSlashX, slashFooSlashXSlashY, mockedMp3File});
 
         // when
-        List<File> result = service.findAcceptableFilesRecursively(slashFoo);
+        audioFileLoader.openDirectory(slashFoo);
 
         // then
-        assertEquals(3, result.size());
+        verify(bus, times(3)).post(isA(OpenFileEvent.class));
     }
 
     @Test
     public void doesNotDetectBadlyNamedFolderAsFile() throws IOException {
 
         // given
-        AudioFileFilter audioFileFilter = spy(new AudioFileFilter());
-        AudioFileLoader service = new AudioFileLoader(audioFileFilter);
         File validFile = aValidMp3File();
 
         File badlyNamedFolder = mock(File.class);
@@ -170,10 +174,10 @@ public class AudioFileLoaderTest {
         when(badlyNamedFolder.listFiles()).thenReturn(new File[]{validFile});
 
         // when
-        List<File> results = service.findAcceptableFilesRecursively(badlyNamedFolder);
+        audioFileLoader.openDirectory(badlyNamedFolder);
 
         // then
-        assertEquals(1, results.size());
+        verify(bus, times(1)).post(isA(OpenFileEvent.class));
     }
 
     private File aValidMp3File() throws IOException {
@@ -185,5 +189,4 @@ public class AudioFileLoaderTest {
         when(mockedMp3File.getCanonicalPath()).thenReturn("foo.mp3");
         return mockedMp3File;
     }
-
 }

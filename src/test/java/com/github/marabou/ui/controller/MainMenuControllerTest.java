@@ -19,112 +19,63 @@ package com.github.marabou.ui.controller;
 import com.github.marabou.audio.loader.AudioFileLoader;
 import com.github.marabou.audio.store.AudioFileStore;
 import com.github.marabou.properties.UserProperties;
-import com.github.marabou.ui.events.OpenFileEvent;
 import com.github.marabou.ui.events.SaveSelectedFilesEvent;
 import com.github.marabou.ui.view.AboutWindow;
+import com.github.marabou.ui.view.OpenDirectoryDialog;
 import com.google.common.eventbus.EventBus;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.io.File;
+
 public class MainMenuControllerTest {
+
     EventBus bus = mock(EventBus.class);
+    UserProperties userPropertiesMock = mock(UserProperties.class);
+    AudioFileLoader audioFileLoaderMock = mock(AudioFileLoader.class);
+    AboutWindow aboutWindowMock = mock(AboutWindow.class);
+    AudioFileStore audioFileStore = mock(AudioFileStore.class);
+    OpenDirectoryDialog openDirectoryDialog = mock(OpenDirectoryDialog.class);
+    MainMenuController controller = new MainMenuController(bus, audioFileStore, userPropertiesMock, audioFileLoaderMock, aboutWindowMock, openDirectoryDialog);
 
     @Test
-    public void opensValidFile() throws Exception {
-
+    public void handleOpenDirectoryEventCallsAudioFileLoader() {
         // given
-        MainMenuController controllerUnderTest = givenAMainMenuControllerWithMocks();
-
-        controllerUnderTest.audioFileStore = mock(AudioFileStore.class);
-
-        File file = aValidMockedFile();
-
+        when(openDirectoryDialog.getDirectoryToOpen(any())).thenReturn("openMe");
         // when
-        controllerUnderTest.openFile(file);
-
-        ArgumentCaptor<OpenFileEvent> argument = ArgumentCaptor.forClass(OpenFileEvent.class);
-        verify(bus).post(argument.capture());
-
+        controller.handleOpenDirectoryEvent();
         // then
-        assertEquals(file, argument.getValue().getFile());
+        verify(audioFileLoaderMock).openDirectory(eq(new File("openMe")));
     }
 
     @Test
-    public void openingAFileProvokesAnOpenFileEvent() throws Exception {
-
+    public void handleOpenDirectoryEventSavesLastPathIfEnabled() {
         // given
-        MainMenuController controllerUnderTest = givenAMainMenuControllerWithMocks();
-
-        controllerUnderTest.audioFileStore = mock(AudioFileStore.class);
-
-        List<File> files = new ArrayList<>(1);
-        File file = aValidMockedFile();
-        files.add(file);
-
+        when(openDirectoryDialog.getDirectoryToOpen(any())).thenReturn("openMe");
+        when(userPropertiesMock.rememberLastPath()).thenReturn(true);
         // when
-        controllerUnderTest.openFiles(files);
-
-        ArgumentCaptor<OpenFileEvent> argumentCaptor = ArgumentCaptor.forClass(OpenFileEvent.class);
-        verify(bus).post(argumentCaptor.capture());
-
+        controller.handleOpenDirectoryEvent();
         // then
-        assertEquals(file, argumentCaptor.getValue().getFile());
+        verify(userPropertiesMock).setLastPath(eq("openMe"));
     }
 
-
     @Test
-    public void opensMultipleFiles() throws Exception {
-
+    public void handleOpenDirectoryEventDoesNotSaveLastPathIfDisabled() {
         // given
-        MainMenuController controllerUnderTest = givenAMainMenuControllerWithMocks();
-
-        controllerUnderTest.audioFileStore = mock(AudioFileStore.class);
-
-        List<File> files = new ArrayList<>(2);
-        files.add(aValidMockedFile());
-        files.add(aValidMockedFile());
-
+        when(openDirectoryDialog.getDirectoryToOpen(any())).thenReturn("openMe");
+        when(userPropertiesMock.rememberLastPath()).thenReturn(false);
         // when
-        controllerUnderTest.openFiles(files);
-
+        controller.handleOpenDirectoryEvent();
         // then
-        verify(bus, times(2)).post(isA(OpenFileEvent.class));
+        verify(userPropertiesMock, never()).setLastPath(any());
     }
 
     @Test
     public void saveSelectedFilesFiresEvent() throws Exception {
-
-        // given
-        MainMenuController controller = givenAMainMenuControllerWithMocks();
-
         // when
         controller.handleSaveSelectedFilesEvent();
-
         // then
         verify(controller.bus).post(any(SaveSelectedFilesEvent.class));
-    }
-
-    private MainMenuController givenAMainMenuControllerWithMocks() {
-        UserProperties userPropertiesMock = mock(UserProperties.class);
-        AudioFileLoader audioFileLoaderMock = mock(AudioFileLoader.class);
-        AboutWindow aboutWindowMock = mock(AboutWindow.class);
-        AudioFileStore audioFileStore = mock(AudioFileStore.class);
-
-        return new MainMenuController(bus, audioFileStore, userPropertiesMock, audioFileLoaderMock, aboutWindowMock);
-    }
-
-    private File aValidMockedFile() {
-        File file = mock(File.class);
-        when(file.getName()).thenReturn("foo.mp3");
-        when(file.canRead()).thenReturn(true);
-        when(file.isDirectory()).thenReturn(false);
-        return file;
     }
 }

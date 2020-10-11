@@ -37,21 +37,15 @@ public class MainMenuController {
     private final AudioFileLoader audioFileLoader;
     private final AboutWindow aboutWindow;
     protected EventBus bus;
+    private OpenDirectoryDialog openDirectoryDialog;
 
-    public MainMenuController(EventBus bus, AudioFileStore audioFileStore, UserProperties userProperties, AudioFileLoader audioFileLoader, AboutWindow aboutWindow) {
+    public MainMenuController(EventBus bus, AudioFileStore audioFileStore, UserProperties userProperties, AudioFileLoader audioFileLoader, AboutWindow aboutWindow, OpenDirectoryDialog openDirectoryDialog) {
         this.bus = bus;
         this.audioFileStore = audioFileStore;
         this.userProperties = userProperties;
         this.audioFileLoader = audioFileLoader;
         this.aboutWindow = aboutWindow;
-    }
-
-    protected void openFiles(List<File> files) {
-        files.forEach(this::openFile);
-    }
-
-    protected void openFile(File file) {
-        bus.post(new OpenFileEvent(file));
+        this.openDirectoryDialog = openDirectoryDialog;
     }
 
     public void handleSaveSelectedFilesEvent() {
@@ -59,8 +53,6 @@ public class MainMenuController {
     }
 
     public void handleOpenDirectoryEvent() {
-
-        OpenDirectoryDialog openDirectoryDialog = new OpenDirectoryDialog();
         String dirToOpen = openDirectoryDialog.getDirectoryToOpen(userProperties.getLastPath());
 
         if (userProperties.rememberLastPath() && dirToOpen != null) {
@@ -68,8 +60,7 @@ public class MainMenuController {
         }
 
         if (dirToOpen != null) {
-            List<File> files = audioFileLoader.findAcceptableFilesRecursively(new File(dirToOpen));
-            openFiles(files);
+            audioFileLoader.openDirectory(new File(dirToOpen));
         }
     }
 
@@ -82,7 +73,7 @@ public class MainMenuController {
             userProperties.setLastPath(openFileDialog.getLastPath());
         }
 
-        filesToOpen.forEach(this::openFile);
+        filesToOpen.forEach(audioFileLoader::openFile);
     }
 
     public void handleShowAboutWindow() {

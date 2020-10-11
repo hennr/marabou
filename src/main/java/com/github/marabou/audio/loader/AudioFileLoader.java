@@ -23,6 +23,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+import com.github.marabou.ui.events.OpenFileEvent;
+import com.google.common.eventbus.EventBus;
+
 import static java.util.Arrays.asList;
 
 public class AudioFileLoader {
@@ -30,16 +33,22 @@ public class AudioFileLoader {
     Logger log = LoggerFactory.getLogger(AudioFileLoader.class);
 
     private final AudioFileFilter audioFileFilter;
+    private final EventBus bus;
 
-
-    public AudioFileLoader(AudioFileFilter audioFileFilter) {
+    public AudioFileLoader(AudioFileFilter audioFileFilter, EventBus bus) {
         this.audioFileFilter = audioFileFilter;
+        this.bus = bus;
     }
 
-    public List<File> findAcceptableFilesRecursively(File dirToScan) {
-        log.info("recursively scanning directory for compatible files: " + dirToScan.getName());
+    public void openDirectory(File directory) {
+        log.info("recursively scanning directory for compatible files: " + directory.getName());
 
-        return findAcceptableFilesRecursively(dirToScan, new HashSet<>());
+        List<File> files = findAcceptableFilesRecursively(directory, new HashSet<>());
+        files.forEach(this::openFile);
+    }
+
+    public void openFile(File file) {
+        bus.post(new OpenFileEvent(file));
     }
 
     private List<File> findAcceptableFilesRecursively(File dirToScan, Set<String> alreadyVisitedPaths) {
