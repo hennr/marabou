@@ -69,11 +69,16 @@
             <version>28.2-jre</version>
         </dependency>
 
-        <!-- SWT from https://github.com/maven-eclipse/repo -->
         <dependency>
-            <groupId>org.eclipse.swt</groupId>
+            <groupId>org.eclipse.platform</groupId>
             <artifactId>${swt.artifactId}</artifactId>
-            <version>4.6.1</version>
+            <version>3.115.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.eclipse.platform</groupId>
+                    <artifactId>org.eclipse.swt</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -90,6 +95,18 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-shade-plugin</artifactId>
                     <version>3.0.0</version>
+                    <configuration>
+                        <filters>
+                            <filter>
+                                <artifact>*:*</artifact>
+                                <excludes>
+                                    <exclude>META-INF/*.SF</exclude>
+                                    <exclude>META-INF/*.DSA</exclude>
+                                    <exclude>META-INF/*.RSA</exclude>
+                                </excludes>
+                            </filter>
+                        </filters>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -209,39 +226,7 @@
     </build>
 
     <profiles>
-        <profile>
-            <id>gtk_linux_i386</id>
-            <activation>
-                <os>
-                    <name>linux</name>
-                    <arch>i386</arch>
-                </os>
-            </activation>
-            <properties>
-                <swt.artifactId>org.eclipse.swt.gtk.linux.x86</swt.artifactId>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-shade-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>linux-gtk-x86</id>
-                                <configuration>
-                                    <finalName>${project.name}-${project.version}-linux-gtk-x86</finalName>
-                                </configuration>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>shade</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
+       <profile>
             <id>gtk_linux_amd64</id>
             <activation>
                 <os>
@@ -265,38 +250,6 @@
                                 <id>linux-gtk-x86_64</id>
                                 <configuration>
                                     <finalName>${project.name}-${project.version}-linux-gtk-x86_64</finalName>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>windows_32</id>
-            <activation>
-                <os>
-                    <family>windows</family>
-                    <arch>i386</arch>
-                </os>
-            </activation>
-            <properties>
-                <swt.artifactId>org.eclipse.swt.win32.win32.x86</swt.artifactId>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-shade-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>shade</goal>
-                                </goals>
-                                <id>win32.x86</id>
-                                <configuration>
-                                    <finalName>${project.name}-${project.version}-win32-x86</finalName>
                                 </configuration>
                             </execution>
                         </executions>
@@ -337,13 +290,4 @@
             </build>
         </profile>
     </profiles>
-
-    <repositories>
-        <!-- unofficial swt repo; co-maintained by hennr -->
-        <repository>
-            <id>maven-eclipse-repo</id>
-            <url>http://maven-eclipse.github.io/maven</url>
-        </repository>
-    </repositories>
-
 </project>
